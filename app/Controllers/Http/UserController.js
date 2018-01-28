@@ -1,56 +1,72 @@
-const Database = use('Database')
-const { validate } = use('Validator')
 const User = use('App/Models/User')
 
 
 class UserController {
-  async login({ request, auth }) {
-    const { email, password } = request.all()
-    return auth.attempt(email, password)
+  // POST
+  async login({ auth, request, response }) {
+    try {
+      const { email, password } = request.all()
+      return auth.attempt(email, password)
+    } catch (err) {
+      return response.status(500).send({ error: 'Failed to login.' })
+    }
   }
 
   // GET
-  async index() {
+  async index({ response }) {
     try {
-      return User.all()
+      const users = User.all()
+      response.send(users)
     } catch (err) {
-      throw new Error('[ERROR] Unable to get notes...')
+      response.status(500).send({ error: 'Failed to GET users.' })
     }
   }
   // GET :id
-  async show({ auth, params }) {
-    if (auth.user.id !== Number(params.id)) {
-      return 'You cannot see someone else\'s profile'
+  async show({ auth, params, response }) {
+    try {
+      if (auth.user.id === Number(params.id)) {
+        response.send(auth.user)
+      } else {
+        response.status(403).send({ error: 'You don\'t have permission to view this user.' })
+      }
+    } catch (err) {
+      response.status(500).send({ error: `Failed to GET user (id: ${params.id})` })
     }
-    return auth.user
   }
-
-  async store({ request }) {
-    const rules = {
-      email: 'required|email|unique:users,email',
-      username: 'required',
-      password: 'required',
+  // POST
+  async store({ request, response }) {
+    try {
+      const userData = request.only(['email', 'username', 'password'])
+      const user = await User.create(userData)
+      response.send(user)
+    } catch (err) {
+      response.status(500).send({ error: 'Failed to POST user.' })
     }
-    const validation = await validate(request.all(), rules)
-
-    if (validation.fails()) {
-      return 'Incorrect credentials. Try again...'
-    }
+  }
+  // PUT/PATCH
+  async update({ params, request, response }) {
     try {
       const user = new User()
-
       user.email = request.post().email
       user.username = request.post().username
-      user.password = request.post().password
-
-      return user.save()
+      const updatedNote = await User
+        .query()
+        .where('id', params.id)
+        .update(user)
+      response.send(updatedNote)
     } catch (err) {
-      throw new Error(`[ERROR] Failed to create user: ${err.message}`)
+      response.status(500).send({ error: `Failed to PUT note (id: ${params.id}).` })
     }
   }
-
-  destroy() {
-
+  // DELETE
+  async destroy({ params, response }) {
+    try {
+      const user = await User.find(params.id)
+      await user.delete()
+      response.send(user)
+    } catch (err) {
+      response.status(500).send({ error: `Failed to DELETE user (id: ${params.id}).` })
+    }
   }
 }
 
