@@ -2,7 +2,7 @@ const Route = use('Route')
 const prefix = 'api/v1'
 
 
-Route.get('/', ({ request }) => ({ greeting: 'prolificr' }))
+Route.get('/', () => ({ greeting: 'prolificr' }))
 
 
 // User
@@ -11,6 +11,9 @@ Route.group(() => {
     .apiOnly()
     .middleware(new Map([
       [['users.show', 'users.update', 'users.destroy'], ['auth']],
+    ]))
+    .validator(new Map([
+      [['users.store'], ['StoreUser']],
     ]))
 }).prefix(prefix)
 
@@ -21,4 +24,7 @@ Route.group(() => {
   Route.resource('notes', 'NoteController')
     .apiOnly()
     .middleware(['auth'])
+    .validator(new Map([
+      [['notes.store'], ['StoreNote']],
+    ]))
 }).prefix(prefix)
