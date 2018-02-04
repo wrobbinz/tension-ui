@@ -22,13 +22,11 @@ class Workspace extends Component {
     this.updateContents = this.updateContents.bind(this)
   }
 
-  componentDidMount() {
-    axios.get(api.notes, api.config)
-      .then((res) => {
-        const notes = reverse(res.data)
-        const note = notes[0]
-        this.setState({ notes, note })
-      })
+  async componentWillMount() {
+    const res = await axios.get(api.notes, api.config())
+    const notes = reverse(res.data)
+    const note = notes[0]
+    this.setState({ notes, note })
   }
 
   toggleVisibility() {
