@@ -1,12 +1,20 @@
-body {
-  background: #f9fafb;
-  font-family: Helvetica, Arial, sans-serif;
-  padding: 30px;
-  font-size: 16px;
+.full-height {
+  height: 100% !important;
 }
 
-img {
-  display: block;
-  margin: 20px 0;
-  width: 140px;
+.left-icon {
+    float: none;
+    margin: 0em 0.35714286em 0em 0em;
+}
+
+.no-border-radius {
+  border-radius: 0 !important;
+}
+
+.no-border {
+  border: none !important;
+}
+
+#titleInput {
+  border: none !important;
 }
