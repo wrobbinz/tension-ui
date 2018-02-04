@@ -1,99 +1,136 @@
 import React, { Component } from 'react'
-import { Icon, Menu } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Icon, Input } from 'semantic-ui-react'
 import axios from 'axios'
-import Editor from './editor.jsx'
+import { remove, reverse } from 'lodash'
+import api from './api'
+import '../css/style.css'
+import Editor from './editor'
 
 
 class Workspace extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      visible: true,
       notes: [],
-      activeNote: {},
-      noteValue: '',
-      activeItem: 'notes',
+      note: {},
     }
-    this.handleItemClick = this.handleItemClick.bind(this)
+    this.selectNote = this.selectNote.bind(this)
     this.createNote = this.createNote.bind(this)
     this.deleteNote = this.deleteNote.bind(this)
-    axios.get('http://localhost:3333/api/v1/notes', {
-      headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('jwtToken')}`,
-      },
-    })
+    this.toggleVisibility = this.toggleVisibility.bind(this)
+    this.updateContents = this.updateContents.bind(this)
+  }
+
+  componentDidMount() {
+    axios.get(api.notes, api.config)
       .then((res) => {
-        const notes = res.data
-        const activeNote = notes[0]
-        const noteValue = activeNote.contents
-        this.setState({ notes, activeNote, noteValue })
+        const notes = reverse(res.data)
+        const note = notes[0]
+        this.setState({ notes, note })
       })
   }
 
-  handleItemClick(e, { name, id }) {
-    const activeNote = this.state.notes.find(note => note.id === id)
+  toggleVisibility() {
     this.setState({
-      activeNote,
-      noteValue: activeNote.contents,
-      activeItem: name,
+      visible: !this.state.visible,
+
     })
+  }
+
+  selectNote(id) {
+    const note = this.state.notes.find(n => n.id === id)
+    console.log('selected', note)
+    this.setState({ note })
   }
 
   createNote() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('jwtToken')}`,
-      },
-    }
     const payload = {
-      title: 'new note',
-      contents: ' ',
+      title: 'Untitled Note',
+      contents: '',
     }
-    axios.post('http://localhost:3333/api/v1/notes', payload, config)
+    axios.post(api.notes, payload, api.config)
       .then((res) => {
         const { notes } = this.state
-        notes.push(res.data)
-        const activeNote = res.data
-        const noteValue = activeNote.contents
-        this.setState({ notes, activeNote, noteValue })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  deleteNote() {
-    const { id } = this.state.activeNote
-    axios.delete('http://localhost:3333/api/v1/notes', { params: { id } })
-      .then((res) => {
-        console.log(res)
+        notes.unshift(res.data)
+        const note = res.data
+        this.setState({ notes, note })
       })
       .catch((err) => {
         console.log(err)
       })
   }
 
+  deleteNote(id) {
+    axios.delete(`${api.notes}${id}`, api.config)
+      .then(() => {
+        const { notes } = this.state
+        remove(notes, note => note.id === id)
+        this.setState({ notes })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  updateTitle(event) {
+    const { note } = this.state
+    note.title = event.target.value
+    this.setState({ note })
+  }
+
+  updateContents(event) {
+    const { note } = this.state
+    note.contents = event.target.value
+    this.setState({ note })
+  }
+
   render() {
-    const { activeItem } = this.state
     return (
-      <div>
-        <Menu vertical inverted>
-          <Menu.Item>
-            <Icon link onClick={this.createNote} name="plus" /><Menu.Header>Notes</Menu.Header>
+      <div className="full-height">
+        <Sidebar.Pushable as={Segment} className="no-border-radius no-border">
+          <Sidebar
+            as={Menu}
+            animation="push"
+            visible={this.state.visible}
+            className="full-height"
+            vertical
+            inverted
+          >
+            <Menu.Item>Notes
+              <Icon link onClick={() => { this.createNote() }} name="plus" />
+            </Menu.Item>
             <Menu.Menu>
               {this.state.notes.map(note => (
-                <div>
+                <div key={note.id}>
                   <Menu.Item
-                    name={note.title}
-                    active={activeItem === note.id}
-                    onClick={this.handleItemClick}
+                    onClick={() => { this.selectNote(note.id) }}
+                    name={note.id.toString()}
+                    active={this.state.note.id === note.id}
                     id={note.id}
-                    key={note.id}
-                  />
+                  >
+                    {note.title === '' ? 'Untitled Note' : note.title}
+                    <Icon link onClick={() => { this.deleteNote(note.id) }} name="trash outline" />
+                  </Menu.Item>
+
                 </div>
               ))}
             </Menu.Menu>
-          </Menu.Item>
-        </Menu>
-        <Editor />
+          </Sidebar>
+          <Sidebar.Pusher className="full-height">
+            <Icon link onClick={this.toggleVisibility} flipped={this.state.visible ? 'horizontally' : null} name="angle right" size="big" />
+            <Input
+              id="titleInput"
+              className="no-border"
+              size="big"
+              placeholder="Title"
+              value={this.state.note.title || ''}
+              maxLength="20"
+              onChange={(event) => { this.updateTitle(event) }}
+            />
+            <Editor updateContents={this.updateContents} note={this.state.note} />
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
       </div>
     )
   }
