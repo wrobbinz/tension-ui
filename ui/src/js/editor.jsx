@@ -1,22 +1,40 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Form, TextArea } from 'semantic-ui-react'
-import axios from 'axios'
 
 
 class Editor extends Component {
   constructor(props) {
     super(props)
     this.state = {
+
     }
   }
 
   render() {
     return (
-      <Form>
-        <TextArea value={this.state.noteValue} onChange={(event, newValue) => this.setState({ noteValue: newValue })} placeholder="Tell us more" style={{ minHeight: '100%' }} />
+      <Form className="full-height">
+        <TextArea
+          id="editor"
+          className="no-border-radius no-border"
+          value={this.props.note.contents}
+          onChange={this.props.updateContents}
+          placeholder="..."
+          style={{ minHeight: '100%' }}
+        />
       </Form>
     )
   }
+}
+
+Editor.propTypes = {
+  updateContents: PropTypes.func,
+  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+}
+
+Editor.defaultProps = {
+  updateContents: false,
+  note: false,
 }
 
 export default Editor
