@@ -2,7 +2,6 @@ class StoreNote {
   get rules() {
     return {
       title: 'required',
-      contents: 'required',
     }
   }
 
