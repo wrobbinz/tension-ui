@@ -4,10 +4,12 @@ const api = {
   users: `${base}users/`,
   login: `${base}login/`,
 
-  config: {
-    headers: {
-      Authorization: `Bearer ${window.sessionStorage.getItem('jwtToken')}`,
-    },
+  config() {
+    return {
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.getItem('jwtToken')}`,
+      },
+    }
   },
 }
 
