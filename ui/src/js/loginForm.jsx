@@ -13,8 +13,8 @@ class LoginForm extends Component {
       password: '',
       username: '',
       signup: false,
-      formColor: 'teal',
       loginFailed: false,
+      formColor: 'teal',
     }
   }
 
@@ -24,7 +24,6 @@ class LoginForm extends Component {
         email: this.state.email,
         password: this.state.password,
       }
-      console.log(payload)
       const res = await axios.post(api.login, payload)
       window.sessionStorage.setItem('jwtToken', res.data.token)
       this.props.loggedIn(true)
@@ -55,10 +54,11 @@ class LoginForm extends Component {
   async signUp() {
     try {
       const payload = {
-        email: this.state.email.value,
-        username: this.state.username.value,
-        password: this.state.password.value,
+        email: this.state.email,
+        username: this.state.username,
+        password: this.state.password,
       }
+      console.log(payload)
       await axios.post(api.users, payload)
       this.logIn()
     } catch (err) {
