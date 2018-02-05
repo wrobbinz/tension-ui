@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
 import { Sidebar, Segment, Menu, Icon, Input } from 'semantic-ui-react'
 import axios from 'axios'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { remove, reverse } from 'lodash'
 import api from './api'
 import '../css/style.css'
 import Editor from './editor'
 
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list)
+  const [removed] = result.splice(startIndex, 1)
+  result.splice(endIndex, 0, removed)
+
+  return result
+}
 
 class Workspace extends Component {
   constructor(props) {
@@ -13,7 +23,10 @@ class Workspace extends Component {
     this.state = {
       visible: true,
       notes: [],
-      note: {},
+      note: {
+        title: '...',
+        contents: '',
+      },
     }
     this.selectNote = this.selectNote.bind(this)
     this.createNote = this.createNote.bind(this)
@@ -21,13 +34,32 @@ class Workspace extends Component {
     this.toggleVisibility = this.toggleVisibility.bind(this)
     this.updateContents = this.updateContents.bind(this)
     this.updateTitle = this.updateTitle.bind(this)
+    this.onDragEnd = this.onDragEnd.bind(this)
+
+    axios.get(api.notes, api.config())
+      .then((res) => {
+        const notes = reverse(res.data)
+        const note = notes[0]
+        this.setState({ notes, note })
+        this.setState({ notes })
+      })
   }
 
-  async componentWillMount() {
-    const res = await axios.get(api.notes, api.config())
-    const notes = reverse(res.data)
-    const note = notes[0]
-    this.setState({ notes, note })
+  onDragEnd(result) {
+    // dropped outside the list
+    if (!result.destination) {
+      return
+    }
+
+    const notes = reorder(
+      this.state.notes,
+      result.source.index,
+      result.destination.index,
+    )
+
+    this.setState({
+      notes,
+    })
   }
 
   toggleVisibility() {
@@ -65,7 +97,8 @@ class Workspace extends Component {
       .then(() => {
         const { notes } = this.state
         remove(notes, note => note.id === id)
-        this.setState({ notes })
+        const note = notes[0] || null
+        this.setState({ notes, note })
       })
       .catch((err) => {
         console.log(err)
@@ -100,34 +133,62 @@ class Workspace extends Component {
               <Icon link onClick={() => { this.createNote() }} name="plus" />
             </Menu.Item>
             <Menu.Menu>
-              {this.state.notes.map(note => (
-                <div key={note.id}>
-                  <Menu.Item
-                    onClick={() => { this.selectNote(note.id) }}
-                    name={note.id.toString()}
-                    active={this.state.note.id === note.id}
-                    id={note.id}
-                  >
-                    {note.title === '' ? 'Untitled Note' : note.title}
-                    <Icon link onClick={() => { this.deleteNote(note.id) }} name="trash outline" />
-                  </Menu.Item>
-
-                </div>
-              ))}
+              <DragDropContext onDragEnd={this.onDragEnd}>
+                <Droppable droppableId="droppable">
+                  {provided => (
+                    <div
+                      ref={provided.innerRef}
+                    >
+                      {this.state.notes.map((note, index) => (
+                        <Draggable key={note.id} draggableId={note.id} index={index}>
+                          {prov => (
+                            <div>
+                              <div
+                                ref={prov.innerRef}
+                                {...prov.draggableProps}
+                                {...prov.dragHandleProps}
+                              >
+                                <Menu.Item
+                                  onClick={() => { this.selectNote(note.id) }}
+                                  name={note.id.toString()}
+                                  active={this.state.note.id === note.id}
+                                  id={note.id}
+                                >
+                                  {note.title === '' ? 'Untitled Note' : note.title}
+                                  <Icon
+                                    onClick={() => { this.deleteNote(note.id) }}
+                                    name="trash outline"
+                                    link
+                                  />
+                                </Menu.Item>
+                              </div>
+                              {prov.placeholder}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </Menu.Menu>
           </Sidebar>
           <Sidebar.Pusher className="full-height">
-            <Icon link onClick={this.toggleVisibility} flipped={this.state.visible ? 'horizontally' : null} name="angle right" size="big" />
-            <Input
-              id="titleInput"
-              className="no-border"
-              size="big"
-              placeholder="Title"
-              value={this.state.note.title || ''}
-              maxLength="20"
-              onChange={(event) => { this.updateTitle(event) }}
-            />
-            <Editor updateContents={this.updateContents} note={this.state.note} />
+            {this.state.note ?
+              <div>
+                <Icon link onClick={this.toggleVisibility} flipped={this.state.visible ? 'horizontally' : null} name="angle right" size="big" />
+                <Input
+                  id="titleInput"
+                  className="no-border"
+                  size="big"
+                  placeholder="Title"
+                  value={this.state.note ? this.state.note.title : ''}
+                  maxLength="20"
+                  onChange={(event) => { this.updateTitle(event) }}
+                />
+                <Editor updateContents={this.updateContents} note={this.state.note} />
+              </div> : null
+            }
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </div>
