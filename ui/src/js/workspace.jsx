@@ -77,7 +77,7 @@ class Workspace extends Component {
 
   createNote() {
     const payload = {
-      title: 'Untitled Note',
+      title: '',
       contents: '',
     }
     axios.post(api.notes, payload, api.config())
