@@ -27,7 +27,7 @@ class LoginForm extends Component {
       const res = await axios.post(api.login, payload)
       window.sessionStorage.setItem('jwtToken', res.data.token)
       this.props.loggedIn(true)
-      console.log('Login successful', res)
+      console.log('Login successful!')
     } catch (err) {
       this.setState({
         loginFailed: true,
