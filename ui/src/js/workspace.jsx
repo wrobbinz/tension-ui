@@ -6,6 +6,7 @@ import { remove, reverse } from 'lodash'
 import api from './api'
 import '../css/style.css'
 import Editor from './editor'
+import NoteMenu from './noteMenu'
 
 
 // a little function to help us with reordering the result
@@ -155,11 +156,7 @@ class Workspace extends Component {
                                   id={note.id}
                                 >
                                   {note.title === '' ? 'Untitled Note' : note.title}
-                                  <Icon
-                                    onClick={() => { this.deleteNote(note.id) }}
-                                    name="trash outline"
-                                    link
-                                  />
+                                  <NoteMenu />
                                 </Menu.Item>
                               </div>
                               {prov.placeholder}
