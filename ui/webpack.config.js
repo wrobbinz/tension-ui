@@ -1,9 +1,9 @@
 // We are using node's native package 'path'
 // https://nodejs.org/api/path.html
-const path = require('path');
+const path = require('path')
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin'); //  -> ADDED IN THIS STEP
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 // Constant with our paths
 const paths = {
@@ -24,7 +24,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(paths.SRC, 'index.html'),
     }),
-    new ExtractTextPlugin('style.bundle.css'), // CSS will be extracted to this bundle file -> ADDED IN THIS STEP
+    new ExtractTextPlugin('style.bundle.css'), // CSS will be extracted to this bundle file
   ],
   // Loaders configuration
   // We are telling webpack to use "babel-loader" for .js and .jsx files
@@ -46,7 +46,7 @@ module.exports = {
           use: 'css-loader',
         }),
       },
-      // File loader for image assets -> ADDED IN THIS STEP
+      // File loader for image assets
       // We'll add only image extensions, but you can add things like svgs, fonts and videos
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -62,11 +62,11 @@ module.exports = {
   // Enable importing JS files without specifying their's extension
   //
   // So we can write:
-  // import MyComponent from './my-component';
+  // import MyComponent from './my-component'
   //
   // Instead of:
-  // import MyComponent from './my-component.jsx';
+  // import MyComponent from './my-component.jsx'
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-};
+}
