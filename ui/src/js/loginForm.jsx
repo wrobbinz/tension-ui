@@ -58,9 +58,8 @@ class LoginForm extends Component {
         username: this.state.username,
         password: this.state.password,
       }
-      console.log(payload)
       await axios.post(api.users, payload)
-      this.logIn()
+      await this.logIn()
     } catch (err) {
       console.log(err)
     }
