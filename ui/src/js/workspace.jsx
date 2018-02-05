@@ -20,6 +20,7 @@ class Workspace extends Component {
     this.deleteNote = this.deleteNote.bind(this)
     this.toggleVisibility = this.toggleVisibility.bind(this)
     this.updateContents = this.updateContents.bind(this)
+    this.updateTitle = this.updateTitle.bind(this)
   }
 
   async componentWillMount() {
@@ -47,7 +48,7 @@ class Workspace extends Component {
       title: 'Untitled Note',
       contents: '',
     }
-    axios.post(api.notes, payload, api.config)
+    axios.post(api.notes, payload, api.config())
       .then((res) => {
         const { notes } = this.state
         notes.unshift(res.data)
@@ -60,7 +61,7 @@ class Workspace extends Component {
   }
 
   deleteNote(id) {
-    axios.delete(`${api.notes}${id}`, api.config)
+    axios.delete(`${api.notes}${id}`, api.config())
       .then(() => {
         const { notes } = this.state
         remove(notes, note => note.id === id)
