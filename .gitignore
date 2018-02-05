@@ -9,9 +9,5 @@ tmp
 
 # Lock files
 package-lock.json
-yarn.lock
-
-# The development sqlite file
-database/development.sqlite
 
 .DS_Store
