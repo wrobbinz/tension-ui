@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import '../../semantic/dist/semantic.min.css'
 import '../css/style.css'
 import LoginForm from './loginForm'
-import Workspace from './workspace'
+import SideNav from './sideNav'
 
 
 export default class App extends Component {
@@ -25,7 +25,7 @@ export default class App extends Component {
   render() {
     if (this.state.loggedIn === true || window.sessionStorage.getItem('jwtToken')) {
       return (
-        <Workspace className="full-height" />
+        <SideNav className="full-height" />
       )
     } else {
       return (

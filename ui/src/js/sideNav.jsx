@@ -6,7 +6,7 @@ import { remove, reverse } from 'lodash'
 import api from './api'
 import '../css/style.css'
 import Editor from './editor'
-import NoteMenu from './noteMenu'
+import NoteOptions from './noteOptions'
 
 
 // a little function to help us with reordering the result
@@ -18,7 +18,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-class Workspace extends Component {
+class SideNav extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -124,6 +124,7 @@ class Workspace extends Component {
         <Sidebar.Pushable as={Segment} className="no-border-radius no-border">
           <Sidebar
             as={Menu}
+            width="thin"
             animation="push"
             visible={this.state.visible}
             className="full-height"
@@ -156,7 +157,10 @@ class Workspace extends Component {
                                   id={note.id}
                                 >
                                   {note.title === '' ? 'Untitled Note' : note.title}
-                                  <NoteMenu />
+                                  <NoteOptions
+                                    note={this.state.note}
+                                    deleteNote={this.deleteNote}
+                                  />
                                 </Menu.Item>
                               </div>
                               {prov.placeholder}
@@ -193,4 +197,4 @@ class Workspace extends Component {
   }
 }
 
-export default Workspace
+export default SideNav
