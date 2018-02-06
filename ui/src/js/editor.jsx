@@ -19,7 +19,7 @@ class Editor extends Component {
           className="no-border-radius no-border"
           value={this.props.note.contents}
           onChange={this.props.updateContents}
-          placeholder="..."
+          placeholder="_"
           style={{ minHeight: '100%' }}
         />
       </Form>
