@@ -2,6 +2,10 @@
   height: 100% !important;
 }
 
+.full-width {
+  width: 100% !important
+}
+
 .left-icon {
     float: none;
     margin: 0em 0.35714286em 0em 0em;
@@ -18,3 +22,28 @@
 #titleInput {
   border: none !important;
 }
+
+#editor {
+  display: inline-block!important;
+}
+
+.sidenav {
+  box-shadow: none!important;
+}
+.sidenav .active.item {
+  background: white!important;
+
+}
+
+.sidenav .active.item i {
+  color: rgb(27, 28, 29)!important;
+ }
+
+ .float-right {
+   float: right;
+ }
+
+
+ .pointer {
+   cursor: pointer;
+ }
