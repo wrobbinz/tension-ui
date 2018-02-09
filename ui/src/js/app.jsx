@@ -23,7 +23,7 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.state.loggedIn === true || window.sessionStorage.getItem('jwtToken')) {
+    if (this.state.loggedIn === true || window.localStorage.getItem('jwtToken')) {
       return (
         <SideNav className="full-height" />
       )

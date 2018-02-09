@@ -7,7 +7,7 @@ const api = {
   config() {
     return {
       headers: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${window.localStorage.getItem('jwtToken')}`,
       },
     }
   },
