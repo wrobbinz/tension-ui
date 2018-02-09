@@ -11,7 +11,11 @@ class NoteOptions extends Component {
     }
   }
 
-  handleClick() {
+  handleCopy() {
+    const { id } = this.props.note
+    this.props.copyNote(id)
+  }
+  handleDelete() {
     const { id } = this.props.note
     this.props.deleteNote(id)
   }
@@ -22,11 +26,11 @@ class NoteOptions extends Component {
         trigger={<Icon name="ellipsis horizontal" link />}
         content={
           <List>
-            <List.Item icon="copy" content="Duplicate" />
-            <List.Item icon="share" content="Share" />
             <List.Item
-              icon="trash outline"
-              content={<a onClick={() => this.handleClick()} href="#">Delete</a>}
+              icon="copy"
+              onClick={() => this.handleCopy()}
+              content="Duplicate"
+              className="pointer"
             />
           </List>
         }
