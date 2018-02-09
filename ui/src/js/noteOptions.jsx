@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Popup, List, Icon } from 'semantic-ui-react'
+import { Popup, List, Icon, Modal, Header, Button } from 'semantic-ui-react'
 
 
 class NoteOptions extends Component {
@@ -32,6 +32,36 @@ class NoteOptions extends Component {
               content="Duplicate"
               className="pointer"
             />
+            <List.Item icon="share" content="Share" />
+            <Modal
+              trigger={
+                <List.Item
+                  icon="trash outline"
+                  content="Delete"
+                  className="pointer"
+                />
+              }
+              basic
+              size="small"
+            >
+              <Header
+                icon="trash"
+                content={
+                  `Delete ${this.props.note.title === '' ? 'untitled' : `"${this.props.note.title}"`} note?`
+                }
+              />
+              <Modal.Content>
+                <p>Are you sure you want to delete this note? (This action cannot be undone)</p>
+              </Modal.Content>
+              <Modal.Actions>
+                <Button basic color="grey" inverted>
+                  <Icon name="remove" /> Cancel
+                </Button>
+                <Button color="red" onClick={() => this.handleDelete()} inverted>
+                  <Icon name="remove" /> Delete
+                </Button>
+              </Modal.Actions>
+            </Modal>
           </List>
         }
         on="click"
@@ -42,11 +72,13 @@ class NoteOptions extends Component {
 }
 
 NoteOptions.propTypes = {
+  copyNote: PropTypes.func,
   deleteNote: PropTypes.func,
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 }
 
 NoteOptions.defaultProps = {
+  copyNote: false,
   deleteNote: false,
   note: false,
 }
