@@ -75,6 +75,21 @@ class SideNav extends Component {
               size="mini"
               inverted
             />
+            <Popup
+              trigger={
+                <Menu.Item
+                  onClick={() => { this.handleClick('files') }}
+                  active={this.state.focus === 'files'}
+                >
+                  <Icon link size="large" name="save" />
+                </Menu.Item>
+              }
+              mouseEnterDelay={2000}
+              content="Files"
+              position="right center"
+              size="mini"
+              inverted
+            />
           </Sidebar>
           <Sidebar.Pusher className="full-height">
             <WorkMenu focus={this.state.focus} />
