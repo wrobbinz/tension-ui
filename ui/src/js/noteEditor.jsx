@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, TextArea } from 'semantic-ui-react'
+import { Segment, Input } from 'semantic-ui-react'
 import ContentEditable from 'react-contenteditable'
 
 
@@ -8,19 +8,17 @@ class NoteEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      html: this.props.note.contents,
     }
   }
 
   handleChange = (event) => {
     const html = event.target.value
-    this.setState({ html })
     this.props.updateContents(html)
   }
 
   render() {
     return (
-      <div id="editor">
+      <div className="full-height">
         <Input
           id="titleInput"
           className="no-border"
@@ -31,8 +29,8 @@ class NoteEditor extends Component {
           onChange={this.props.updateTitle}
         />
         <ContentEditable
-          className="full-height"
-          html={this.props.html}
+          className=""
+          html={this.props.note.contents}
           disabled={false}
           onChange={this.handleChange}
         />

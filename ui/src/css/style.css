@@ -23,10 +23,6 @@
   border: none !important;
 }
 
-#editor {
-  display: inline-block!important;
-}
-
 .sidenav {
   box-shadow: none!important;
 }
@@ -43,6 +39,9 @@
    float: right;
  }
 
+ .float-left {
+   float: left;
+ }
 
  .pointer {
    cursor: pointer;
@@ -54,4 +53,12 @@
 
  .ui.inverted.menu {
    background: #182C44;
+ }
+
+ .inline {
+   display: inline-block!important;
+ }
+
+ .no-top-margin {
+   margin-top: 0!important;
  }

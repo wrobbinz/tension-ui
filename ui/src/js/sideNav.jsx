@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Sidebar, Segment, Menu, Icon, Popup } from 'semantic-ui-react'
+import { Menu, Icon, Popup } from 'semantic-ui-react'
 import '../css/style.css'
 import WorkMenu from './workMenu'
 
@@ -44,9 +44,21 @@ class SideNav extends Component {
   render() {
     return (
       <div className="full-height">
-        <Menu floated icon vertical inverted className="full-height sidenav no-border-radius">
+        <Menu
+          className="full-height sidenav no-border-radius"
+          floated
+          vertical
+          inverted
+          icon
+        >
           {menuItems.map(item => (
             <Popup
+              key={item.name}
+              mouseEnterDelay={DELAY}
+              content={item.tooltip}
+              position="right center"
+              size="mini"
+              inverted
               trigger={
                 <Menu.Item
                   className="no-border-radius"
@@ -56,16 +68,14 @@ class SideNav extends Component {
                   <Icon link size="large" name={item.icon} />
                 </Menu.Item>
               }
-              key={item.name}
-              mouseEnterDelay={DELAY}
-              content={item.tooltip}
-              position="right center"
-              size="mini"
-              inverted
             />
           ))}
         </Menu>
-        <WorkMenu floated="left" focus={this.state.focus} className="full-height" />
+        <WorkMenu
+          className="full-height"
+          focus={this.state.focus}
+          floated
+        />
       </div>
     )
   }
