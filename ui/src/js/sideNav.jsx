@@ -4,6 +4,8 @@ import '../css/style.css'
 import WorkMenu from './workMenu'
 
 
+const DELAY = 500
+
 class SideNav extends Component {
   constructor(props) {
     super(props)
@@ -39,7 +41,7 @@ class SideNav extends Component {
                   <Icon link size="large" name="sticky note" />
                 </Menu.Item>
               }
-              mouseEnterDelay={2000}
+              mouseEnterDelay={DELAY}
               content="Notes"
               position="right center"
               size="mini"
@@ -54,7 +56,7 @@ class SideNav extends Component {
                   <Icon link size="large" name="tasks" />
                 </Menu.Item>
               }
-              mouseEnterDelay={2000}
+              mouseEnterDelay={DELAY}
               content="Tasks"
               position="right center"
               size="mini"
@@ -69,7 +71,7 @@ class SideNav extends Component {
                   <Icon link size="large" name="paint brush" />
                 </Menu.Item>
               }
-              mouseEnterDelay={2000}
+              mouseEnterDelay={DELAY}
               content="Sketches"
               position="right center"
               size="mini"
@@ -84,7 +86,7 @@ class SideNav extends Component {
                   <Icon link size="large" name="save" />
                 </Menu.Item>
               }
-              mouseEnterDelay={2000}
+              mouseEnterDelay={DELAY}
               content="Files"
               position="right center"
               size="mini"
