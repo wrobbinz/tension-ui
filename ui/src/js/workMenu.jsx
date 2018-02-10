@@ -27,13 +27,6 @@ class WorkMenu extends Component {
         contents: '',
       },
     }
-    this.onDragEnd = this.onDragEnd.bind(this)
-    this.selectNote = this.selectNote.bind(this)
-    this.createNote = this.createNote.bind(this)
-    this.copyNote = this.copyNote.bind(this)
-    this.deleteNote = this.deleteNote.bind(this)
-    this.updateTitle = this.updateTitle.bind(this)
-    this.updateContents = this.updateContents.bind(this)
   }
 
   componentWillMount() {
@@ -45,7 +38,7 @@ class WorkMenu extends Component {
       })
   }
 
-  onDragEnd(result) {
+  onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
       return
@@ -62,13 +55,13 @@ class WorkMenu extends Component {
     })
   }
 
-  selectNote(id) {
+  selectNote = (id) => {
     const note = this.state.notes.find(n => n.id === id)
     console.log('selected', note)
     this.setState({ note })
   }
 
-  createNote(title = '', contents = '') {
+  createNote = (title = '', contents = '') => {
     const payload = { title, contents }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
@@ -82,7 +75,7 @@ class WorkMenu extends Component {
       })
   }
 
-  copyNote(id) {
+  copyNote = (id) => {
     const note = this.state.notes.find(n => n.id === id)
     const { contents } = note
     let { title } = note
@@ -90,7 +83,7 @@ class WorkMenu extends Component {
     this.createNote(title, contents)
   }
 
-  deleteNote(id) {
+  deleteNote = (id) => {
     axios.delete(`${api.notes}${id}`, api.config())
       .then(() => {
         const { notes } = this.state
@@ -103,15 +96,15 @@ class WorkMenu extends Component {
       })
   }
 
-  updateTitle(event) {
+  updateTitle = (event) => {
     const { note } = this.state
     note.title = event.target.value
     this.setState({ note })
   }
 
-  updateContents(event) {
+  updateContents = (contents) => {
     const { note } = this.state
-    note.contents = event.target.value
+    note.contents = contents
     this.setState({ note })
   }
 
@@ -166,6 +159,7 @@ class WorkMenu extends Component {
                       )}
                     </Draggable>
                   ))}
+                  {provided.placeholder}
                 </div>
               )}
             </Droppable>

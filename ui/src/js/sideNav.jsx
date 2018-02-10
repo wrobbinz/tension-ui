@@ -21,82 +21,69 @@ class SideNav extends Component {
   render() {
     return (
       <div className="full-height">
-        <Sidebar.Pushable as={Segment} className="no-border-radius no-border">
-          <Sidebar
-            as={Menu}
-            width="very thin"
-            animation="push"
-            visible
-            className="full-height sidenav"
-            icon
-            vertical
+        <Menu floated icon vertical inverted className="full-height sidenav">
+          <Popup
+            trigger={
+              <Menu.Item
+                onClick={() => { this.handleClick('notes') }}
+                active={this.state.focus === 'notes'}
+              >
+                <Icon link size="large" name="sticky note" />
+              </Menu.Item>
+            }
+            mouseEnterDelay={DELAY}
+            content="Notes"
+            position="right center"
+            size="mini"
             inverted
-          >
-            <Popup
-              trigger={
-                <Menu.Item
-                  onClick={() => { this.handleClick('notes') }}
-                  active={this.state.focus === 'notes'}
-                >
-                  <Icon link size="large" name="sticky note" />
-                </Menu.Item>
-              }
-              mouseEnterDelay={DELAY}
-              content="Notes"
-              position="right center"
-              size="mini"
-              inverted
-            />
-            <Popup
-              trigger={
-                <Menu.Item
-                  onClick={() => { this.handleClick('tasks') }}
-                  active={this.state.focus === 'tasks'}
-                >
-                  <Icon link size="large" name="tasks" />
-                </Menu.Item>
-              }
-              mouseEnterDelay={DELAY}
-              content="Tasks"
-              position="right center"
-              size="mini"
-              inverted
-            />
-            <Popup
-              trigger={
-                <Menu.Item
-                  onClick={() => { this.handleClick('sketches') }}
-                  active={this.state.focus === 'sketches'}
-                >
-                  <Icon link size="large" name="paint brush" />
-                </Menu.Item>
-              }
-              mouseEnterDelay={DELAY}
-              content="Sketches"
-              position="right center"
-              size="mini"
-              inverted
-            />
-            <Popup
-              trigger={
-                <Menu.Item
-                  onClick={() => { this.handleClick('files') }}
-                  active={this.state.focus === 'files'}
-                >
-                  <Icon link size="large" name="save" />
-                </Menu.Item>
-              }
-              mouseEnterDelay={DELAY}
-              content="Files"
-              position="right center"
-              size="mini"
-              inverted
-            />
-          </Sidebar>
-          <Sidebar.Pusher className="full-height">
-            <WorkMenu focus={this.state.focus} />
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
+          />
+          <Popup
+            trigger={
+              <Menu.Item
+                onClick={() => { this.handleClick('tasks') }}
+                active={this.state.focus === 'tasks'}
+              >
+                <Icon link size="large" name="tasks" />
+              </Menu.Item>
+            }
+            mouseEnterDelay={DELAY}
+            content="Tasks"
+            position="right center"
+            size="mini"
+            inverted
+          />
+          <Popup
+            trigger={
+              <Menu.Item
+                onClick={() => { this.handleClick('sketches') }}
+                active={this.state.focus === 'sketches'}
+              >
+                <Icon link size="large" name="paint brush" />
+              </Menu.Item>
+            }
+            mouseEnterDelay={DELAY}
+            content="Sketches"
+            position="right center"
+            size="mini"
+            inverted
+          />
+          <Popup
+            trigger={
+              <Menu.Item
+                onClick={() => { this.handleClick('files') }}
+                active={this.state.focus === 'files'}
+              >
+                <Icon link size="large" name="save" />
+              </Menu.Item>
+            }
+            mouseEnterDelay={DELAY}
+            content="Files"
+            position="right center"
+            size="mini"
+            inverted
+          />
+        </Menu>
+        <WorkMenu floated="left" focus={this.state.focus} className="full-height" />
       </div>
     )
   }
