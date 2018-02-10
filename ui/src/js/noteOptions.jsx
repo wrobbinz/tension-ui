@@ -23,7 +23,9 @@ class NoteOptions extends Component {
   render() {
     return (
       <Popup
-        trigger={<Icon name="ellipsis horizontal" link />}
+        trigger={<Icon name="ellipsis horizontal" link size="large" />}
+        on="click"
+        position="right center"
         content={
           <List>
             <List.Item
@@ -64,8 +66,6 @@ class NoteOptions extends Component {
             </Modal>
           </List>
         }
-        on="click"
-        position="right center"
       />
     )
   }
