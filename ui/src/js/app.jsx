@@ -5,6 +5,7 @@ import '../../semantic/dist/semantic.min.css'
 import '../css/style.css'
 import LoginForm from './loginForm'
 import SideNav from './sideNav'
+import WorkSpace from './workSpace'
 
 
 export default class App extends Component {
@@ -25,7 +26,7 @@ export default class App extends Component {
   render() {
     if (this.state.loggedIn === true || window.localStorage.getItem('jwtToken')) {
       return (
-        <SideNav className="full-height" />
+        <WorkSpace className="full-height" />
       )
     } else {
       return (

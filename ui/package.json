@@ -30,11 +30,13 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "codemirror": "^5.34.0",
     "lodash": "^4.17.5",
     "marked": "^0.3.12",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-beautiful-dnd": "^4.0.1",
+    "react-codemirror2": "^4.0.0",
     "react-contenteditable": "^2.0.5",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",

@@ -23,7 +23,7 @@ class NoteOptions extends Component {
   render() {
     return (
       <Popup
-        trigger={<Icon name="ellipsis horizontal" link size="large" />}
+        trigger={<Icon name="ellipsis horizontal" link disabled size="large" />}
         on="click"
         position="right center"
         content={

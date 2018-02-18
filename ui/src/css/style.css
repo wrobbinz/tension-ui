@@ -1,3 +1,7 @@
+html, body {
+  min-height: 100%;
+}
+
 .full-height {
   height: 100% !important;
 }
@@ -55,10 +59,42 @@
    background: #182C44;
  }
 
- .inline {
-   display: inline-block!important;
- }
+.editor:focus {
+  /* outline: none; */
+}
 
- .no-top-margin {
-   margin-top: 0!important;
- }
+.editor {
+  width: calc(100% - 316px);
+  height: calc(100% - 46px);
+}
+
+
+.note-grid {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.flex-one {
+  flex: 1;
+}
+
+.row {
+  padding-bottom: 0!important;
+}
+
+.CodeMirror {
+  height: 100%!important;
+  font-family: Arial, monospace!important;
+  font-size: 16px;
+  line-height: 25px!important;
+}
+
+.CodeMirror-cursor {
+  border-left: 2px solid #C34B5F!important;
+}
+
+.cm-header-1 {
+  font-size: 28px;
+  line-height: 80px!important;
+}
