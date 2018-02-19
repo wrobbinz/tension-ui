@@ -50,6 +50,10 @@ class SideNav extends Component {
     this.props.setFocus(focus)
   }
 
+  logOut = () => {
+    window.localStorage.removeItem('jwtToken')
+  }
+
   render() {
     return (
       <Menu
@@ -78,6 +82,12 @@ class SideNav extends Component {
             }
           />
         ))}
+        <Menu.Item
+          className="no-border-radius"
+          onClick={() => { this.logOut() }}
+        >
+          <Icon link size="large" name="log out" />
+        </Menu.Item>
       </Menu>
     )
   }
