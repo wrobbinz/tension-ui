@@ -1,7 +1,5 @@
-const Database = use('Database')
-const { validate } = use('Validator')
 const User = use('App/Models/User')
-
+const { validate } = use('Validator')
 
 class UserController {
   async login({ request, auth }) {
