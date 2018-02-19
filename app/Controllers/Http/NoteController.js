@@ -36,7 +36,7 @@ class NoteController {
       const note = await Note.create(noteData)
       response.send(note)
     } catch (err) {
-      response.status(500).send({ error: 'Failed to POST note.' })
+      response.status(500).send({ message: 'Failed to POST note.', error: err })
     }
   }
   // PUT/PATCH
