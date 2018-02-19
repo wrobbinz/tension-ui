@@ -1,0 +1,100 @@
+html, body {
+  min-height: 100%;
+}
+
+.full-height {
+  height: 100% !important;
+}
+
+.full-width {
+  width: 100% !important
+}
+
+.left-icon {
+    float: none;
+    margin: 0em 0.35714286em 0em 0em;
+}
+
+.no-border-radius {
+  border-radius: 0 !important;
+}
+
+.no-border {
+  border: none !important;
+}
+
+#titleInput {
+  border: none !important;
+}
+
+.sidenav {
+  box-shadow: none!important;
+}
+.sidenav .active.item {
+  background: white!important;
+
+}
+
+.sidenav .active.item i {
+  color: #182C44!important;
+ }
+
+ .float-right {
+   float: right;
+ }
+
+ .float-left {
+   float: left;
+ }
+
+ .pointer {
+   cursor: pointer;
+ }
+
+ .ui.secondary.vertical.pointing.menu .active.item {
+   border-color: #C34B5F;
+ }
+
+ .ui.inverted.menu {
+   background: #182C44;
+ }
+
+.editor:focus {
+  /* outline: none; */
+}
+
+.editor {
+  width: calc(100% - 316px);
+  height: calc(100% - 46px);
+}
+
+
+.note-grid {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.flex-one {
+  flex: 1;
+}
+
+.row {
+  padding-bottom: 0!important;
+}
+
+.CodeMirror {
+  height: 100%!important;
+  font-family: Arial, monospace!important;
+  font-size: 16px;
+  line-height: 25px!important;
+}
+
+.CodeMirror-cursor {
+  border-left: 2px solid #C34B5F!important;
+}
+
+.cm-header-1 {
+  font-size: 28px;
+  line-height: 80px!important;
+}

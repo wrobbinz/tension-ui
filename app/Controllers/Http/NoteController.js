@@ -1,72 +1,67 @@
-const Database = use('Database')
+const Note = use('App/Models/Note')
 
 
 class NoteController {
   // GET
-  async index() {
+  async index({ auth, response }) {
     try {
-      return Database
-        .select('*')
-        .from('notes')
-        .paginate(1, 10)
+      const notes = await Note
+        .query()
+        .where('owned_by', '=', auth.user.id)
+        .fetch()
+      response.send(notes)
     } catch (err) {
-      throw new Error('[ERROR] Unable to get notes...')
+      response.status(500).send({ error: 'Failed to GET notes.' })
     }
   }
   // GET :id
-  async show({ params }) {
+  async show({ auth, params, response }) {
     try {
-      const { id } = params
-      return Database
-        .select('*')
-        .from('notes')
-        .where({ id })
+      const note = await Note
+        .find(params.id)
+      if (auth.user.id === note.owned_by) {
+        response.send(note)
+      } else {
+        response.status(403).send({ error: 'You don\'t have access to this note.' })
+      }
     } catch (err) {
-      throw new Error('[ERROR] Unable to fetch note...')
+      response.status(500).send({ error: `Failed to GET note (id: ${params.id}).` })
     }
   }
   // POST
-  async store({ request }) {
+  async store({ auth, request, response }) {
     try {
-      const [id] = await Database
-        .insert(request.post())
-        .into('notes')
-        .returning('id')
-      return Database
-        .select('*')
-        .from('notes')
-        .where({ id })
+      const noteData = request.only(['title', 'contents'])
+      noteData.owned_by = auth.user.id
+      const note = await Note.create(noteData)
+      response.send(note)
     } catch (err) {
-      throw new Error('[ERROR] Note creation failed...')
+      response.status(500).send({ error: 'Failed to POST note.' })
     }
   }
   // PUT/PATCH
-  async update({ params, request }) {
+  async update({ params, request, response }) {
     try {
-      const { id } = params
-      return Database
-        .table('notes')
-        .where({ id })
-        .update(request.post())
-        .returning('id')
-        .then(() => Database
-          .select('*')
-          .from('notes')
-          .where({ id }))
+      const note = new Note()
+      note.title = request.post().title
+      note.contents = request.post().contents
+      const updatedNote = await Note
+        .query()
+        .where('id', params.id)
+        .update(note)
+      response.send(updatedNote)
     } catch (err) {
-      throw new Error('[ERROR] Note update failed...')
+      response.status(500).send({ error: `Failed to PUT note (id: ${params.id}).` })
     }
   }
   // DELETE
-  async destroy({ params }) {
+  async destroy({ params, response }) {
     try {
-      const { id } = params
-      return Database
-        .table('notes')
-        .where({ id })
-        .delete()
+      const note = await Note.find(params.id)
+      await note.delete()
+      response.send(note)
     } catch (err) {
-      throw new Error('[ERROR] Failed to delete note...')
+      response.status(500).send({ error: `Failed to DELETE note (id: ${params.id}).` })
     }
   }
 }
