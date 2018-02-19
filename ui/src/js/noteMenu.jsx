@@ -105,7 +105,7 @@ NoteMenu.propTypes = {
 
 NoteMenu.defaultProps = {
   notes: false,
-  note: false,
+  note: null,
   selectNote: false,
   createNote: false,
   copyNote: false,

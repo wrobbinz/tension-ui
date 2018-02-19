@@ -9,7 +9,7 @@ import 'codemirror/addon/fold/foldcode'
 import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/markdown-fold'
 import 'codemirror/addon/edit/continuelist'
-import 'hypermd/mode/hypermd'
+// import 'hypermd/mode/hypermd'
 // import './hypermd/addon/hide-token'
 // import './hypermd/addon/cursor-debounce'
 // import './hypermd/addon/fold'
@@ -93,7 +93,7 @@ NoteEditor.propTypes = {
 NoteEditor.defaultProps = {
   updateTitle: false,
   updateContents: false,
-  note: false,
+  note: null,
 }
 
 export default NoteEditor
