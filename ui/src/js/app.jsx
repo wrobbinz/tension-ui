@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom'
 import '../../semantic/dist/semantic.min.css'
 import '../css/style.css'
 import LoginForm from './loginForm'
-import SideNav from './sideNav'
 import WorkSpace from './workSpace'
 
 
