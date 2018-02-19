@@ -8,6 +8,7 @@ class NoteSchema extends Schema {
       table.increments()
       table.string('title')
       table.text('contents', 'longtext')
+      table.integer('owned_by')
       table.timestamps()
     })
   }
