@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../css/style.css'
 import SideNav from './sideNav'
-import NoteApp from './noteApp'
+import NoteApp from './note/noteApp'
 
 
 class WorkSpace extends Component {

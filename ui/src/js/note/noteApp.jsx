@@ -6,7 +6,7 @@ import { EditorState } from 'draft-js'
 import { Grid, Header, Icon } from 'semantic-ui-react'
 import NoteMenu from './noteMenu'
 import NoteEditor from './noteEditor'
-import api from './api'
+import api from '../api'
 
 
 class NoteApp extends Component {
