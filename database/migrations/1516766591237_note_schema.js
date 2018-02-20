@@ -1,19 +1,17 @@
-'use strict'
-
 const Schema = use('Schema')
 
 class NoteSchema extends Schema {
-  up () {
+  up() {
     this.create('notes', (table) => {
       table.increments()
       table.string('title')
-      table.text('contents', 'longtext')
+      table.json('content')
       table.integer('owned_by')
       table.timestamps()
     })
   }
 
-  down () {
+  down() {
     this.drop('notes')
   }
 }
