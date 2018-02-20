@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import axios from 'axios'
 import { reverse, remove } from 'lodash'
+import { EditorState } from 'draft-js'
+import { Grid, Header, Icon } from 'semantic-ui-react'
 import NoteMenu from './noteMenu'
 import NoteEditor from './noteEditor'
 import api from './api'
@@ -13,8 +15,8 @@ class NoteApp extends Component {
     this.state = {
       notes: [],
       note: {
-        title: '...',
-        contents: '',
+        title: 'Untitled Note',
+        content: EditorState.createEmpty(),
       },
     }
   }
@@ -23,19 +25,21 @@ class NoteApp extends Component {
     axios.get(api.notes, api.config())
       .then((res) => {
         const notes = reverse(res.data)
-        const note = notes[0]
-        this.setState({ notes, note })
+        if (notes.length > 0) {
+          const note = notes[0]
+          this.setState({ notes, note })
+        }
       })
   }
 
   selectNote = (id) => {
     const note = this.state.notes.find(n => n.id === id)
-    console.log('selected', note)
+    console.log('Selected:', note)
     this.setState({ note })
   }
 
-  createNote = (title = '', contents = '') => {
-    const payload = { title, contents }
+  createNote = (title = 'Untitled Note', content = EditorState.createEmpty()) => {
+    const payload = { title, content }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
         const { notes } = this.state
@@ -50,10 +54,10 @@ class NoteApp extends Component {
 
   copyNote = (id) => {
     const note = this.state.notes.find(n => n.id === id)
-    const { contents } = note
+    const { content } = note
     let { title } = note
     title = `${title} copy`
-    this.createNote(title, contents)
+    this.createNote(title, content)
   }
 
   deleteNote = (id) => {
@@ -75,9 +79,9 @@ class NoteApp extends Component {
     this.setState({ note })
   }
 
-  updateContents = (markdown) => {
+  updateContent = (editorState) => {
     const { note } = this.state
-    note.contents = markdown
+    note.content = editorState
     this.setState({ note })
   }
 
@@ -97,11 +101,29 @@ class NoteApp extends Component {
           deleteNote={this.deleteNote}
           updateOrder={this.updateOrder}
         />
-        <NoteEditor
-          note={this.state.note}
-          updateTitle={this.updateTitle}
-          updateContents={this.updateContents}
-        />
+        {
+          this.state.notes.length > 0 ?
+            <NoteEditor
+              note={this.state.note}
+              updateTitle={this.updateTitle}
+              updateContent={this.updateContent}
+            /> :
+            <Grid
+              className="editor float-left"
+              verticalAlign="middle"
+              columns={1}
+              centered
+            >
+              <Grid.Row>
+                <Grid.Column centered textAlign="center">
+                  <Header as="h2" color="grey" icon>
+                    <Icon name="sticky note" />
+                    Click the + icon to create a new note
+                  </Header>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+        }
       </div>
     )
   }
