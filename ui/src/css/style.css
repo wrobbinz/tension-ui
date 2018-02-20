@@ -69,6 +69,10 @@ html, body {
   height: 100%;
 }
 
+.light-grey {
+  color: #c1c1c1!important;
+}
+
 .DraftEditor-editorContainer {
   height: 100%;
 }

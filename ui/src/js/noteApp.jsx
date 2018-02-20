@@ -112,11 +112,10 @@ class NoteApp extends Component {
               className="editor float-left"
               verticalAlign="middle"
               columns={1}
-              centered
             >
               <Grid.Row>
-                <Grid.Column centered textAlign="center">
-                  <Header as="h2" color="grey" icon>
+                <Grid.Column centered="true" textAlign="center">
+                  <Header className="light-grey" as="h2" icon>
                     <Icon name="sticky note" />
                     Click the + icon to create a new note
                   </Header>
