@@ -97,8 +97,8 @@ html, body {
   line-height: 25px!important;
 }
 
-.CodeMirror-cursor {
-  border-left: 2px solid #C34B5F!important;
+.public-DraftEditor-content {
+  caret-color: #C34B5F;
 }
 
 .cm-header-1 {
