@@ -1,25 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Input } from 'semantic-ui-react'
-// import marked from 'marked'
-import { Controlled as CodeMirror } from 'react-codemirror2'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/gfm/gfm'
-import 'codemirror/addon/fold/foldcode'
-import 'codemirror/addon/fold/foldgutter'
-import 'codemirror/addon/fold/markdown-fold'
-import 'codemirror/addon/edit/continuelist'
-// import 'hypermd/mode/hypermd'
-// import './hypermd/addon/hide-token'
-// import './hypermd/addon/cursor-debounce'
-// import './hypermd/addon/fold'
-// import './hypermd/addon/fold-math'
-// import './hypermd/addon/readlink'
-// import './hypermd/addon/click'
-// import './hypermd/addon/hover'
-// import './hypermd/addon/paste'
-// import './hypermd/addon/paste-image'
-// import '../css/theme.css'
+import { Input, Form, TextArea } from 'semantic-ui-react'
 
 
 class NoteEditor extends Component {
@@ -48,28 +29,7 @@ class NoteEditor extends Component {
           maxLength="20"
           onChange={this.props.updateTitle}
         />
-        <CodeMirror
-          className="full-height"
-          options={{
-            mode: 'text/x-hypermd',
-            lineNumbers: true,
-            lineWrapping: true,
-            extraKeys: {
-              Enter: 'newlineAndIndentContinueMarkdownList',
-            },
-            theme: 'theme',
-            hmdHideToken: '(profile-1)',
-          }}
-          value={this.state.value}
-          // options={}
-          onBeforeChange={(editor, data, value) => {
-            this.setState({ value })
-          }}
-          onChange={(editor, value) => {
-            console.log('controlled', { value })
-          }}
-        />
-        {/* <Form className="full-height">
+        <Form className="full-height">
           <TextArea
             id="editor"
             className="no-border-radius no-border"
@@ -78,7 +38,7 @@ class NoteEditor extends Component {
             placeholder="_"
             style={{ minHeight: '100%' }}
           />
-        </Form> */}
+        </Form>
       </div>
     )
   }
