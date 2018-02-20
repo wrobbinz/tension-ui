@@ -40,7 +40,7 @@ class UserController {
       const user = await User.create(userData)
       response.send(user)
     } catch (err) {
-      response.status(500).send({ error: 'Failed to POST user.' })
+      response.status(500).send(err)
     }
   }
   // PUT/PATCH
