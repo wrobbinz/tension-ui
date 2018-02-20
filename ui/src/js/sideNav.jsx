@@ -33,9 +33,9 @@ const menuItems = [
     tooltip: 'Sketches',
   },
   {
-    name: 'files',
-    icon: 'save',
-    tooltip: 'Files',
+    name: 'drive',
+    icon: 'disk outline',
+    tooltip: 'Drive',
   },
 ]
 
