@@ -59,15 +59,22 @@ html, body {
    background: #182C44;
  }
 
-.editor:focus {
-  /* outline: none; */
-}
-
 .editor {
   width: calc(100% - 316px);
-  height: calc(100% - 46px);
+  height: calc(100% - 40px);
+}
+.DraftEditor-root {
+  margin: 20px;
+  height: 100%;
 }
 
+.DraftEditor-editorContainer {
+  height: 100%;
+}
+
+.public-DraftEditor-content {
+  height: 100%;
+}
 
 .note-grid {
   display: flex;
