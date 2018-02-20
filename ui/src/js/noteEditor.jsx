@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Input, Form, TextArea } from 'semantic-ui-react'
+import Editor from 'draft-js-plugins-editor'
+import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin'
+import { EditorState } from 'draft-js'
+// import { Input, Form, TextArea } from 'semantic-ui-react'
 
+
+const plugins = [
+  createMarkdownShortcutsPlugin(),
+]
 
 class NoteEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: '',
+      editorState: EditorState.createEmpty(),
     }
+  }
+
+  onChange = (editorState) => {
+    this.setState({
+      editorState,
+    })
   }
 
   handleChange = (event) => {
@@ -20,25 +33,12 @@ class NoteEditor extends Component {
   render() {
     return (
       <div className="editor float-left">
-        <Input
-          id="titleInput"
-          className="no-border full-width"
-          size="big"
-          placeholder="Title"
-          value={this.props.note ? this.props.note.title : ''}
-          maxLength="20"
-          onChange={this.props.updateTitle}
+        <Editor
+          className="full-height"
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+          plugins={plugins}
         />
-        <Form className="full-height">
-          <TextArea
-            id="editor"
-            className="no-border-radius no-border"
-            value={this.props.note.contents}
-            onChange={this.handleChange}
-            placeholder="_"
-            style={{ minHeight: '100%' }}
-          />
-        </Form>
       </div>
     )
   }
