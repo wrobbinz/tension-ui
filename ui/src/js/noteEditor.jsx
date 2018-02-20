@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import Editor from 'draft-js-plugins-editor'
 import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin'
 import { EditorState } from 'draft-js'
-// import { Input, Form, TextArea } from 'semantic-ui-react'
-
+import { Input } from 'semantic-ui-react'
 
 const plugins = [
   createMarkdownShortcutsPlugin(),
@@ -14,28 +13,28 @@ class NoteEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      editorState: EditorState.createEmpty(),
     }
   }
 
   onChange = (editorState) => {
-    this.setState({
-      editorState,
-    })
-  }
-
-  handleChange = (event) => {
-    const markdown = event.target.value
-    this.setState({ markdown })
-    this.props.updateContents(markdown)
+    this.props.updateContent(editorState)
   }
 
   render() {
     return (
       <div className="editor float-left">
+        <Input
+          id="titleInput"
+          className="no-border full-width"
+          size="big"
+          placeholder="Title"
+          value={this.props.note ? this.props.note.title : ''}
+          maxLength="20"
+          onChange={this.props.updateTitle}
+        />
         <Editor
           className="full-height"
-          editorState={this.state.editorState}
+          editorState={this.props.note.content || EditorState.createEmpty()}
           onChange={this.onChange}
           plugins={plugins}
         />
@@ -46,13 +45,13 @@ class NoteEditor extends Component {
 
 NoteEditor.propTypes = {
   updateTitle: PropTypes.func,
-  updateContents: PropTypes.func,
+  updateContent: PropTypes.func,
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 }
 
 NoteEditor.defaultProps = {
   updateTitle: false,
-  updateContents: false,
+  updateContent: false,
   note: null,
 }
 
