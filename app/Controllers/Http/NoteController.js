@@ -45,7 +45,7 @@ class NoteController {
       const note = new Note()
       note.title = request.post().title
       note.contents = request.post().contents
-      const noteId = await Note
+      await Note
         .query()
         .where('id', params.id)
         .update(note)
