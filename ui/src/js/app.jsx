@@ -25,7 +25,10 @@ export default class App extends Component {
   render() {
     if (this.state.loggedIn === true || window.localStorage.getItem('jwtToken')) {
       return (
-        <WorkSpace className="full-height" />
+        <WorkSpace
+          className="full-height"
+          loggedIn={this.setLoginState}
+        />
       )
     } else {
       return (

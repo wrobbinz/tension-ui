@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Menu, Icon, Popup } from 'semantic-ui-react'
+import { Menu, Icon, Popup, List } from 'semantic-ui-react'
+import Settings from './settings'
 
 
 const DELAY = 500
@@ -52,6 +53,7 @@ class SideNav extends Component {
 
   logOut = () => {
     window.localStorage.removeItem('jwtToken')
+    this.props.loggedIn(false)
   }
 
   render() {
@@ -82,23 +84,49 @@ class SideNav extends Component {
             }
           />
         ))}
-        <Menu.Item
-          className="no-border-radius"
-          onClick={() => { this.logOut() }}
-        >
-          <Icon link size="large" name="log out" />
-        </Menu.Item>
+        <Popup
+          size="large"
+          className="setting-popup"
+          inverted
+          trigger={
+            <Menu.Item
+              className="setting-nav no-border-radius"
+            >
+              <Icon link size="large" name="setting" />
+            </Menu.Item>
+          }
+          on="click"
+          position="right center"
+          content={
+            <List>
+              <Settings />
+              <List.Item
+                icon="announcement"
+                content="Feedback"
+                className="pointer"
+              />
+              <List.Item
+                icon="log out"
+                onClick={() => { this.logOut() }}
+                content="Sign out"
+                className="pointer"
+              />
+            </List>
+          }
+        />
       </Menu>
     )
   }
 }
 
 SideNav.propTypes = {
+  loggedIn: PropTypes.func,
   focus: PropTypes.string,
   setFocus: PropTypes.func,
 }
 
 SideNav.defaultProps = {
+  loggedIn: null,
   focus: false,
   setFocus: false,
 }

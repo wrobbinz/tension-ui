@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import '../css/style.css'
 import SideNav from './sideNav'
 import NoteApp from './note/noteApp'
@@ -23,6 +24,7 @@ class WorkSpace extends Component {
           focus={this.state.focus}
           setFocus={this.setFocus}
           className="full-height"
+          loggedIn={this.props.loggedIn}
         />
         {
           this.state.focus === 'notes' ?
@@ -31,6 +33,14 @@ class WorkSpace extends Component {
       </div>
     )
   }
+}
+
+WorkSpace.propTypes = {
+  loggedIn: PropTypes.func,
+}
+
+WorkSpace.defaultProps = {
+  loggedIn: null,
 }
 
 export default WorkSpace
