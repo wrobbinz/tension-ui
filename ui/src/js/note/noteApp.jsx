@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import axios from 'axios'
 import { reverse, remove } from 'lodash'
-import { EditorState, convertToRaw } from 'draft-js'
+import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js'
 import { Grid, Header, Icon } from 'semantic-ui-react'
 import NoteMenu from './noteMenu'
 import NoteEditor from './noteEditor'
@@ -16,8 +16,9 @@ class NoteApp extends Component {
       notes: [],
       note: {
         title: 'Untitled Note',
-        content: EditorState.createEmpty(),
+        content: convertToRaw(ContentState.createFromText('...')),
       },
+      editorState: EditorState.createEmpty(),
     }
   }
 
@@ -27,7 +28,8 @@ class NoteApp extends Component {
         const notes = reverse(res.data)
         if (notes.length > 0) {
           const note = notes[0]
-          this.setState({ notes, note })
+          const editorState = EditorState.createWithContent(convertFromRaw(note.content))
+          this.setState({ notes, note, editorState })
         }
       })
   }
@@ -35,21 +37,19 @@ class NoteApp extends Component {
   selectNote = (id) => {
     const note = this.state.notes.find(n => n.id === id)
     console.log('Selected:', note)
-    this.setState({ note })
+    const editorState = EditorState.createWithContent(convertFromRaw(note.content))
+    this.setState({ note, editorState })
   }
 
-  createNote = (title = 'Untitled Note') => {
-    const content = convertToRaw(EditorState
-      .createEmpty()
-      .getCurrentContent())
-
+  createNote = (title = 'Untitled Note', content = convertToRaw(ContentState.createFromText('...'))) => {
     const payload = { title, content }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
         const { notes } = this.state
         notes.unshift(res.data)
         const note = res.data
-        this.setState({ notes, note })
+        const editorState = EditorState.createWithContent(convertFromRaw(note.content))
+        this.setState({ notes, note, editorState })
       })
       .catch((err) => {
         console.log(err)
@@ -95,11 +95,12 @@ class NoteApp extends Component {
     this.setState({ note })
   }
 
-  updateContent = (content) => {
+  updateContent = (editorState) => {
     const { note } = this.state
-    note.content = content
-    this.setState({ note })
-    console.log('updated note', note)
+    const contentState = editorState.getCurrentContent()
+    const rawContent = convertToRaw(contentState)
+    note.content = rawContent
+    this.setState({ note, editorState })
   }
 
   updateOrder = (notes) => {
@@ -123,6 +124,7 @@ class NoteApp extends Component {
           this.state.notes.length > 0 ?
             <NoteEditor
               note={this.state.note}
+              editorState={this.state.editorState}
               updateTitle={this.updateTitle}
               updateContent={this.updateContent}
             /> :

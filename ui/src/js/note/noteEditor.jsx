@@ -14,18 +14,10 @@ class NoteEditor extends Component {
     super(props)
     this.state = {
     }
-    const { content } = this.props.note
-    if (content) {
-      this.state.editorState = EditorState.createWithContent(convertFromRaw(content))
-    } else {
-      this.state.editorState = EditorState.createEmpty()
-    }
   }
 
   onChange = (editorState) => {
-    const contentState = convertToRaw(editorState.getCurrentContent())
-    this.props.updateContent(contentState)
-    this.setState({ editorState })
+    this.props.updateContent(editorState)
   }
 
   render() {
@@ -42,7 +34,7 @@ class NoteEditor extends Component {
         />
         <Editor
           className="full-height"
-          editorState={this.state.editorState}
+          editorState={this.props.editorState}
           onChange={this.onChange}
           plugins={plugins}
         />
@@ -55,12 +47,14 @@ NoteEditor.propTypes = {
   updateTitle: PropTypes.func,
   updateContent: PropTypes.func,
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  editorState: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 }
 
 NoteEditor.defaultProps = {
   updateTitle: false,
   updateContent: false,
   note: null,
+  editorState: null,
 }
 
 export default NoteEditor
