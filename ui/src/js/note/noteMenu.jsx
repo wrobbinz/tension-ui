@@ -37,13 +37,14 @@ class NoteMenu extends Component {
     return (
       <Menu size="large" pointing secondary vertical className="full-height" floated>
         <Menu.Item>
-          <Header as="h3" floated="left">Notes</Header>
+          <span className="menu-header">Notes</span>
           <Icon
             link
             onClick={() => { this.props.createNote() }}
             size="large"
             name="plus"
             floated="right"
+            className="create-new"
           />
         </Menu.Item>
         <Menu.Item>

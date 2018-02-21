@@ -73,6 +73,15 @@ html, body {
   color: #c1c1c1!important;
 }
 
+.menu-header {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.create-new:hover {
+  color: #C34B5F;
+}
+
 .DraftEditor-editorContainer {
   height: 100%;
 }
