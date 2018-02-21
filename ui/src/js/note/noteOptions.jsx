@@ -11,6 +11,11 @@ class NoteOptions extends Component {
     }
   }
 
+  handleSave() {
+    const { id } = this.props.note
+    this.props.saveNote(id)
+  }
+
   handleCopy() {
     const { id } = this.props.note
     this.props.copyNote(id)
@@ -28,6 +33,12 @@ class NoteOptions extends Component {
         position="right center"
         content={
           <List>
+            <List.Item
+              icon="save"
+              onClick={() => this.handleSave()}
+              content="Save"
+              className="pointer"
+            />
             <List.Item
               icon="copy"
               onClick={() => this.handleCopy()}
@@ -72,12 +83,14 @@ class NoteOptions extends Component {
 }
 
 NoteOptions.propTypes = {
+  saveNote: PropTypes.func,
   copyNote: PropTypes.func,
   deleteNote: PropTypes.func,
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 }
 
 NoteOptions.defaultProps = {
+  saveNote: null,
   copyNote: false,
   deleteNote: false,
   note: false,

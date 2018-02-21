@@ -75,6 +75,7 @@ class NoteMenu extends Component {
                               note={this.props.note}
                               deleteNote={this.props.deleteNote}
                               copyNote={this.props.copyNote}
+                              saveNote={this.props.saveNote}
                             />
                           </Menu.Item>
                         </div>
@@ -101,6 +102,7 @@ NoteMenu.propTypes = {
   copyNote: PropTypes.func,
   deleteNote: PropTypes.func,
   updateOrder: PropTypes.func,
+  saveNote: PropTypes.func,
 }
 
 NoteMenu.defaultProps = {
@@ -111,6 +113,7 @@ NoteMenu.defaultProps = {
   copyNote: false,
   deleteNote: false,
   updateOrder: false,
+  saveNote: null,
 }
 
 export default NoteMenu
