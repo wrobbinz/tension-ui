@@ -74,8 +74,16 @@ html, body {
 }
 
 .menu-header {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
+}
+
+.setting-nav {
+  position: absolute!important;
+  bottom: 0!important;
+}
+.setting-popup {
+  left: 10px!important;
 }
 
 .create-new:hover {
