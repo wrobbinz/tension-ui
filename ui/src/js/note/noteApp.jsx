@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types'
 import axios from 'axios'
 import { reverse, remove } from 'lodash'
-import { EditorState } from 'draft-js'
+import { EditorState, convertToRaw } from 'draft-js'
 import { Grid, Header, Icon } from 'semantic-ui-react'
 import NoteMenu from './noteMenu'
 import NoteEditor from './noteEditor'
@@ -38,7 +38,7 @@ class NoteApp extends Component {
     this.setState({ note })
   }
 
-  createNote = (title = 'Untitled Note', content = EditorState.createEmpty()) => {
+  createNote = (title = 'Untitled Note', content = null) => {
     const payload = { title, content }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
