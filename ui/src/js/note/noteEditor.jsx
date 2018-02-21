@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Editor from 'draft-js-plugins-editor'
 import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin'
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
 import { Input } from 'semantic-ui-react'
 
 const plugins = [

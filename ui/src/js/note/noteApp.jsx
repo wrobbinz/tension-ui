@@ -41,7 +41,7 @@ class NoteApp extends Component {
     this.setState({ note, editorState })
   }
 
-  createNote = (title = 'Untitled Note', content = convertToRaw(ContentState.createFromText('...'))) => {
+  createNote = (title = 'Untitled Note', content = convertToRaw(ContentState.createFromText(''))) => {
     const payload = { title, content }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
