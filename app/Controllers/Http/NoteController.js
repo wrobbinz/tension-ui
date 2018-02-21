@@ -45,10 +45,12 @@ class NoteController {
       const note = new Note()
       note.title = request.post().title
       note.contents = request.post().contents
-      const updatedNote = await Note
+      const noteId = await Note
         .query()
         .where('id', params.id)
         .update(note)
+      const updatedNote = await Note
+        .find(params.id)
       response.send(updatedNote)
     } catch (err) {
       response.status(500).send({ error: `Failed to PUT note (id: ${params.id}).` })
