@@ -31,7 +31,7 @@ class NoteController {
   // POST
   async store({ auth, request, response }) {
     try {
-      const noteData = request.only(['title', 'contents'])
+      const noteData = request.only(['title', 'content'])
       noteData.owned_by = auth.user.id
       const note = await Note.create(noteData)
       response.send(note)
