@@ -44,7 +44,7 @@ class NoteController {
     try {
       const note = new Note()
       note.title = request.post().title
-      note.contents = request.post().contents
+      note.content = request.post().content
       await Note
         .query()
         .where('id', params.id)

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Editor from 'draft-js-plugins-editor'
 import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin'
-import { EditorState } from 'draft-js'
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js'
 import { Input } from 'semantic-ui-react'
 
 const plugins = [
@@ -14,10 +14,18 @@ class NoteEditor extends Component {
     super(props)
     this.state = {
     }
+    const { content } = this.props.note
+    if (content) {
+      this.state.editorState = EditorState.createWithContent(convertFromRaw(content))
+    } else {
+      this.state.editorState = EditorState.createEmpty()
+    }
   }
 
   onChange = (editorState) => {
-    this.props.updateContent(editorState)
+    const contentState = convertToRaw(editorState.getCurrentContent())
+    this.props.updateContent(contentState)
+    this.setState({ editorState })
   }
 
   render() {
@@ -34,7 +42,7 @@ class NoteEditor extends Component {
         />
         <Editor
           className="full-height"
-          editorState={this.props.note.content || EditorState.createEmpty()}
+          editorState={this.state.editorState}
           onChange={this.onChange}
           plugins={plugins}
         />

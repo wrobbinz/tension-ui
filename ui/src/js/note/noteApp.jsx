@@ -38,7 +38,11 @@ class NoteApp extends Component {
     this.setState({ note })
   }
 
-  createNote = (title = 'Untitled Note', content = null) => {
+  createNote = (title = 'Untitled Note') => {
+    const content = convertToRaw(EditorState
+      .createEmpty()
+      .getCurrentContent())
+
     const payload = { title, content }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
@@ -57,7 +61,7 @@ class NoteApp extends Component {
     const payload = { title, content }
     axios.put(`${api.notes}${id}`, payload, api.config())
       .then((res) => {
-        console.log('hi', res)
+        console.log('saveNote res:', res)
       })
       .catch((err) => {
         console.log(err)
@@ -91,10 +95,11 @@ class NoteApp extends Component {
     this.setState({ note })
   }
 
-  updateContent = (editorState) => {
+  updateContent = (content) => {
     const { note } = this.state
-    note.content = editorState
+    note.content = content
     this.setState({ note })
+    console.log('updated note', note)
   }
 
   updateOrder = (notes) => {
