@@ -52,6 +52,18 @@ class NoteApp extends Component {
       })
   }
 
+  saveNote = (id) => {
+    const { title, content } = this.state.note
+    const payload = { title, content }
+    axios.put(`${api.notes}${id}`, payload, api.config())
+      .then((res) => {
+        console.log('hi', res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   copyNote = (id) => {
     const note = this.state.notes.find(n => n.id === id)
     const { content } = note
@@ -99,6 +111,7 @@ class NoteApp extends Component {
           createNote={this.createNote}
           copyNote={this.copyNote}
           deleteNote={this.deleteNote}
+          saveNote={this.saveNote}
           updateOrder={this.updateOrder}
         />
         {
