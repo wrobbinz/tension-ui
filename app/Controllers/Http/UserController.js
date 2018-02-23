@@ -1,3 +1,5 @@
+const { each } = require('lodash')
+
 const User = use('App/Models/User')
 const { validate } = use('Validator')
 
@@ -13,10 +15,9 @@ class UserController {
   }
 
   // GET
-  async index({ response }) {
+  async index({ auth, response }) {
     try {
-      const users = User.all()
-      response.send(users)
+      response.send(auth.user)
     } catch (err) {
       response.status(500).send({ error: 'Failed to GET users.' })
     }
@@ -47,15 +48,18 @@ class UserController {
   async update({ params, request, response }) {
     try {
       const user = new User()
-      user.email = request.post().email
-      user.username = request.post().username
-      const updatedNote = await User
+      each(request.post(), (value, key) => {
+        user[key] = key === 'tags' ? JSON.stringify(value) : value
+      })
+      await User
         .query()
         .where('id', params.id)
         .update(user)
-      response.send(updatedNote)
+      const updatedUser = await User
+        .find(params.id)
+      response.send(updatedUser)
     } catch (err) {
-      response.status(500).send({ error: `Failed to PUT note (id: ${params.id}).` })
+      response.status(500).send(err)
     }
   }
   // DELETE

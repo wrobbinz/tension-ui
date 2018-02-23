@@ -1,3 +1,5 @@
+const { each } = require('lodash')
+
 const Note = use('App/Models/Note')
 
 
@@ -31,7 +33,7 @@ class NoteController {
   // POST
   async store({ auth, request, response }) {
     try {
-      const noteData = request.only(['title', 'content'])
+      const noteData = request.only(['title', 'content', 'tags'])
       noteData.owned_by = auth.user.id
       const note = await Note.create(noteData)
       response.send(note)
@@ -43,8 +45,9 @@ class NoteController {
   async update({ params, request, response }) {
     try {
       const note = new Note()
-      note.title = request.post().title
-      note.content = request.post().content
+      each(request.post(), (value, key) => {
+        note[key] = key === 'tags' ? JSON.stringify(value) : value
+      })
       await Note
         .query()
         .where('id', params.id)
@@ -53,7 +56,7 @@ class NoteController {
         .find(params.id)
       response.send(updatedNote)
     } catch (err) {
-      response.status(500).send({ error: `Failed to PUT note (id: ${params.id}).` })
+      response.status(500).send(err)
     }
   }
   // DELETE
