@@ -10,7 +10,7 @@ Route.group(() => {
   Route.resource('users', 'UserController')
     .apiOnly()
     .middleware(new Map([
-      [['users.show', 'users.update', 'users.destroy'], ['auth']],
+      [['users.index', 'users.show', 'users.update', 'users.destroy'], ['auth']],
     ]))
     .validator(new Map([
       [['users.store'], ['StoreUser']],
