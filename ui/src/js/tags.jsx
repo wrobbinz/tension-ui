@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import { Dropdown } from 'semantic-ui-react'
 
 
-class NoteOptions extends Component {
+class Tags extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
     }
   }
@@ -27,6 +26,7 @@ class NoteOptions extends Component {
         search
         selection
         multiple
+        upward
         allowAdditions
         value={this.props.note.tags.map(tag => tag.value)}
         onAddItem={this.handleAddition}
@@ -36,7 +36,7 @@ class NoteOptions extends Component {
   }
 }
 
-NoteOptions.propTypes = {
+Tags.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   addUserTag: PropTypes.func,
@@ -44,7 +44,7 @@ NoteOptions.propTypes = {
   placeholder: PropTypes.string,
 }
 
-NoteOptions.defaultProps = {
+Tags.defaultProps = {
   note: null,
   userTags: null,
   addUserTag: null,
@@ -52,4 +52,4 @@ NoteOptions.defaultProps = {
   placeholder: null,
 }
 
-export default NoteOptions
+export default Tags
