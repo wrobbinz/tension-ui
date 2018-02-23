@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { Menu, Icon } from 'semantic-ui-react'
 import NoteOptions from './noteOptions'
-import Tags from '../tags'
+import Search from '../search'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -15,7 +15,9 @@ const reorder = (list, startIndex, endIndex) => {
 class NoteMenu extends Component {
   constructor(props) {
     super(props)
+    console.log('noteMenu props:', props)
     this.state = {
+      searchTags: [],
     }
   }
 
@@ -34,6 +36,27 @@ class NoteMenu extends Component {
     this.props.updateOrder(notes)
   }
 
+  updateSearchTags = (value) => {
+    this.setState({ searchTags: value })
+  }
+
+  matchNotes = () => {
+    if (this.state.searchTags.length > 0) {
+      const matchedNotes = this.props.notes.filter((note) => {
+        let found = false
+        note.tags.forEach((tag) => {
+          if (this.state.searchTags.includes(tag.value)) {
+            found = true
+          }
+        })
+        return found
+      })
+      console.log('matchedNotes:', matchedNotes)
+      return matchedNotes
+    }
+    return this.props.notes
+  }
+
   render() {
     return (
       <Menu size="large" pointing secondary vertical className="full-height" floated>
@@ -49,12 +72,12 @@ class NoteMenu extends Component {
           />
         </Menu.Item>
         <Menu.Item>
-          {/* <Tags
-            noteTags={this.props.noteTags}
+          <Search
+            searchTags={this.state.searchTags}
             userTags={this.props.userTags}
-            addTag={this.props.addTag}
-            placeholder="Search..."
-          /> */}
+            updateSearchTags={this.updateSearchTags}
+            placeholder="Search by Tag..."
+          />
         </Menu.Item>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
@@ -62,7 +85,7 @@ class NoteMenu extends Component {
               <div
                 ref={provided.innerRef}
               >
-                {this.props.notes.map((note, index) => (
+                {this.matchNotes().map((note, index) => (
                   <Draggable key={note.id} draggableId={note.id} index={index}>
                     {prov => (
                       <div>
@@ -110,9 +133,7 @@ NoteMenu.propTypes = {
   deleteNote: PropTypes.func,
   updateOrder: PropTypes.func,
   saveNote: PropTypes.func,
-  noteTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  addTag: PropTypes.func,
 }
 
 NoteMenu.defaultProps = {
@@ -124,9 +145,7 @@ NoteMenu.defaultProps = {
   deleteNote: false,
   updateOrder: false,
   saveNote: null,
-  noteTags: null,
   userTags: null,
-  addTag: null,
 }
 
 export default NoteMenu
