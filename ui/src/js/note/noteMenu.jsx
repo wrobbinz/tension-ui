@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { Menu, Dropdown, Icon, Header } from 'semantic-ui-react'
+import { Menu, Icon } from 'semantic-ui-react'
 import NoteOptions from './noteOptions'
+import Tags from '../tags'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -48,7 +49,12 @@ class NoteMenu extends Component {
           />
         </Menu.Item>
         <Menu.Item>
-          <Dropdown placeholder="Search..." search selection options={[{ key: 'CD', value: 'coding', text: '#coding' }]} />
+          {/* <Tags
+            noteTags={this.props.noteTags}
+            userTags={this.props.userTags}
+            addTag={this.props.addTag}
+            placeholder="Search..."
+          /> */}
         </Menu.Item>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
@@ -104,6 +110,9 @@ NoteMenu.propTypes = {
   deleteNote: PropTypes.func,
   updateOrder: PropTypes.func,
   saveNote: PropTypes.func,
+  noteTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  addTag: PropTypes.func,
 }
 
 NoteMenu.defaultProps = {
@@ -115,6 +124,9 @@ NoteMenu.defaultProps = {
   deleteNote: false,
   updateOrder: false,
   saveNote: null,
+  noteTags: null,
+  userTags: null,
+  addTag: null,
 }
 
 export default NoteMenu
