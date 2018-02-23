@@ -32,6 +32,10 @@ html, body {
   padding-left: 0px!important;
 }
 
+.title-input input {
+  padding-left: 0px!important;
+}
+
 .sidenav {
   box-shadow: none!important;
 }
