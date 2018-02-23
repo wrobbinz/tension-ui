@@ -6,6 +6,7 @@ class NoteSchema extends Schema {
       table.increments()
       table.string('title')
       table.json('content')
+      table.json('tags')
       table.integer('owned_by')
       table.timestamps()
     })
