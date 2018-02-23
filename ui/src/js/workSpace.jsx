@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
+import api from './api'
 import '../css/style.css'
 import SideNav from './sideNav'
 import NoteApp from './note/noteApp'
@@ -10,7 +12,15 @@ class WorkSpace extends Component {
     super(props)
     this.state = {
       focus: 'notes',
+      user: {},
     }
+  }
+
+  async componentWillMount() {
+    const user = await axios.get(api.users, api.config())
+    this.setState({
+      user: user.data,
+    })
   }
 
   setFocus = (focus) => {
@@ -28,7 +38,7 @@ class WorkSpace extends Component {
         />
         {
           this.state.focus === 'notes' ?
-            <NoteApp /> : null
+            <NoteApp user={this.state.user} /> : null
         }
       </div>
     )

@@ -148,4 +148,12 @@ class NoteApp extends Component {
   }
 }
 
+NoteApp.propTypes = {
+  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+}
+
+NoteApp.defaultProps = {
+  user: null,
+}
+
 export default NoteApp

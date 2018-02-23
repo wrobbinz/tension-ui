@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+import axios from 'axios'
+import api from './api'
 import '../../semantic/dist/semantic.min.css'
 import '../css/style.css'
 import LoginForm from './loginForm'
@@ -17,9 +19,7 @@ export default class App extends Component {
   }
 
   setLoginState(value) {
-    this.setState({
-      loggedIn: value,
-    })
+    this.setState({ loggedIn: value })
   }
 
   render() {
@@ -27,6 +27,7 @@ export default class App extends Component {
       return (
         <WorkSpace
           className="full-height"
+          user={this.state.user}
           loggedIn={this.setLoginState}
         />
       )
