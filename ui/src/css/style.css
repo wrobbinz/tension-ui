@@ -19,12 +19,17 @@ html, body {
   border-radius: 0 !important;
 }
 
-.no-border {
+#titleInput {
   border: none !important;
 }
 
-#titleInput {
-  border: none !important;
+.no-border {
+  border: none!important;
+}
+
+.title-input {
+  margin-left: 0px!important;
+  padding-left: 0px!important;
 }
 
 .sidenav {
@@ -65,7 +70,8 @@ html, body {
 }
 
 .DraftEditor-root {
-  margin: 20px;
+  border-top: 2px solid rgba(34, 36, 38, .03);
+  padding: 20px;
   height: 100%;
 }
 
@@ -123,7 +129,10 @@ html, body {
   caret-color: #C34B5F;
 }
 
-.cm-header-1 {
-  font-size: 28px;
-  line-height: 80px!important;
+.editor-menu {
+  margin-bottom: 0px!important;
+}
+
+.no-margin {
+  margin: 0px!important;
 }
