@@ -13,6 +13,7 @@ class NoteEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      title: this.props.note.title,
       noteSaved: true,
       contentState: this.props.editorState.getCurrentContent(),
     }
@@ -28,6 +29,17 @@ class NoteEditor extends Component {
       })
     }
     this.props.updateContent(editorState)
+  }
+
+  handleTitleChange = (event) => {
+    const newTitle = event.target.value
+    if (newTitle !== this.state.title) {
+      this.setState({
+        title: newTitle,
+        noteSaved: false,
+      })
+    }
+    this.props.updateTitle(event)
   }
 
   handleSave() {
@@ -66,7 +78,7 @@ class NoteEditor extends Component {
               placeholder="Title"
               value={this.props.note ? this.props.note.title : ''}
               maxLength="20"
-              onChange={this.props.updateTitle}
+              onChange={this.handleTitleChange}
             />
           </Menu.Item>
           <Menu.Menu position="right">
