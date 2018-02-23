@@ -26,7 +26,6 @@ class Tags extends Component {
         search
         selection
         multiple
-        upward
         allowAdditions
         value={this.props.note.tags.map(tag => tag.value)}
         onAddItem={this.handleAddition}
