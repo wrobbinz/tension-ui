@@ -22,7 +22,6 @@ class NoteEditor extends Component {
   onChange = (editorState) => {
     const newContentState = editorState.getCurrentContent()
     if (newContentState !== this.state.contentState) {
-      console.log('they dont match', newContentState !== this.state.contentState)
       this.setState({
         contentState: newContentState,
         noteSaved: false,

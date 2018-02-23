@@ -15,7 +15,6 @@ const reorder = (list, startIndex, endIndex) => {
 class NoteMenu extends Component {
   constructor(props) {
     super(props)
-    console.log('noteMenu props:', props)
     this.state = {
       searchTags: [],
     }
@@ -51,7 +50,6 @@ class NoteMenu extends Component {
         })
         return found
       })
-      console.log('matchedNotes:', matchedNotes)
       return matchedNotes
     }
     return this.props.notes

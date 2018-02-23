@@ -58,7 +58,7 @@ class NoteApp extends Component {
         this.setState({ notes, note, editorState })
       })
       .catch((err) => {
-        console.log(err)
+        throw err
       })
   }
 
@@ -70,7 +70,7 @@ class NoteApp extends Component {
         console.log('Note saved:', res)
       })
       .catch((err) => {
-        console.log(err)
+        throw err
       })
   }
 
@@ -91,7 +91,7 @@ class NoteApp extends Component {
         this.setState({ notes, note })
       })
       .catch((err) => {
-        console.log(err)
+        throw err
       })
   }
 
