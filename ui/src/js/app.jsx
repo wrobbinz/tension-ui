@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import axios from 'axios'
-import api from './api'
 import '../../semantic/dist/semantic.min.css'
 import '../css/style.css'
 import LoginForm from './loginForm'
