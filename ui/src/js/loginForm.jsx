@@ -32,7 +32,7 @@ class LoginForm extends Component {
       this.setState({
         loginFailed: true,
       })
-      console.log(err)
+      throw err
     }
   }
 
@@ -61,7 +61,7 @@ class LoginForm extends Component {
       await axios.post(api.users, payload)
       await this.logIn()
     } catch (err) {
-      console.log(err)
+      throw err
     }
   }
 
