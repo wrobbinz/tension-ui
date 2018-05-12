@@ -9,8 +9,8 @@ class UserController {
     try {
       const { email, password } = request.all()
       return auth.attempt(email, password)
-    } catch (err) {
-      return response.status(500).send({ error: 'Failed to login.' })
+    } catch (error) {
+      return response.status(500).send(error)
     }
   }
 
@@ -18,8 +18,8 @@ class UserController {
   async index({ auth, response }) {
     try {
       response.send(auth.user)
-    } catch (err) {
-      response.status(500).send({ error: 'Failed to GET users.' })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // GET :id
@@ -28,10 +28,10 @@ class UserController {
       if (auth.user.id === Number(params.id)) {
         response.send(auth.user)
       } else {
-        response.status(403).send({ error: 'You don\'t have permission to view this user.' })
+        response.status(403).send({ message: 'You don\'t have permission to view this user.' })
       }
-    } catch (err) {
-      response.status(500).send({ error: `Failed to GET user (id: ${params.id})` })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // POST
@@ -40,8 +40,8 @@ class UserController {
       const userData = request.only(['email', 'username', 'password'])
       const user = await User.create(userData)
       response.send(user)
-    } catch (err) {
-      response.status(500).send(err)
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // PUT/PATCH
@@ -58,8 +58,8 @@ class UserController {
       const updatedUser = await User
         .find(params.id)
       response.send(updatedUser)
-    } catch (err) {
-      response.status(500).send(err)
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // DELETE
@@ -68,8 +68,8 @@ class UserController {
       const user = await User.find(params.id)
       await user.delete()
       response.send(user)
-    } catch (err) {
-      response.status(500).send({ error: `Failed to DELETE user (id: ${params.id}).` })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
 }

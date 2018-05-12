@@ -1,0 +1,181 @@
+html, body {
+  min-height: 100%;
+}
+
+.flex-wrapper {
+  display: -webkit-flex;
+  display: flex;
+  min-height: 100%;
+}
+
+.flex-shrink {
+  -webkit-flex: 0;
+  flex: 0;
+}
+
+.flex-grow {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.workspace {
+  -webkit-flex: 5;
+  flex: 5;
+}
+
+.full-height {
+  height: 100% !important;
+}
+
+.full-width {
+  width: 100% !important
+}
+
+.left-icon {
+    float: none;
+    margin: 0em 0.35714286em 0em 0em;
+}
+
+.no-border-radius {
+  border-radius: 0 !important;
+}
+
+#titleInput {
+  border: none !important;
+}
+
+.no-border {
+  border: none!important;
+}
+
+.title-input {
+  margin-left: 0px!important;
+  padding-left: 0px!important;
+}
+
+#titleInput:hover {
+  background-color: #F5F5F5 !important;
+}
+
+.sidenav {
+  box-shadow: none!important;
+}
+.sidenav .active.item {
+  background: white!important;
+
+}
+
+.sidenav .active.item i {
+  color: #182C44!important;
+ }
+
+ .float-right {
+   float: right;
+ }
+
+ .float-left {
+   float: left;
+ }
+
+ .pointer {
+   cursor: pointer;
+ }
+
+ .ui.secondary.vertical.pointing.menu .active.item {
+   border-color: #C34B5F;
+ }
+
+ .ui.inverted.menu {
+   background: #182C44;
+ }
+
+.editor {
+  width: calc(100% - 316px);
+  height: 100%;
+}
+
+.DraftEditor-root {
+  /* border-top: 2px solid rgba(34, 36, 38, .03); */
+  padding: 1em 3em;
+  height: calc(100vh - 60px)!important;
+  overflow-y: auto !important;
+}
+
+.light-grey {
+  color: #c1c1c1!important;
+}
+
+.menu-header {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.setting-nav {
+  position: absolute!important;
+  bottom: 0!important;
+}
+.setting-popup {
+  left: 10px!important;
+}
+
+.create-new:hover {
+  color: #C34B5F;
+}
+
+.DraftEditor-editorContainer {
+  height: calc(100vh - 60px - 2em)!important;
+}
+
+.public-DraftEditor-content {
+  height: calc(100vh - 60px - 2em)!important;
+}
+
+.note-grid {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.flex-one {
+  flex: 1;
+}
+
+.row {
+  padding-bottom: 0!important;
+}
+
+.public-DraftEditor-content {
+  caret-color: #C34B5F;
+}
+
+.editor-menu {
+  margin-bottom: 0px!important;
+}
+
+.no-margin {
+  margin: 0px!important;
+}
+
+.ui.page.modals.transition.visible {
+    display: flex !important;
+}
+
+.note-icon {
+  float: left !important;
+  margin: 0 0.5em 0 0 !important;
+}
+
+.note-options {
+  float: right !important;
+}
+
+.favorite > i {
+  outline-style: none !important;
+}
+
+.note-list {
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  height: calc(100vh - 107px);
+}
+

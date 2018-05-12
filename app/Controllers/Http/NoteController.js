@@ -12,8 +12,8 @@ class NoteController {
         .where('owned_by', '=', auth.user.id)
         .fetch()
       response.send(notes)
-    } catch (err) {
-      response.status(500).send({ error: 'Failed to GET notes.' })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // GET :id
@@ -26,19 +26,25 @@ class NoteController {
       } else {
         response.status(403).send({ error: 'You don\'t have access to this note.' })
       }
-    } catch (err) {
-      response.status(500).send({ error: `Failed to GET note (id: ${params.id}).` })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // POST
   async store({ auth, request, response }) {
     try {
       const noteData = request.only(['title', 'content', 'tags'])
+      const notes = await Note
+        .query()
+        .where('owned_by', '=', auth.user.id)
+        .fetch()
+      console.log(notes)
+      noteData.order = notes.length
       noteData.owned_by = auth.user.id
       const note = await Note.create(noteData)
       response.send(note)
-    } catch (err) {
-      response.status(500).send({ message: 'Failed to POST note.', error: err })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // PUT/PATCH
@@ -46,7 +52,7 @@ class NoteController {
     try {
       const note = new Note()
       each(request.post(), (value, key) => {
-        note[key] = key === 'tags' ? JSON.stringify(value) : value
+        note[key] = value
       })
       await Note
         .query()
@@ -55,8 +61,8 @@ class NoteController {
       const updatedNote = await Note
         .find(params.id)
       response.send(updatedNote)
-    } catch (err) {
-      response.status(500).send(err)
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
   // DELETE
@@ -65,8 +71,8 @@ class NoteController {
       const note = await Note.find(params.id)
       await note.delete()
       response.send(note)
-    } catch (err) {
-      response.status(500).send({ error: `Failed to DELETE note (id: ${params.id}).` })
+    } catch (error) {
+      response.status(500).send(error)
     }
   }
 }

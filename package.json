@@ -1,17 +1,16 @@
 {
-  "name": "adonis-api-app",
-  "version": "4.0.0",
-  "description": "Adonisjs boilerplate for API server with pre-configured JWT",
+  "name": "slyp",
+  "version": "0.1.0",
+  "description": "slyp",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "test": "jest"
   },
   "keywords": [
-    "adonisjs",
-    "adonis-app"
+    "slyp"
   ],
-  "author": "",
+  "author": "@wrobbinz",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
@@ -27,7 +26,7 @@
     "@adonisjs/validator": "^5.0.3",
     "eslint": "^4.17.0",
     "lodash": "^4.17.5",
-    "pg": "^7.4.1"
+    "pg": "^7.4.3"
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^12.1.0",
