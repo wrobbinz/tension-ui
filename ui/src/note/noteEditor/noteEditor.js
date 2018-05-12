@@ -72,6 +72,17 @@ class NoteEditor extends Component {
       title: this.props.note.title,
       isFavorite: this.props.note.is_favorite,
     }
+
+    this.status = {
+      saved: {
+        icon: 'check circle',
+        color: 'green',
+      },
+      typing: {
+        icon: 'circle outline',
+        color: 'grey',
+      },
+    }
   }
 
   onChange = (editorState) => {
@@ -100,9 +111,8 @@ class NoteEditor extends Component {
   isFavorite = () => {
     if (this.props.note.is_favorite) {
       return 1
-    } else {
-      return 0
     }
+    return 0
   }
 
   render() {
@@ -110,17 +120,12 @@ class NoteEditor extends Component {
       <div className="editor flex-grow">
         <Menu secondary className="editor-menu">
           <Menu.Item>
-            {this.props.isSaved ?
-              <Icon
-                name="check circle"
-                className="no-margin"
-                color="green"
-                size="large"
-              /> :
-              <Icon>
-                <Loader active size="small" />
-              </Icon>
-            }
+            <Icon
+              name={this.props.isSaved ? this.status.saved.icon : this.status.typing.icon}
+              className="no-margin"
+              color={this.props.isSaved ? this.status.saved.color : this.status.typing.color}
+              size="large"
+            />
           </Menu.Item>
           <Menu.Item className="title-input">
             <Input

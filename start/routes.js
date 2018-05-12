@@ -2,7 +2,7 @@ const Route = use('Route')
 const prefix = 'api/v1'
 
 
-Route.get('/', () => ({ greeting: 'prolificr' }))
+Route.get('/', () => ({ greeting: 'slyp' }))
 
 
 // User
