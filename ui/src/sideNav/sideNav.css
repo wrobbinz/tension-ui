@@ -1,0 +1,11 @@
+.sidenav {
+  box-shadow: none!important;
+}
+.sidenav .active.item {
+  background: #fafafa !important;
+
+}
+
+.sidenav .active.item i {
+  color: #223c5b !important;
+ }

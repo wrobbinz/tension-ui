@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { Menu, Icon, Rating } from 'semantic-ui-react'
-import NoteOptions from './noteOptions/noteOptions'
+import Resizable from 're-resizable'
+import { Menu, List, Icon, Button } from 'semantic-ui-react'
 import Search from './search/search'
+import './noteMenu.css'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -18,6 +19,7 @@ class NoteMenu extends Component {
     this.state = {
       searchValue: '',
       showFavorites: false,
+      noteView: 'All',
     }
   }
 
@@ -68,79 +70,121 @@ class NoteMenu extends Component {
     return this.props.notes
   }
 
+  handleViewChange = noteView => this.setState({ noteView })
+
   render() {
     return (
-      <Menu size="large" pointing secondary vertical className="full-height" floated>
-        <Menu.Item>
-          <span className="menu-header">
-            Notes
-            <Rating
-              icon="heart"
-              className="favorite"
-              onRate={() => this.setState({ showFavorites: !this.state.showFavorites })}
-              maxRating={1}
+      <Resizable
+        className="resize-indicator"
+        minWidth="250"
+        maxWidth="40%"
+        defaultSize={{ width: 250 }}
+        enable={{
+          top: false,
+          right: true,
+          bottom: false,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false,
+        }}
+      >
+        <Menu
+          className="note-menu full-height full-width"
+          size="large"
+          pointing
+          secondary
+          vertical
+          floated
+        >
+          <Menu.Item className="flex-area">
+            <Search
+              compact
+              searchValue={this.state.searchValue}
+              userTags={this.props.userTags}
+              updateSearchValue={this.updateSearchValue}
             />
-          </span>
-          <Icon
-            link
-            onClick={() => { this.props.createNote() }}
-            size="large"
-            name="plus"
-            floated="right"
-            className="create-new"
-          />
-        </Menu.Item>
-        <Menu.Item>
-          <Search
-            searchValue={this.state.searchValue}
-            userTags={this.props.userTags}
-            updateSearchValue={this.updateSearchValue}
-            placeholder="Search..."
-          />
-        </Menu.Item>
-        <DragDropContext onDragEnd={this.onDragEnd} className="note-list">
-          <Droppable droppableId="droppable">
-            {provided => (
-              <div
-                className="note-list"
-                ref={provided.innerRef}
+          </Menu.Item>
+          <Menu.Item>
+            <List>
+              <DragDropContext onDragEnd={this.onDragEnd} className="note-list">
+                <Droppable droppableId="droppable">
+                  {provided => (
+                    <div
+                      className="note-list"
+                      ref={provided.innerRef}
+                    >
+                      {this.matchNotes().map((note, index) => (
+                        <Draggable key={note.id} draggableId={note.id} index={index}>
+                          {prov => (
+                            <div>
+                              <div
+                                ref={prov.innerRef}
+                                {...prov.draggableProps}
+                                {...prov.dragHandleProps}
+                              >
+                                <List.Item
+                                  className="note-list-item truncate"
+                                  onClick={() => { this.props.selectNote(note.id) }}
+                                  name={note.id.toString()}
+                                  active={this.props.note.id === note.id}
+                                  id={note.id}
+                                >
+                                  <List.Icon
+                                    className="note-icon"
+                                    name={this.props.note.id === note.id ? 'sticky note' : 'sticky note outline'}
+                                  />
+                                  <List.Description>
+                                    {note.title === '' ? 'Untitled Note' : note.title}
+                                  </List.Description>
+                                </List.Item>
+                              </div>
+                              {prov.placeholder}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </List>
+          </Menu.Item>
+          <Menu.Item id="noteView">
+            <Button.Group
+              size="mini"
+              widths="3"
+              fluid
+              basic
+            >
+              <Button
+                onClick={() => { this.handleViewChange('All') }}
+                active={this.state.noteView === 'All'}
               >
-                {this.matchNotes().map((note, index) => (
-                  <Draggable key={note.id} draggableId={note.id} index={index}>
-                    {prov => (
-                      <div>
-                        <div
-                          ref={prov.innerRef}
-                          {...prov.draggableProps}
-                          {...prov.dragHandleProps}
-                        >
-                          <Menu.Item
-                            onClick={() => { this.props.selectNote(note.id) }}
-                            name={note.id.toString()}
-                            active={this.props.note.id === note.id}
-                            id={note.id}
-                          >
-                            <Icon name="file outline" className="note-icon" />
-                            {note.title === '' ? 'Untitled Note' : note.title}
-                            <NoteOptions
-                              note={this.props.note}
-                              deleteNote={this.props.deleteNote}
-                              copyNote={this.props.copyNote}
-                              saveNote={this.props.saveNote}
-                            />
-                          </Menu.Item>
-                        </div>
-                        {prov.placeholder}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </Menu>
+                All
+              </Button>
+              <Button
+                onClick={() => { this.handleViewChange('Tags') }}
+                active={this.state.noteView === 'Tags'}
+              >
+                Tags
+              </Button>
+              <Button
+                onClick={() => { this.handleViewChange('Favorites') }}
+                active={this.state.noteView === 'Favorites'}
+                icon
+              >
+                <Icon
+                  color={this.state.noteView === 'Favorites' ? 'red' : 'grey'}
+                  name="heart"
+                />
+              </Button>
+            </Button.Group>
+          </Menu.Item>
+        </Menu>
+      </Resizable>
     )
   }
 }

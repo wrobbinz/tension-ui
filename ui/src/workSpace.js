@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import api from './api'
 import './style.css'
-import SideNav from './sideNav'
+import SideNav from './sideNav/sideNav'
 import NoteApp from './note/noteApp'
 // import BoardApp from './board/boardApp'
 

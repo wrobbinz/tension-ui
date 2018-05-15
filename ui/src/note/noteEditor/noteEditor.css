@@ -1,0 +1,70 @@
+.editor-menu {
+  margin-bottom: 0px!important;
+}
+
+.title-input {
+  margin-left: 0px!important;
+  padding-left: 0px!important;
+  flex: 1 !important;
+}
+
+#titleInput {
+  border: none !important;
+}
+
+.editor {
+  width: calc(100% - 316px);
+  height: 100%;
+}
+
+.DraftEditor-root {
+  /* border-top: 2px solid rgba(34, 36, 38, .03); */
+  padding: 1em 3em;
+  height: calc(100vh - 114px)!important;
+  overflow-y: auto !important;
+}
+
+.DraftEditor-editorContainer {
+  height: calc(100vh - 114px - 2em)!important;
+}
+
+.public-DraftEditor-content {
+  height: calc(100vh - 114px - 2em)!important;
+}
+
+.draftJsUndoPlugin__button__3Vugn {
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  height: 1.5em;
+  color: #888;
+  line-height: 1.2em;
+  cursor: pointer;
+  background-color: #fff;
+  width: 2.5em;
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: 0;
+  margin: 0;
+}
+
+.draftJsUndoPlugin__button__3Vugn:focus {
+  background-color: #eee;
+  color: #999;
+  outline: 0; /* reset for :focus */
+}
+
+.draftJsUndoPlugin__button__3Vugn:hover {
+  background-color: #eee;
+  color: #999;
+}
+
+.draftJsUndoPlugin__button__3Vugn:active {
+  background-color: #ddd;
+  color: #777;
+}
+
+.draftJsUndoPlugin__button__3Vugn:disabled {
+  background-color: #fff;
+  color: #ccc;
+}
+

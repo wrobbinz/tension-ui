@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
 import createMarkdownPlugin from 'draft-js-markdown-plugin'
+import createCodeEditorPlugin from 'draft-js-code-editor-plugin'
 import createImagePlugin from 'draft-js-image-plugin'
-import 'draft-js-image-plugin/lib/plugin.css'
 import createUndoPlugin from 'draft-js-undo-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
+import createPrismPlugin from 'draft-js-prism-plugin'
+import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import { stateToMarkdown } from 'draft-js-export-markdown'
 import Prism from 'prismjs'
 import 'draft-js/dist/Draft.css'
@@ -21,24 +23,26 @@ import 'prismjs/components/prism-kotlin'
 import 'prismjs/components/prism-perl'
 import 'prismjs/components/prism-ruby'
 import 'prismjs/components/prism-swift'
-import createPrismPlugin from 'draft-js-prism-plugin'
-import createLinkifyPlugin from 'draft-js-linkify-plugin'
-import { Menu, Input, Icon, Loader, Button, Rating } from 'semantic-ui-react'
-import Tags from './tags/tags'
-
-
+import { Menu, Input, Button, Rating } from 'semantic-ui-react'
+import createHashtagPlugin from 'draft-js-hashtag-plugin'
+import 'draft-js-image-plugin/lib/plugin.css'
 import './CheckableListItem.css'
 import './prism.css'
+import Tags from './tags/tags'
+import './noteEditor.css'
+
+const hashtagPlugin = createHashtagPlugin()
 
 const undoPlugin = createUndoPlugin()
+const { UndoButton, RedoButton } = undoPlugin
+
 const prismPlugin = createPrismPlugin({
   prism: Prism,
 })
 
-const { UndoButton, RedoButton } = undoPlugin
-
 const focusPlugin = createFocusPlugin()
 const resizeablePlugin = createResizeablePlugin()
+const codeEditorPlugin = createCodeEditorPlugin()
 
 const decorator = composeDecorators(
   resizeablePlugin.decorator,
@@ -62,7 +66,9 @@ const plugins = [
   imagePlugin,
   undoPlugin,
   prismPlugin,
+  codeEditorPlugin,
   markdownPlugin,
+  hashtagPlugin,
 ]
 
 class NoteEditor extends Component {
@@ -70,18 +76,6 @@ class NoteEditor extends Component {
     super(props)
     this.state = {
       title: this.props.note.title,
-      isFavorite: this.props.note.is_favorite,
-    }
-
-    this.status = {
-      saved: {
-        icon: 'check circle',
-        color: 'green',
-      },
-      typing: {
-        icon: 'circle outline',
-        color: 'grey',
-      },
     }
   }
 
@@ -118,53 +112,49 @@ class NoteEditor extends Component {
   render() {
     return (
       <div className="editor flex-grow">
-        <Menu secondary className="editor-menu">
-          <Menu.Item>
-            <Icon
-              name={this.props.isSaved ? this.status.saved.icon : this.status.typing.icon}
-              className="no-margin"
-              color={this.props.isSaved ? this.status.saved.color : this.status.typing.color}
-              size="large"
+        <Menu secondary className="no-margin">
+          <Menu.Item className="no-margin">
+            <Rating
+              icon="heart"
+              className="favorite"
+              onRate={(event, data) => this.handleRating(data.rating)}
+              rating={this.isFavorite()}
+              maxRating={1}
             />
           </Menu.Item>
           <Menu.Item className="title-input">
             <Input
               id="titleInput"
-              className="no-border full-width"
+              className="no-border"
               size="big"
               placeholder="Title"
               value={this.props.note ? this.props.note.title : ''}
-              maxLength="30"
+              maxLength="100"
               onChange={this.handleTitleChange}
+              fluid
             />
           </Menu.Item>
-          <Menu.Menu position="right">
+          <Menu.Menu
+            id="editorOptions"
+            className="editor-options"
+            position="right"
+          >
+            <Menu.Item>
+              <UndoButton as={Button} />
+              <RedoButton as={Button} />
+            </Menu.Item>
             <Menu.Item>
               <Button onClick={event => this.convertToMarkdown(event)} size="tiny">
                 Convert
               </Button>
             </Menu.Item>
             <Menu.Item>
-              <UndoButton as={Button} />
-              <RedoButton as={Button} />
-            </Menu.Item>
-            <Menu.Item>
-              <Rating
-                icon="heart"
-                className="favorite"
-                onRate={(event, data) => this.handleRating(data.rating)}
-                rating={this.isFavorite()}
-                maxRating={1}
-              />
-            </Menu.Item>
-            <Menu.Item>
-              <Tags
+              {/* <NoteOptions
                 note={this.props.note}
-                userTags={this.props.userTags}
-                addUserTag={this.props.addUserTag}
-                updateNoteTags={this.props.updateNoteTags}
-                placeholder="Tags"
-              />
+                deleteNote={this.props.deleteNote}
+                copyNote={this.props.copyNote}
+                saveNote={this.props.saveNote}
+              /> */}
             </Menu.Item>
           </Menu.Menu>
         </Menu>
@@ -177,6 +167,17 @@ class NoteEditor extends Component {
           spellCheck
           ref={(element) => { this.editor = element }}
         />
+        <Menu secondary className="no-margin">
+          <Menu.Item className="full-width">
+            <Tags
+              note={this.props.note}
+              userTags={this.props.userTags}
+              addUserTag={this.props.addUserTag}
+              updateNoteTags={this.props.updateNoteTags}
+              placeholder="# Tags"
+            />
+          </Menu.Item>
+        </Menu>
       </div>
     )
   }

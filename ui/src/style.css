@@ -8,6 +8,13 @@ html, body {
   min-height: 100%;
 }
 
+.flex-area {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+}
+
 .flex-shrink {
   -webkit-flex: 0;
   flex: 0;
@@ -40,34 +47,13 @@ html, body {
   border-radius: 0 !important;
 }
 
-#titleInput {
-  border: none !important;
+.no-padding {
+  padding: 0 !important;
 }
 
 .no-border {
   border: none!important;
 }
-
-.title-input {
-  margin-left: 0px!important;
-  padding-left: 0px!important;
-}
-
-#titleInput:hover {
-  background-color: #F5F5F5 !important;
-}
-
-.sidenav {
-  box-shadow: none!important;
-}
-.sidenav .active.item {
-  background: white!important;
-
-}
-
-.sidenav .active.item i {
-  color: #182C44!important;
- }
 
  .float-right {
    float: right;
@@ -86,20 +72,8 @@ html, body {
  }
 
  .ui.inverted.menu {
-   background: #182C44;
+   background: #223c5b;
  }
-
-.editor {
-  width: calc(100% - 316px);
-  height: 100%;
-}
-
-.DraftEditor-root {
-  /* border-top: 2px solid rgba(34, 36, 38, .03); */
-  padding: 1em 3em;
-  height: calc(100vh - 60px)!important;
-  overflow-y: auto !important;
-}
 
 .light-grey {
   color: #c1c1c1!important;
@@ -116,18 +90,6 @@ html, body {
 }
 .setting-popup {
   left: 10px!important;
-}
-
-.create-new:hover {
-  color: #C34B5F;
-}
-
-.DraftEditor-editorContainer {
-  height: calc(100vh - 60px - 2em)!important;
-}
-
-.public-DraftEditor-content {
-  height: calc(100vh - 60px - 2em)!important;
 }
 
 .note-grid {
@@ -148,10 +110,6 @@ html, body {
   caret-color: #C34B5F;
 }
 
-.editor-menu {
-  margin-bottom: 0px!important;
-}
-
 .no-margin {
   margin: 0px!important;
 }
@@ -160,22 +118,7 @@ html, body {
     display: flex !important;
 }
 
-.note-icon {
-  float: left !important;
-  margin: 0 0.5em 0 0 !important;
-}
-
-.note-options {
-  float: right !important;
-}
-
 .favorite > i {
   outline-style: none !important;
-}
-
-.note-list {
-  overflow-y: auto !important;
-  overflow-x: hidden;
-  height: calc(100vh - 107px);
 }
 

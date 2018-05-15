@@ -1,0 +1,40 @@
+.note-menu {
+  border: none !important;
+  background: #fafafa !important;
+  position: relative;
+}
+
+.new-note {
+  flex: 1 !important;
+}
+
+.new-note:hover {
+  color: #C34B5F !important;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.note-icon {
+  float: left !important;
+  margin: 0 0.5em 0 0 !important;
+}
+
+.note-list {
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  height: auto;
+}
+
+.note-list-item {
+  padding: 0.5em 0 !important;
+}
+
+#noteView {
+  position: absolute !important;
+  bottom: 0;
+  width: 252px;
+}

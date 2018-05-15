@@ -1,0 +1,9 @@
+.note-search {
+  /* width: auto !important; */
+}
+
+.note-search button {
+  border-top-right-radius: 0.285714rem !important;
+  border-bottom-right-radius: 0.285714rem !important;
+
+}

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Popup, List } from 'semantic-ui-react'
-import Settings from './settings'
+import Settings from '../settings'
+import './sideNav.css'
 
 
 const DELAY = 500
@@ -14,24 +15,9 @@ const menuItems = [
     flipped: 'vertically',
   },
   {
-    name: 'mail',
-    icon: 'inbox',
-    tooltip: 'Inbox',
-  },
-  {
-    name: 'events',
-    icon: 'calendar outline',
-    tooltip: 'Events',
-  },
-  {
     name: 'notes',
     icon: 'sticky note',
     tooltip: 'Notes',
-  },
-  {
-    name: 'sketches',
-    icon: 'paint brush',
-    tooltip: 'Sketches',
   },
   {
     name: 'drive',

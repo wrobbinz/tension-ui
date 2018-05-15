@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown } from 'semantic-ui-react'
+import './tags.css'
 
 
 class Tags extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      dropdownClasses: 'no-border',
     }
   }
 
@@ -28,15 +30,19 @@ class Tags extends Component {
   render() {
     return (
       <Dropdown
+        className="tags-dropdown"
         options={this.props.userTags}
         placeholder={this.props.placeholder}
-        search
-        selection
-        multiple
-        allowAdditions
         value={this.tagsValue()}
         onAddItem={this.handleAddition}
         onChange={this.handleChange}
+        search
+        upward
+        fluid
+        selection
+        multiple
+        allowAdditions
+        floating
       />
     )
   }
