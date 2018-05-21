@@ -98,7 +98,7 @@ class NoteMenu extends Component {
           vertical
           floated
         >
-          <Menu.Item className="flex-area">
+          <Menu.Item>
             <Search
               compact
               searchValue={this.state.searchValue}
@@ -108,7 +108,7 @@ class NoteMenu extends Component {
           </Menu.Item>
           <Menu.Item>
             <List>
-              <DragDropContext onDragEnd={this.onDragEnd} className="note-list">
+              <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                   {provided => (
                     <div
