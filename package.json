@@ -1,14 +1,14 @@
 {
-  "name": "slyp",
+  "name": "Tension",
   "version": "0.1.0",
-  "description": "slyp",
+  "description": "Personal organization suite.",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "test": "jest"
   },
   "keywords": [
-    "slyp"
+    "tension"
   ],
   "author": "@wrobbinz",
   "license": "UNLICENSED",

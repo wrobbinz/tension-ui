@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Input } from 'semantic-ui-react'
+import { Input, Button } from 'semantic-ui-react'
 import './search.css'
 
 
@@ -25,7 +25,12 @@ class Search extends Component {
         onChange={this.handleChange}
         iconPosition="left"
         icon="search"
-        action={{ icon: 'plus' }}
+        action={
+          <Button
+            icon="plus"
+            onClick={() => { this.props.createNote() }}
+          />
+        }
       />
     )
   }

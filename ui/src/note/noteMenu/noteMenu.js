@@ -104,6 +104,7 @@ class NoteMenu extends Component {
               searchValue={this.state.searchValue}
               userTags={this.props.userTags}
               updateSearchValue={this.updateSearchValue}
+              createNote={this.props.createNote}
             />
           </Menu.Item>
           <Menu.Item>

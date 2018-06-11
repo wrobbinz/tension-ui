@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Editor, { composeDecorators } from 'draft-js-plugins-editor'
+import Editor from 'draft-js-plugins-editor'
 import createMarkdownPlugin from 'draft-js-markdown-plugin'
 import createCodeEditorPlugin from 'draft-js-code-editor-plugin'
-import createImagePlugin from 'draft-js-image-plugin'
 import createUndoPlugin from 'draft-js-undo-plugin'
-import createFocusPlugin from 'draft-js-focus-plugin'
-import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import createPrismPlugin from 'draft-js-prism-plugin'
-import createLinkifyPlugin from 'draft-js-linkify-plugin'
 import { stateToMarkdown } from 'draft-js-export-markdown'
 import Prism from 'prismjs'
 import 'draft-js/dist/Draft.css'
@@ -24,14 +20,10 @@ import 'prismjs/components/prism-perl'
 import 'prismjs/components/prism-ruby'
 import 'prismjs/components/prism-swift'
 import { Menu, Input, Button, Rating } from 'semantic-ui-react'
-import createHashtagPlugin from 'draft-js-hashtag-plugin'
-import 'draft-js-image-plugin/lib/plugin.css'
-import './CheckableListItem.css'
 import './prism.css'
 import Tags from './tags/tags'
 import './noteEditor.css'
-
-const hashtagPlugin = createHashtagPlugin()
+import './CheckableListItem.css'
 
 const undoPlugin = createUndoPlugin()
 const { UndoButton, RedoButton } = undoPlugin
@@ -40,16 +32,7 @@ const prismPlugin = createPrismPlugin({
   prism: Prism,
 })
 
-const focusPlugin = createFocusPlugin()
-const resizeablePlugin = createResizeablePlugin()
 const codeEditorPlugin = createCodeEditorPlugin()
-
-const decorator = composeDecorators(
-  resizeablePlugin.decorator,
-  focusPlugin.decorator,
-)
-
-const imagePlugin = createImagePlugin({ decorator })
 
 const entityType = {
   IMAGE: 'IMAGE',
@@ -57,18 +40,12 @@ const entityType = {
 
 const markdownPlugin = createMarkdownPlugin({ entityType })
 
-const linkifyPlugin = createLinkifyPlugin()
 
 const plugins = [
-  linkifyPlugin,
-  focusPlugin,
-  resizeablePlugin,
-  imagePlugin,
-  undoPlugin,
   prismPlugin,
+  undoPlugin,
   codeEditorPlugin,
   markdownPlugin,
-  hashtagPlugin,
 ]
 
 class NoteEditor extends Component {

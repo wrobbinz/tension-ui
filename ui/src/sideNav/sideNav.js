@@ -21,7 +21,7 @@ const menuItems = [
   },
   {
     name: 'drive',
-    icon: 'disk outline',
+    icon: 'disk',
     tooltip: 'Drive',
   },
 ]
