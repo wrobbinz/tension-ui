@@ -2,6 +2,8 @@
 
 ## Getting Started
 
+Ensure you've installed a version of NodeJS >= 8.0
+
 ### Run DB
 
 1. Install PostgreSQL ([Postgres App](https://postgresapp.com/) recommended)
