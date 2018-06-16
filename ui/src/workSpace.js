@@ -13,6 +13,7 @@ class WorkSpace extends Component {
     super(props)
     this.state = {
       focus: 'notes',
+      menuVisible: true,
       user: {},
     }
   }
@@ -25,13 +26,16 @@ class WorkSpace extends Component {
   }
 
   setFocus = (focus) => {
+    if (focus === this.state.focus) {
+      this.setState({ menuVisible: !this.state.menuVisible })
+    }
     this.setState({ focus })
   }
 
   render() {
     let appView
     if (this.state.focus === 'notes') {
-      appView = <NoteApp user={this.state.user} />
+      appView = <NoteApp user={this.state.user} menuVisible={this.state.menuVisible} />
     }
     // if (this.state.focus === 'board') {
     //   appView = <BoardApp user={this.state.user} />

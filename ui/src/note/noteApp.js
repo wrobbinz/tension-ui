@@ -186,18 +186,21 @@ class NoteApp extends Component {
   render() {
     return (
       <div className="flex-wrapper flex-grow">
-        <NoteMenu
-          className="flex-shrink"
-          notes={this.state.notes}
-          note={this.state.note}
-          selectNote={this.selectNote}
-          createNote={this.createNote}
-          copyNote={this.copyNote}
-          deleteNote={this.deleteNote}
-          updateOrder={this.updateOrder}
-          userTags={this.state.userTags}
-          addUserTag={this.addUserTag}
-        />
+        {
+          this.props.menuVisible ?
+            <NoteMenu
+              className="flex-shrink"
+              notes={this.state.notes}
+              note={this.state.note}
+              selectNote={this.selectNote}
+              createNote={this.createNote}
+              copyNote={this.copyNote}
+              deleteNote={this.deleteNote}
+              updateOrder={this.updateOrder}
+              userTags={this.state.userTags}
+              addUserTag={this.addUserTag}
+            /> : null
+        }
         {
           this.state.notes.length > 0 ?
             <div className="flex-wrapper flex-grow">
