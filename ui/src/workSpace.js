@@ -47,7 +47,7 @@ class WorkSpace extends Component {
             focus={this.state.focus}
             setFocus={this.setFocus}
             className="full-height"
-            loggedIn={this.props.loggedIn}
+            setLoginStatus={this.props.setLoginStatus}
           />
         </div>
         { appView }
@@ -57,11 +57,11 @@ class WorkSpace extends Component {
 }
 
 WorkSpace.propTypes = {
-  loggedIn: PropTypes.func,
+  setLoginStatus: PropTypes.func,
 }
 
 WorkSpace.defaultProps = {
-  loggedIn: null,
+  setLoginStatus: null,
 }
 
 export default WorkSpace

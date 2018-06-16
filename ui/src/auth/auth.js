@@ -23,12 +23,12 @@ class Auth extends Component {
       const { email, password } = this.state
       const res = await axios.post(api.login, { email, password })
       window.localStorage.setItem('jwtToken', res.data.token)
-      this.props.loggedIn(true)
+      this.props.setLoginStatus(true)
     } catch (error) {
       this.setState({
         loginFailed: true,
       })
-      throw new Error('[auth.logIn]', error)
+      console.error(`[auth.logIn] ${error}`)
     }
   }
 
@@ -54,7 +54,7 @@ class Auth extends Component {
       await axios.post(api.users, { email, username, password })
       await this.logIn()
     } catch (error) {
-      throw new Error('[auth.signUp]', error)
+      console.error('[auth.signUp]', error)
     }
   }
 
@@ -68,7 +68,7 @@ class Auth extends Component {
         >
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as="h2" color={this.state.formColor} textAlign="center">
-              {' '}{ this.state.signup === true ? 'Sign Up' : 'Log In'}
+              {' '}{ this.state.signup ? 'Sign Up' : 'Log In'}
             </Header>
             <Form size="large">
               <Segment>
@@ -108,23 +108,26 @@ class Auth extends Component {
                 }
               </Segment>
             </Form>
-            { this.state.loginFailed === true ?
+            { this.state.loginFailed ?
               <Message
                 error
                 header="Login Failed"
                 content="Email or password we're incorrect."
               /> : null
             }
-            { this.state.signup === true ?
+            {
               <Message>
-                Already a user? <a href="#" onClick={() => this.loadLogin()}>Log In</a>
-              </Message> :
-              <Message>
-                New to us? <a href="#" onClick={() => this.loadSignup()}>Sign Up</a>
+                {
+                  this.state.signup ? 'Already a user? ' : 'New to us? '
+                }
+                { this.state.signup ? (
+                  <a href="#" onClick={() => this.loadLogin()}>Log In</a>
+                  ) : (
+                    <a href="#" onClick={() => this.loadSignup()}>Sign Up</a>
+                  )
+                }
               </Message>
             }
-
-
           </Grid.Column>
         </Grid>
       </div>
@@ -133,11 +136,11 @@ class Auth extends Component {
 }
 
 Auth.propTypes = {
-  loggedIn: PropTypes.func,
+  setLoginStatus: PropTypes.func,
 }
 
 Auth.defaultProps = {
-  loggedIn: false,
+  setLoginStatus: null,
 }
 
 export default Auth

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'semantic-ui-css/semantic.min.css'
 import './style.css'
-import LoginForm from './auth/auth'
+import Auth from './auth/auth'
 import WorkSpace from './workSpace'
 
 class App extends Component {
@@ -10,10 +10,9 @@ class App extends Component {
     this.state = {
       loggedIn: false,
     }
-    this.setLoginState = this.setLoginState.bind(this)
   }
 
-  setLoginState(value) {
+  setLoginStatus = (value) => {
     this.setState({ loggedIn: value })
   }
 
@@ -23,13 +22,13 @@ class App extends Component {
         <WorkSpace
           className="full-height"
           user={this.state.user}
-          loggedIn={this.setLoginState}
+          setLoginStatus={this.setLoginStatus}
         />
       )
     }
     return (
-      <LoginForm
-        loggedIn={this.setLoginState}
+      <Auth
+        setLoginStatus={this.setLoginStatus}
       />
     )
   }

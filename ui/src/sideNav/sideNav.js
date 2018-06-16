@@ -39,7 +39,7 @@ class SideNav extends Component {
 
   logOut = () => {
     window.localStorage.removeItem('jwtToken')
-    this.props.loggedIn(false)
+    this.props.setLoginStatus(false)
   }
 
   render() {
@@ -106,13 +106,13 @@ class SideNav extends Component {
 }
 
 SideNav.propTypes = {
-  loggedIn: PropTypes.func,
+  setLoginStatus: PropTypes.func,
   focus: PropTypes.string,
   setFocus: PropTypes.func,
 }
 
 SideNav.defaultProps = {
-  loggedIn: null,
+  setLoginStatus: null,
   focus: false,
   setFocus: false,
 }
