@@ -14,7 +14,7 @@ Ensure you've installed a version of NodeJS >= 8.0
 
 ### Run API
 
-1. ` git clone https://github.com/wrobbinz/tension.git`
+1. `git clone https://github.com/wrobbinz/tension.git`
 2. `cd ./tension`
 3. `npm i -g @adonisjs/cli`
 4. `npm i`
