@@ -20,18 +20,15 @@ class Auth extends Component {
 
   async logIn() {
     try {
-      const payload = {
-        email: this.state.email,
-        password: this.state.password,
-      }
-      const res = await axios.post(api.login, payload)
+      const { email, password } = this.state
+      const res = await axios.post(api.login, { email, password })
       window.localStorage.setItem('jwtToken', res.data.token)
       this.props.loggedIn(true)
     } catch (error) {
       this.setState({
         loginFailed: true,
       })
-      throw error
+      throw new Error('[auth.logIn]', error)
     }
   }
 
@@ -41,6 +38,7 @@ class Auth extends Component {
       formColor: 'teal',
     })
   }
+
   loadSignup() {
     this.setState({
       signup: true,
@@ -52,15 +50,11 @@ class Auth extends Component {
 
   async signUp() {
     try {
-      const payload = {
-        email: this.state.email,
-        username: this.state.username,
-        password: this.state.password,
-      }
-      await axios.post(api.users, payload)
+      const { email, username, password } = this.state
+      await axios.post(api.users, { email, username, password })
       await this.logIn()
-    } catch (err) {
-      throw err
+    } catch (error) {
+      throw new Error('[auth.signUp]', error)
     }
   }
 
