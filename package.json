@@ -1,7 +1,7 @@
 {
-  "name": "Tension",
+  "name": "tension",
   "version": "0.1.0",
-  "description": "Personal organization suite.",
+  "description": "Productivity suite",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
