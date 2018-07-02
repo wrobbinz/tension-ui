@@ -1,8 +1,9 @@
-const base = 'http://localhost:3333/api/v1/'
+const base = 'http://0.0.0.0:4000/api/v1/'
 const api = {
-  notes: `${base}notes/`,
-  users: `${base}users/`,
-  login: `${base}login/`,
+  notes: `${base}users/1/notes`,
+  makeNote: `${base}notes/`,
+  users: `${base}user`,
+  login: `${base}login`,
 
   config() {
     return {

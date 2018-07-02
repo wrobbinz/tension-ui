@@ -21,8 +21,8 @@ class Auth extends Component {
   async logIn() {
     try {
       const { email, password } = this.state
-      const res = await axios.post(api.login, { email, password })
-      window.localStorage.setItem('jwtToken', res.data.token)
+      const jwtToken = (await axios.post(api.login, { email, password })).data
+      window.localStorage.setItem('jwtToken', jwtToken)
       this.props.setLoginStatus(true)
     } catch (error) {
       this.setState({
@@ -51,7 +51,7 @@ class Auth extends Component {
   async signUp() {
     try {
       const { email, username, password } = this.state
-      await axios.post(api.users, { email, username, password })
+      await axios.post('http://0.0.0.0:4000/api/v1/users', { email, username, password })
       await this.logIn()
     } catch (error) {
       console.error('[auth.signUp]', error)

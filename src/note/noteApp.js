@@ -26,8 +26,9 @@ class NoteApp extends Component {
   }
 
   async componentWillMount() {
-    const notesResponse = await axios.get(api.notes, api.config())
-    const notes = reverse(notesResponse.data)
+    const notesResponse = (await axios.get(api.notes, api.config())).data.notes
+    console.log(notesResponse)
+    const notes = reverse(notesResponse)
     if (notes.length > 0) {
       const note = notes[0]
       const editorState = EditorState.createWithContent(convertFromRaw(note.content))
@@ -49,7 +50,7 @@ class NoteApp extends Component {
   }
 
   createNote = (title = 'Untitled Note', content = convertToRaw(ContentState.createFromText(''))) => {
-    const payload = { title, content, tags: [] }
+    const payload = { title, content }
     axios.post(api.notes, payload, api.config())
       .then((res) => {
         const { notes } = this.state
@@ -67,7 +68,7 @@ class NoteApp extends Component {
     try {
       const { title, content } = this.state.note
       const payload = { title, content }
-      return axios.put(`${api.notes}${id}`, payload, api.config())
+      return axios.patch(`${api.makeNote}${id}`, payload, api.config())
     } catch (error) {
       throw error
     }
