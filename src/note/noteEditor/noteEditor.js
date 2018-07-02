@@ -1,63 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Editor from 'draft-js-plugins-editor';
-import createMarkdownPlugin from 'draft-js-markdown-plugin';
-import createCodeEditorPlugin from 'draft-js-code-editor-plugin';
-import createUndoPlugin from 'draft-js-undo-plugin';
-import createPrismPlugin from 'draft-js-prism-plugin';
-import { stateToMarkdown } from 'draft-js-export-markdown';
-import Prism from 'prismjs';
-import 'draft-js/dist/Draft.css';
-import 'prismjs/components/prism-java';
-import 'prismjs/components/prism-scala';
-import 'prismjs/components/prism-go';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-c';
-import 'prismjs/components/prism-cpp';
-import 'prismjs/components/prism-kotlin';
-import 'prismjs/components/prism-perl';
-import 'prismjs/components/prism-ruby';
-import 'prismjs/components/prism-swift';
-import { Menu, Input, Button, Rating } from 'semantic-ui-react';
-import './prism.css';
+import ReactQuill from 'react-quill';
+import { Menu, Input, Rating } from 'semantic-ui-react';
+import 'react-quill/dist/quill.snow.css';
 import Tags from './tags/tags';
 import './noteEditor.css';
-import './CheckableListItem.css';
 
-const undoPlugin = createUndoPlugin();
-const { UndoButton, RedoButton } = undoPlugin;
-
-const prismPlugin = createPrismPlugin({
-  prism: Prism,
-});
-
-const codeEditorPlugin = createCodeEditorPlugin();
-
-const entityType = {
-  IMAGE: 'IMAGE',
-};
-
-const markdownPlugin = createMarkdownPlugin({ entityType });
-
-
-const plugins = [
-  prismPlugin,
-  undoPlugin,
-  codeEditorPlugin,
-  markdownPlugin,
-];
 
 class NoteEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: this.props.note.title,
+      text: '',
     };
   }
 
   onChange = (editorState) => {
     this.props.updateContent(editorState);
+  }
+
+  handleChange = (value) => {
+    this.setState({ text: value });
   }
 
   handleTitleChange = (event) => {
@@ -72,11 +36,6 @@ class NoteEditor extends Component {
 
   handleRating = (rating) => {
     this.props.updateRating(rating);
-  }
-
-  convertToMarkdown = (event) => {
-    const contentState = this.props.editorState.getCurrentContent();
-    console.log(stateToMarkdown(contentState));
   }
 
   isFavorite = () => {
@@ -117,15 +76,6 @@ class NoteEditor extends Component {
             position="right"
           >
             <Menu.Item>
-              <UndoButton as={Button} />
-              <RedoButton as={Button} />
-            </Menu.Item>
-            <Menu.Item>
-              <Button onClick={event => this.convertToMarkdown(event)} size="tiny">
-                Convert
-              </Button>
-            </Menu.Item>
-            <Menu.Item>
               {/* <NoteOptions
                 note={this.props.note}
                 deleteNote={this.props.deleteNote}
@@ -135,14 +85,11 @@ class NoteEditor extends Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu>
-        <Editor
-          className="full-height flex-grow"
-          editorState={this.props.editorState}
-          onChange={this.onChange}
-          plugins={plugins}
-          placeholder="..."
-          spellCheck
-          ref={(element) => { this.editor = element; }}
+        <ReactQuill
+          value={this.state.text}
+          onChange={this.handleChange}
+          modules={{}}
+          // className="full-height flex-grow"
         />
         <Menu secondary className="no-margin">
           <Menu.Item className="full-width">
