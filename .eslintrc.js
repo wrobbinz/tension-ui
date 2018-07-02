@@ -1,10 +1,11 @@
 module.exports = {
-    "extends": "airbnb-base",
-    "rules": {
-        "semi": [2, 'never'],
-        "class-methods-use-this": "off",
+    'extends': 'airbnb',
+    'parser': 'babel-eslint',
+    'rules': {
+        'react/jsx-filename-extension': [0, 'off'],
+        'jsx-a11y/anchor-is-valid': [0, 'off'],
     },
-    "globals": {
-        "use": true,
+    'env': {
+        'browser': true,
     },
 }
