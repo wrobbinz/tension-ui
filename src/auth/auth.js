@@ -51,7 +51,7 @@ class Auth extends Component {
   async signUp() {
     try {
       const { email, username, password } = this.state;
-      await axios.post('http://0.0.0.0:4000/api/v1/users', { email, username, password });
+      await axios.post('http://0.0.0.0:4000/api/v0/users', { email, username, password });
       await this.logIn();
     } catch (error) {
       console.error('[auth.signUp]', error);
