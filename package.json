@@ -9,7 +9,7 @@
     "lint": "eslint \"./ui/src/**/*.js\""
   },
   "keywords": [
-    "tension"
+    "tension", "notes"
   ],
   "author": "@wrobbinz",
   "license": "UNLICENSED",
