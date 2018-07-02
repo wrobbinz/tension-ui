@@ -1,30 +1,30 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Dropdown } from 'semantic-ui-react'
-import './tags.css'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown } from 'semantic-ui-react';
+import './tags.css';
 
 
 class Tags extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       dropdownClasses: 'no-border',
-    }
+    };
   }
 
   handleAddition = (e, { value }) => {
-    this.props.addUserTag(value)
+    this.props.addUserTag(value);
   }
 
   handleChange = (e, { value }) => {
-    this.props.updateNoteTags(value)
+    this.props.updateNoteTags(value);
   }
 
   tagsValue() {
     if (this.props.note.tags) {
-      return this.props.note.tags.map(tag => tag.value)
+      return this.props.note.tags.map(tag => tag.value);
     }
-    return null
+    return null;
   }
 
   render() {
@@ -44,7 +44,7 @@ class Tags extends Component {
         allowAdditions
         floating
       />
-    )
+    );
   }
 }
 
@@ -54,7 +54,7 @@ Tags.propTypes = {
   addUserTag: PropTypes.func,
   updateNoteTags: PropTypes.func,
   placeholder: PropTypes.string,
-}
+};
 
 Tags.defaultProps = {
   note: null,
@@ -62,6 +62,6 @@ Tags.defaultProps = {
   addUserTag: null,
   updateNoteTags: null,
   placeholder: null,
-}
+};
 
-export default Tags
+export default Tags;

@@ -1,73 +1,73 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import Resizable from 're-resizable'
-import { Menu, List, Icon, Button } from 'semantic-ui-react'
-import Search from './search/search'
-import './noteMenu.css'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Resizable from 're-resizable';
+import { Menu, List, Icon, Button } from 'semantic-ui-react';
+import Search from './search/search';
+import './noteMenu.css';
 
 const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-  return result
-}
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
 
 class NoteMenu extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       searchValue: '',
       showFavorites: false,
       noteView: 'All',
-    }
+    };
   }
 
   onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) {
-      return
+      return;
     }
 
     const notes = reorder(
       this.props.notes,
       result.source.index,
       result.destination.index,
-    )
+    );
 
-    this.props.updateOrder(notes)
+    this.props.updateOrder(notes);
   }
 
   updateSearchValue = (value) => {
-    this.setState({ searchValue: value })
+    this.setState({ searchValue: value });
   }
 
   matchNotes = () => {
     if (this.state.showFavorites) {
-      return this.props.notes.filter(note => note.is_favorite)
+      return this.props.notes.filter(note => note.is_favorite);
     }
     if (this.state.searchValue) {
-      const searchValue = this.state.searchValue.toLowerCase()
+      const searchValue = this.state.searchValue.toLowerCase();
       const matchedNotes = this.props.notes.filter((note) => {
-        let found = false
+        let found = false;
         note.tags.forEach((tag) => {
           if (tag.value.toLowerCase().includes(searchValue)) {
-            found = true
+            found = true;
           }
-        })
+        });
         note.content.blocks.forEach((block) => {
           if (block.text.toLowerCase().includes(searchValue)) {
-            found = true
+            found = true;
           }
-        })
+        });
         if (note.title.toLowerCase().includes(searchValue)) {
-          found = true
+          found = true;
         }
-        return found
-      })
-      return matchedNotes
+        return found;
+      });
+      return matchedNotes;
     }
-    return this.props.notes
+    return this.props.notes;
   }
 
   handleViewChange = noteView => this.setState({ noteView })
@@ -127,7 +127,7 @@ class NoteMenu extends Component {
                               >
                                 <List.Item
                                   className="note-list-item truncate"
-                                  onClick={() => { this.props.selectNote(note.id) }}
+                                  onClick={() => { this.props.selectNote(note.id); }}
                                   name={note.id.toString()}
                                   active={this.props.note.id === note.id}
                                   id={note.id}
@@ -161,19 +161,19 @@ class NoteMenu extends Component {
               basic
             >
               <Button
-                onClick={() => { this.handleViewChange('All') }}
+                onClick={() => { this.handleViewChange('All'); }}
                 active={this.state.noteView === 'All'}
               >
                 All
               </Button>
               <Button
-                onClick={() => { this.handleViewChange('Tags') }}
+                onClick={() => { this.handleViewChange('Tags'); }}
                 active={this.state.noteView === 'Tags'}
               >
                 Tags
               </Button>
               <Button
-                onClick={() => { this.handleViewChange('Favorites') }}
+                onClick={() => { this.handleViewChange('Favorites'); }}
                 active={this.state.noteView === 'Favorites'}
                 icon
               >
@@ -186,7 +186,7 @@ class NoteMenu extends Component {
           </Menu.Item>
         </Menu>
       </Resizable>
-    )
+    );
   }
 }
 
@@ -200,7 +200,7 @@ NoteMenu.propTypes = {
   updateOrder: PropTypes.func,
   saveNote: PropTypes.func,
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-}
+};
 
 NoteMenu.defaultProps = {
   notes: false,
@@ -212,6 +212,6 @@ NoteMenu.defaultProps = {
   updateOrder: false,
   saveNote: null,
   userTags: null,
-}
+};
 
-export default NoteMenu
+export default NoteMenu;

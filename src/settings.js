@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { List, Icon, Modal, Header, Button } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { List, Icon, Modal, Header, Button } from 'semantic-ui-react';
 
 class Settings extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-    }
+    };
   }
   render() {
     return (
@@ -37,8 +37,8 @@ class Settings extends Component {
           </Button>
         </Modal.Actions>
       </Modal>
-    )
+    );
   }
 }
 
-export default Settings
+export default Settings;

@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Input, Button } from 'semantic-ui-react'
-import './search.css'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Input, Button } from 'semantic-ui-react';
+import './search.css';
 
 
 class Search extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-    }
+    };
   }
 
   handleChange = (e, { value }) => {
-    this.props.updateSearchValue(value)
+    this.props.updateSearchValue(value);
   }
 
   render() {
@@ -28,11 +28,11 @@ class Search extends Component {
         action={
           <Button
             icon="plus"
-            onClick={() => { this.props.createNote() }}
+            onClick={() => { this.props.createNote(); }}
           />
         }
       />
-    )
+    );
   }
 }
 
@@ -40,12 +40,12 @@ Search.propTypes = {
   searchTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   updateSearchValue: PropTypes.func,
-}
+};
 
 Search.defaultProps = {
   searchTags: null,
   userTags: null,
   updateSearchValue: null,
-}
+};
 
-export default Search
+export default Search;

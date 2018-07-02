@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Popup, List, Icon, Modal, Header, Button } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Popup, List, Icon, Modal, Header, Button } from 'semantic-ui-react';
 
 
 class NoteOptions extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-    }
+    };
   }
 
   handleCopy() {
-    const { id } = this.props.note
-    this.props.copyNote(id)
+    const { id } = this.props.note;
+    this.props.copyNote(id);
   }
   handleDelete() {
-    const { id } = this.props.note
-    this.props.deleteNote(id)
+    const { id } = this.props.note;
+    this.props.deleteNote(id);
   }
 
   render() {
@@ -66,7 +66,7 @@ class NoteOptions extends Component {
           </List>
         }
       />
-    )
+    );
   }
 }
 
@@ -74,12 +74,12 @@ NoteOptions.propTypes = {
   copyNote: PropTypes.func,
   deleteNote: PropTypes.func,
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-}
+};
 
 NoteOptions.defaultProps = {
   copyNote: false,
   deleteNote: false,
   note: false,
-}
+};
 
-export default NoteOptions
+export default NoteOptions;

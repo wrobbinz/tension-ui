@@ -1,4 +1,4 @@
-const base = 'http://0.0.0.0:4000/api/v1/'
+const base = 'http://0.0.0.0:4000/api/v1/';
 const api = {
   notes: `${base}users/1/notes`,
   makeNote: `${base}notes/`,
@@ -10,8 +10,8 @@ const api = {
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem('jwtToken')}`,
       },
-    }
+    };
   },
-}
+};
 
-export default api
+export default api;

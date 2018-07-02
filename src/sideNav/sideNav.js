@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Menu, Icon, Popup, List } from 'semantic-ui-react'
-import Settings from '../settings'
-import './sideNav.css'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Menu, Icon, Popup, List } from 'semantic-ui-react';
+import Settings from '../settings';
+import './sideNav.css';
 
 
-const DELAY = 500
+const DELAY = 500;
 
 const menuItems = [
   {
@@ -24,22 +24,22 @@ const menuItems = [
     icon: 'disk',
     tooltip: 'Drive',
   },
-]
+];
 
 class SideNav extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-    }
+    };
   }
 
   handleClick(focus) {
-    this.props.setFocus(focus)
+    this.props.setFocus(focus);
   }
 
   logOut = () => {
-    window.localStorage.removeItem('jwtToken')
-    this.props.setLoginStatus(false)
+    window.localStorage.removeItem('jwtToken');
+    this.props.setLoginStatus(false);
   }
 
   render() {
@@ -62,7 +62,7 @@ class SideNav extends Component {
             trigger={
               <Menu.Item
                 className="no-border-radius"
-                onClick={() => { this.handleClick(item.name) }}
+                onClick={() => { this.handleClick(item.name); }}
                 active={this.props.focus === item.name}
               >
                 <Icon link size="large" name={item.icon} flipped={item.flipped} />
@@ -93,7 +93,7 @@ class SideNav extends Component {
               />
               <List.Item
                 icon="log out"
-                onClick={() => { this.logOut() }}
+                onClick={() => { this.logOut(); }}
                 content="Sign out"
                 className="pointer"
               />
@@ -101,7 +101,7 @@ class SideNav extends Component {
           }
         />
       </Menu>
-    )
+    );
   }
 }
 
@@ -109,12 +109,12 @@ SideNav.propTypes = {
   setLoginStatus: PropTypes.func,
   focus: PropTypes.string,
   setFocus: PropTypes.func,
-}
+};
 
 SideNav.defaultProps = {
   setLoginStatus: null,
   focus: false,
   setFocus: false,
-}
+};
 
-export default SideNav
+export default SideNav;

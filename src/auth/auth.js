@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
-import axios from 'axios'
-import api from '../api'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+import axios from 'axios';
+import api from '../api';
 
 
 class Auth extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       email: '',
       password: '',
@@ -15,20 +15,20 @@ class Auth extends Component {
       signup: false,
       loginFailed: false,
       formColor: 'teal',
-    }
+    };
   }
 
   async logIn() {
     try {
-      const { email, password } = this.state
-      const jwtToken = (await axios.post(api.login, { email, password })).data
-      window.localStorage.setItem('jwtToken', jwtToken)
-      this.props.setLoginStatus(true)
+      const { email, password } = this.state;
+      const jwtToken = (await axios.post(api.login, { email, password })).data;
+      window.localStorage.setItem('jwtToken', jwtToken);
+      this.props.setLoginStatus(true);
     } catch (error) {
       this.setState({
         loginFailed: true,
-      })
-      console.error(`[auth.logIn] ${error}`)
+      });
+      console.error(`[auth.logIn] ${error}`);
     }
   }
 
@@ -36,7 +36,7 @@ class Auth extends Component {
     this.setState({
       signup: false,
       formColor: 'teal',
-    })
+    });
   }
 
   loadSignup() {
@@ -45,16 +45,16 @@ class Auth extends Component {
       formColor: 'blue',
       loginFailed: false,
       password: '',
-    })
+    });
   }
 
   async signUp() {
     try {
-      const { email, username, password } = this.state
-      await axios.post('http://0.0.0.0:4000/api/v1/users', { email, username, password })
-      await this.logIn()
+      const { email, username, password } = this.state;
+      await axios.post('http://0.0.0.0:4000/api/v1/users', { email, username, password });
+      await this.logIn();
     } catch (error) {
-      console.error('[auth.signUp]', error)
+      console.error('[auth.signUp]', error);
     }
   }
 
@@ -131,16 +131,16 @@ class Auth extends Component {
           </Grid.Column>
         </Grid>
       </div>
-    )
+    );
   }
 }
 
 Auth.propTypes = {
   setLoginStatus: PropTypes.func,
-}
+};
 
 Auth.defaultProps = {
   setLoginStatus: null,
-}
+};
 
-export default Auth
+export default Auth;

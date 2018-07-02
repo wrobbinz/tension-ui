@@ -1,44 +1,44 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import Editor from 'draft-js-plugins-editor'
-import createMarkdownPlugin from 'draft-js-markdown-plugin'
-import createCodeEditorPlugin from 'draft-js-code-editor-plugin'
-import createUndoPlugin from 'draft-js-undo-plugin'
-import createPrismPlugin from 'draft-js-prism-plugin'
-import { stateToMarkdown } from 'draft-js-export-markdown'
-import Prism from 'prismjs'
-import 'draft-js/dist/Draft.css'
-import 'prismjs/components/prism-java'
-import 'prismjs/components/prism-scala'
-import 'prismjs/components/prism-go'
-import 'prismjs/components/prism-sql'
-import 'prismjs/components/prism-bash'
-import 'prismjs/components/prism-c'
-import 'prismjs/components/prism-cpp'
-import 'prismjs/components/prism-kotlin'
-import 'prismjs/components/prism-perl'
-import 'prismjs/components/prism-ruby'
-import 'prismjs/components/prism-swift'
-import { Menu, Input, Button, Rating } from 'semantic-ui-react'
-import './prism.css'
-import Tags from './tags/tags'
-import './noteEditor.css'
-import './CheckableListItem.css'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Editor from 'draft-js-plugins-editor';
+import createMarkdownPlugin from 'draft-js-markdown-plugin';
+import createCodeEditorPlugin from 'draft-js-code-editor-plugin';
+import createUndoPlugin from 'draft-js-undo-plugin';
+import createPrismPlugin from 'draft-js-prism-plugin';
+import { stateToMarkdown } from 'draft-js-export-markdown';
+import Prism from 'prismjs';
+import 'draft-js/dist/Draft.css';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-scala';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-kotlin';
+import 'prismjs/components/prism-perl';
+import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-swift';
+import { Menu, Input, Button, Rating } from 'semantic-ui-react';
+import './prism.css';
+import Tags from './tags/tags';
+import './noteEditor.css';
+import './CheckableListItem.css';
 
-const undoPlugin = createUndoPlugin()
-const { UndoButton, RedoButton } = undoPlugin
+const undoPlugin = createUndoPlugin();
+const { UndoButton, RedoButton } = undoPlugin;
 
 const prismPlugin = createPrismPlugin({
   prism: Prism,
-})
+});
 
-const codeEditorPlugin = createCodeEditorPlugin()
+const codeEditorPlugin = createCodeEditorPlugin();
 
 const entityType = {
   IMAGE: 'IMAGE',
-}
+};
 
-const markdownPlugin = createMarkdownPlugin({ entityType })
+const markdownPlugin = createMarkdownPlugin({ entityType });
 
 
 const plugins = [
@@ -46,44 +46,44 @@ const plugins = [
   undoPlugin,
   codeEditorPlugin,
   markdownPlugin,
-]
+];
 
 class NoteEditor extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       title: this.props.note.title,
-    }
+    };
   }
 
   onChange = (editorState) => {
-    this.props.updateContent(editorState)
+    this.props.updateContent(editorState);
   }
 
   handleTitleChange = (event) => {
-    const newTitle = event.target.value
+    const newTitle = event.target.value;
     if (newTitle !== this.state.title) {
       this.setState({
         title: newTitle,
-      })
+      });
     }
-    this.props.updateTitle(event)
+    this.props.updateTitle(event);
   }
 
   handleRating = (rating) => {
-    this.props.updateRating(rating)
+    this.props.updateRating(rating);
   }
 
   convertToMarkdown = (event) => {
-    const contentState = this.props.editorState.getCurrentContent()
-    console.log(stateToMarkdown(contentState))
+    const contentState = this.props.editorState.getCurrentContent();
+    console.log(stateToMarkdown(contentState));
   }
 
   isFavorite = () => {
     if (this.props.note.is_favorite) {
-      return 1
+      return 1;
     }
-    return 0
+    return 0;
   }
 
   render() {
@@ -142,7 +142,7 @@ class NoteEditor extends Component {
           plugins={plugins}
           placeholder="..."
           spellCheck
-          ref={(element) => { this.editor = element }}
+          ref={(element) => { this.editor = element; }}
         />
         <Menu secondary className="no-margin">
           <Menu.Item className="full-width">
@@ -156,7 +156,7 @@ class NoteEditor extends Component {
           </Menu.Item>
         </Menu>
       </div>
-    )
+    );
   }
 }
 
@@ -170,7 +170,7 @@ NoteEditor.propTypes = {
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   addUserTag: PropTypes.func,
   updateNoteTags: PropTypes.func,
-}
+};
 
 NoteEditor.defaultProps = {
   isSaved: false,
@@ -182,6 +182,6 @@ NoteEditor.defaultProps = {
   userTags: null,
   addUserTag: null,
   updateNoteTags: null,
-}
+};
 
-export default NoteEditor
+export default NoteEditor;
