@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactQuill from 'react-quill';
-import { Menu, Input, Rating } from 'semantic-ui-react';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Menu, Input, Rating } from 'semantic-ui-react';
 import Tags from './tags/tags';
+import MarkdownShortcuts from './plugins/markdown';
 import './noteEditor.css';
+
+
+Quill.register('modules/MarkdownShortcuts', MarkdownShortcuts);
 
 
 class NoteEditor extends Component {
@@ -88,7 +92,9 @@ class NoteEditor extends Component {
         <ReactQuill
           value={this.state.text}
           onChange={this.handleChange}
-          modules={{}}
+          modules={{
+            MarkdownShortcuts: {},
+          }}
           // className="full-height flex-grow"
         />
         <Menu secondary className="no-margin">
