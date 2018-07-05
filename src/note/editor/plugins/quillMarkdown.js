@@ -68,7 +68,7 @@ class MarkdownShortcuts {
       },
       {
         name: 'bold',
-        pattern: /(?:\*|_){2}(.+?)(?:\*|_){2}/g,
+        pattern: /(?:\*|_){1}(.+?)(?:\*|_){1}/g,
         action: (text, selection, pattern, lineStart) => {
           const match = pattern.exec(text);
 
@@ -87,7 +87,7 @@ class MarkdownShortcuts {
       },
       {
         name: 'italic',
-        pattern: /(?:\*){1}(.+?)(?:\*){1}/g,
+        pattern: /(?:\/){1}(.+?)(?:\/){1}/g,
         action: (text, selection, pattern, lineStart) => {
           const match = pattern.exec(text);
 
@@ -118,7 +118,7 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length);
-            this.quill.insertText(startIndex, matchedText, { italic: true });
+            this.quill.insertText(startIndex, matchedText, { underline: true });
             this.quill.format('underline', false);
           }, 0);
         },
@@ -156,7 +156,7 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length);
-            this.quill.insertText(startIndex, matchedText, { strike: true });
+            this.quill.insertText(startIndex, matchedText, { background: '#ffa8a8' });
             this.quill.format('background', false);
           }, 0);
         },
@@ -189,8 +189,8 @@ class MarkdownShortcuts {
           setTimeout(() => {
             this.quill.deleteText(startIndex, text.length);
 
-            this.quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
-            this.quill.insertText(startIndex + 2, '\n', Quill.sources.SILENT);
+            this.quill.insertEmbed(startIndex, 'hr', true, Quill.sources.USER);
+            // this.quill.insertText(startIndex + 2, '\n', Quill.sources.SILENT);
             this.quill.setSelection(startIndex + 2, Quill.sources.SILENT);
           }, 0);
         },
@@ -248,10 +248,9 @@ class MarkdownShortcuts {
 
     /* Handler that looks for insert deltas that match specific characters */
     this.quill.on('text-change', (delta, oldContents, source) => {
-      console.log(delta)
       delta.ops.forEach((op) => {
         const hasInsert = Object.prototype.hasOwnProperty.call(op, 'insert');
-        const hasDelete = Object.prototype.hasOwnProperty.call(op, 'delete');
+        // const hasDelete = Object.prototype.hasOwnProperty.call(op, 'delete');
         if (hasInsert) {
           if (op.insert === ' ') {
             this.onSpace();
@@ -259,9 +258,9 @@ class MarkdownShortcuts {
             this.onEnter();
           }
         }
-        if (hasDelete && source === 'user') {
-          this.onDelete();
-        }
+        // if (hasDelete && source === 'user') {
+        //   this.onDelete();
+        // }
       });
     });
   }
@@ -293,13 +292,14 @@ class MarkdownShortcuts {
     const selection = this.quill.getSelection();
     if (!selection) return;
     const [line, offset] = this.quill.getLine(selection.index);
-    const text = `${line.domNode.textContent} `;
+    let text = line.domNode.textContent;
+    if (text.includes('`')) { text = `${text} `; }
     const lineStart = selection.index - offset;
     selection.length = selection.index + 1;
     if (this.isValid(text, line.domNode.tagName)) {
       const match = this.formats.find(format => text.match(format.pattern));
       if (match) {
-        console.log('matched', match.name, text);
+        console.log('matched:', match.name, text);
         match.action(text, selection, match.pattern, lineStart);
       }
     }
