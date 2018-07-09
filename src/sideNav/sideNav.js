@@ -33,8 +33,8 @@ class SideNav extends Component {
     };
   }
 
-  handleClick(focus) {
-    this.props.setFocus(focus);
+  handleClick = (item) => {
+    this.props.setFocus(item.name);
   }
 
   logOut = () => {
@@ -62,7 +62,7 @@ class SideNav extends Component {
             trigger={
               <Menu.Item
                 className="no-border-radius"
-                onClick={() => { this.handleClick(item.name); }}
+                onClick={() => this.handleClick(item)}
                 active={this.props.focus === item.name}
               >
                 <Icon link size="large" name={item.icon} flipped={item.flipped} />

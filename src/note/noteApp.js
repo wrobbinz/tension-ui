@@ -5,7 +5,8 @@ import { reverse, remove, union } from 'lodash';
 import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js';
 import { Grid, Header, Icon } from 'semantic-ui-react';
 import NoteMenu from './noteMenu/noteMenu';
-import NoteEditor from './noteEditor/noteEditor';
+import Toolbar from './toolbar/toolbar';
+import Editor from './editor/editor';
 import api from '../api';
 
 
@@ -204,8 +205,9 @@ class NoteApp extends Component {
         }
         {
           this.state.notes.length > 0 ?
-            <div className="flex-wrapper flex-grow">
-              <NoteEditor
+            <div className=" editor flex-wrapper flex-grow">
+              <Toolbar />
+              <Editor
                 note={this.state.note}
                 editorState={this.state.editorState}
                 updateTitle={this.updateTitle}
