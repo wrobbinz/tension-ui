@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
-import { Menu, Input, Rating } from 'semantic-ui-react';
-import Tags from './tags/tags';
 import MarkdownShortcuts from './plugins/quillMarkdown';
 import ToolbarOptions from './plugins/quillToolbar';
-import './noteEditor.css';
 import './editor.css';
 
 
@@ -53,17 +50,6 @@ class Editor extends Component {
           tabIndex={0}
           className="full-height flex-grow"
         />
-        <Menu secondary className="no-margin">
-          <Menu.Item className="full-width">
-            <Tags
-              note={this.props.note}
-              userTags={this.props.userTags}
-              addUserTag={this.props.addUserTag}
-              updateNoteTags={this.props.updateNoteTags}
-              placeholder="# Tags"
-            />
-          </Menu.Item>
-        </Menu>
       </div>
     );
   }

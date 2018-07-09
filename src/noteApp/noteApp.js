@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { remove, union } from 'lodash';
-import { Grid, Header, Icon } from 'semantic-ui-react';
 import { routes, options } from '../api';
 import NoteMenu from './noteMenu/noteMenu';
 import Toolbar from './toolbar/toolbar';
