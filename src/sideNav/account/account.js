@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { List, Icon, Modal, Header, Button } from 'semantic-ui-react';
+import './account.css';
 
-class Settings extends Component {
+
+class Account extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,4 +43,4 @@ class Settings extends Component {
   }
 }
 
-export default Settings;
+export default Account;

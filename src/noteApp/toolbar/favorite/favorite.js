@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Rating } from 'semantic-ui-react';
 
 
-class Toolbar extends Component {
+class Favorite extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -11,15 +11,11 @@ class Toolbar extends Component {
 
   handleChange = (event, data) => {
     const { rating } = data;
-
-  }
-
-  handleRating = (rating) => {
     this.props.updateRating(rating);
   }
 
   isFavorite = () => {
-    if (this.props.note.is_favorite) {
+    if (this.props.note && this.props.note.is_favorite) {
       return 1;
     }
     return 0;
@@ -38,4 +34,4 @@ class Toolbar extends Component {
   }
 }
 
-export default Toolbar;
+export default Favorite;

@@ -1,17 +1,15 @@
-const base = 'http://0.0.0.0:4000/api/v0/';
-const api = {
-  notes: `${base}users/1/notes`,
-  makeNote: `${base}notes/`,
-  users: `${base}user`,
-  login: `${base}login`,
+export const base = 'http://0.0.0.0:4000/api/v0';
 
-  config() {
-    return {
-      headers: {
-        Authorization: `Bearer ${window.localStorage.getItem('jwtToken')}`,
-      },
-    };
-  },
+export const routes = {
+  notes: `${base}/notes`,
+  users: `${base}/users`,
+  currentUser: `${base}/user`,
+  login: `${base}/login`,
+  logout: `${base}/logout-all`,
 };
 
-export default api;
+export const options = () => ({
+  headers: {
+    Authorization: `Bearer ${window.localStorage.getItem('jwtToken')}`,
+  },
+});

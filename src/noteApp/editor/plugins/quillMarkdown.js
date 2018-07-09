@@ -247,7 +247,7 @@ class MarkdownShortcuts {
     ];
 
     /* Handler that looks for insert deltas that match specific characters */
-    this.quill.on('text-change', (delta, oldContents, source) => {
+    this.quill.on('text-change', (delta) => {
       delta.ops.forEach((op) => {
         const hasInsert = Object.prototype.hasOwnProperty.call(op, 'insert');
         // const hasDelete = Object.prototype.hasOwnProperty.call(op, 'delete');
@@ -258,9 +258,6 @@ class MarkdownShortcuts {
             this.onEnter();
           }
         }
-        // if (hasDelete && source === 'user') {
-        //   this.onDelete();
-        // }
       });
     });
   }
@@ -302,19 +299,6 @@ class MarkdownShortcuts {
         console.log('matched:', match.name, text);
         match.action(text, selection, match.pattern, lineStart);
       }
-    }
-  }
-
-  onDelete() {
-    const selection = this.quill.getSelection();
-    if (!selection) return;
-    const [line, offset] = this.quill.getLine(selection.index);
-    if (offset === 0) {
-      setTimeout(() => {
-        if (selection.length === 0) {
-          this.quill.removeFormat(selection.index - offset, selection.index);
-        }
-      }, 0);
     }
   }
 }

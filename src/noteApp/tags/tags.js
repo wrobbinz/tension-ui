@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'semantic-ui-react';
+import { Menu, Dropdown } from 'semantic-ui-react';
 import './tags.css';
 
 
@@ -8,7 +8,6 @@ class Tags extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownClasses: 'no-border',
     };
   }
 
@@ -21,7 +20,7 @@ class Tags extends Component {
   }
 
   tagsValue() {
-    if (this.props.note.tags) {
+    if (this.props.note && this.props.note.tags) {
       return this.props.note.tags.map(tag => tag.value);
     }
     return null;
@@ -29,21 +28,25 @@ class Tags extends Component {
 
   render() {
     return (
-      <Dropdown
-        className="tags-dropdown"
-        options={this.props.userTags}
-        placeholder={this.props.placeholder}
-        value={this.tagsValue()}
-        onAddItem={this.handleAddition}
-        onChange={this.handleChange}
-        search
-        upward
-        fluid
-        selection
-        multiple
-        allowAdditions
-        floating
-      />
+      <Menu secondary className="no-margin">
+        <Menu.Item className="full-width">
+          <Dropdown
+            className="tags-dropdown"
+            options={this.props.userTags}
+            placeholder={this.props.placeholder}
+            value={this.tagsValue()}
+            onAddItem={this.handleAddition}
+            onChange={this.handleChange}
+            search
+            upward
+            fluid
+            selection
+            multiple
+            allowAdditions
+            floating
+          />
+        </Menu.Item>
+      </Menu>
     );
   }
 }

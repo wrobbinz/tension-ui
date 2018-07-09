@@ -13,6 +13,17 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
+const resizeDirections = {
+  top: false,
+  right: true,
+  bottom: false,
+  left: false,
+  topRight: false,
+  bottomRight: false,
+  bottomLeft: false,
+  topLeft: false,
+};
+
 class NoteMenu extends Component {
   constructor(props) {
     super(props);
@@ -79,16 +90,7 @@ class NoteMenu extends Component {
         minWidth="250"
         maxWidth="40%"
         defaultSize={{ width: 250 }}
-        enable={{
-          top: false,
-          right: true,
-          bottom: false,
-          left: false,
-          topRight: false,
-          bottomRight: false,
-          bottomLeft: false,
-          topLeft: false,
-        }}
+        enable={resizeDirections}
       >
         <Menu
           className="note-menu full-height full-width"

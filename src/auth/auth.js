@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 import axios from 'axios';
-import api from '../api';
+import { routes, options } from '../api';
 
 
 class Auth extends Component {
@@ -14,49 +14,52 @@ class Auth extends Component {
       username: '',
       signup: false,
       loginFailed: false,
-      formColor: 'teal',
     };
   }
 
-  async logIn() {
+  getCurrentUser = async () => (axios.get(routes.currentUser, options()));
+
+  authenticate = async (email, password) => (axios.post(routes.login, { email, password }));
+
+  async signUp() {
+    try {
+      const { email, username, password } = this.state;
+      await axios.post(routes.users, { email, username, password });
+      await this.logIn();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  logIn = async () => {
     try {
       const { email, password } = this.state;
-      const jwtToken = (await axios.post(api.login, { email, password })).data;
+      const jwtToken = (await this.authenticate(email, password)).data;
       window.localStorage.setItem('jwtToken', jwtToken);
-      this.props.setLoginStatus(true);
+
+      const user = (await this.getCurrentUser()).data;
+      if (user) {
+        this.props.setUser(user, true);
+      }
     } catch (error) {
-      this.setState({
-        loginFailed: true,
-      });
-      console.error(`[auth.logIn] ${error}`);
+      this.setState({ loginFailed: true });
+      throw new Error(error);
     }
   }
 
   loadLogin() {
-    this.setState({
-      signup: false,
-      formColor: 'teal',
-    });
+    this.setState({ signup: false });
   }
 
   loadSignup() {
     this.setState({
       signup: true,
-      formColor: 'blue',
       loginFailed: false,
       password: '',
     });
   }
 
-  async signUp() {
-    try {
-      const { email, username, password } = this.state;
-      await axios.post('http://0.0.0.0:4000/api/v0/users', { email, username, password });
-      await this.logIn();
-    } catch (error) {
-      console.error('[auth.signUp]', error);
-    }
-  }
+  formColor = () => (this.state.signup ? 'blue' : 'teal');
 
   render() {
     return (
@@ -67,7 +70,7 @@ class Auth extends Component {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color={this.state.formColor} textAlign="center">
+            <Header as="h2" color={this.formColor} textAlign="center">
               {' '}{ this.state.signup ? 'Sign Up' : 'Log In'}
             </Header>
             <Form size="large">
@@ -136,11 +139,11 @@ class Auth extends Component {
 }
 
 Auth.propTypes = {
-  setLoginStatus: PropTypes.func,
+  setUser: PropTypes.func,
 };
 
 Auth.defaultProps = {
-  setLoginStatus: null,
+  setUser: null,
 };
 
 export default Auth;

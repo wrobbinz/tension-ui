@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Input } from 'semantic-ui-react';
-import HeartButton from './heartButton/heartButton';
+import Favorite from './favorite/favorite';
+import './toolbar.css';
 
 
 class Toolbar extends Component {
@@ -10,11 +11,19 @@ class Toolbar extends Component {
     this.state = {};
   }
 
+  handleChange = (event) => {
+    const { note } = this.props;
+    note.title = event.target.value;
+    this.props.updateNoteDelay(note);
+  }
+
   render() {
     return (
       <Menu secondary className="no-margin">
         <Menu.Item className="no-margin">
-          <HeartButton />
+          <Favorite
+            updateNote={this.props.updateNote}
+          />
         </Menu.Item>
         <Menu.Item className="title-input">
           <Input
@@ -22,9 +31,9 @@ class Toolbar extends Component {
             className="no-border"
             size="big"
             placeholder="Title"
-            value={this.props.note ? this.props.note.title : ''}
+            value={this.props.note.title}
             maxLength="100"
-            onChange={this.handleTitleChange}
+            onChange={this.handleChange}
             fluid
           />
         </Menu.Item>
@@ -46,5 +55,15 @@ class Toolbar extends Component {
     );
   }
 }
+
+Toolbar.propTypes = {
+  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateNoteDelay: PropTypes.func,
+};
+
+Toolbar.defaultProps = {
+  note: {},
+  updateNoteDelay: null,
+};
 
 export default Toolbar;
