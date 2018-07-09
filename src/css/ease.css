@@ -1,0 +1,70 @@
+html, body {
+  min-height: 100%;
+}
+
+.flex-wrapper {
+  display: -webkit-flex;
+  display: flex;
+  min-height: 100%;
+}
+
+.flex-area {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+}
+
+.flex-shrink {
+  -webkit-flex: 0;
+  flex: 0;
+}
+
+.flex-grow {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.full-height {
+  height: 100% !important;
+}
+
+.full-width {
+  width: 100% !important
+}
+
+.no-border-radius {
+  border-radius: 0 !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-border {
+  border: none!important;
+}
+
+.float-right {
+  float: right;
+ }
+
+.float-left {
+  float: left;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.no-margin {
+  margin: 0px !important;
+}
+
+.flex-one {
+  flex: 1;
+}
+
+.row {
+  padding-bottom: 0 !important;
+}

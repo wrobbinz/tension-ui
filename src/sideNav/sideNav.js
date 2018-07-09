@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Icon, Popup, List } from 'semantic-ui-react';
-import Settings from '../settings';
+import { Menu, Icon, Popup } from 'semantic-ui-react';
+import AppOptions from './appOptions/appOptions';
 import './sideNav.css';
 
-
-const DELAY = 500;
 
 const menuItems = [
   {
@@ -33,13 +31,8 @@ class SideNav extends Component {
     };
   }
 
-  handleClick = (item) => {
-    this.props.setFocus(item.name);
-  }
-
-  logOut = () => {
-    window.localStorage.removeItem('jwtToken');
-    this.props.setLoginStatus(false);
+  handleClick = (e, { focus }) => {
+    this.props.setFocus(focus);
   }
 
   render() {
@@ -54,15 +47,16 @@ class SideNav extends Component {
         {menuItems.map(item => (
           <Popup
             key={item.name}
-            mouseEnterDelay={DELAY}
+            mouseEnterDelay={500}
             content={item.tooltip}
             position="right center"
             size="mini"
             inverted
             trigger={
               <Menu.Item
+                focus={item.name}
                 className="no-border-radius"
-                onClick={() => this.handleClick(item)}
+                onClick={this.handleClick}
                 active={this.props.focus === item.name}
               >
                 <Icon link size="large" name={item.icon} flipped={item.flipped} />
@@ -70,36 +64,7 @@ class SideNav extends Component {
             }
           />
         ))}
-        <Popup
-          size="large"
-          className="setting-popup"
-          inverted
-          trigger={
-            <Menu.Item
-              className="setting-nav no-border-radius"
-            >
-              <Icon link size="large" name="setting" />
-            </Menu.Item>
-          }
-          on="click"
-          position="right center"
-          content={
-            <List>
-              <Settings />
-              <List.Item
-                icon="announcement"
-                content="Feedback"
-                className="pointer"
-              />
-              <List.Item
-                icon="log out"
-                onClick={() => { this.logOut(); }}
-                content="Sign out"
-                className="pointer"
-              />
-            </List>
-          }
-        />
+        <AppOptions logOut={this.props.logOut} />
       </Menu>
     );
   }

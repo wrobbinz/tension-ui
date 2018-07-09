@@ -37,12 +37,14 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+  searchValue: PropTypes.string,
   searchTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   updateSearchValue: PropTypes.func,
 };
 
 Search.defaultProps = {
+  searchValue: '',
   searchTags: null,
   userTags: null,
   updateSearchValue: null,

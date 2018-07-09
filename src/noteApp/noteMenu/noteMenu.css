@@ -38,3 +38,7 @@
   bottom: 0;
   width: 252px;
 }
+
+.ui.secondary.vertical.pointing.menu .active.item {
+  border-color: transparent;
+}

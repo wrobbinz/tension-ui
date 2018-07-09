@@ -1,0 +1,11 @@
+.tags-dropdown {
+  border: 0 !important;
+}
+
+.tags-dropdown:hover, .tags-dropdown:active {
+  background: #fafafa !important;
+}
+
+.tags-dropdown .visible.menu.transition {
+  margin-bottom: 1em !important;
+}

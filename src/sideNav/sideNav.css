@@ -6,6 +6,19 @@
 
 }
 
+.ui.inverted.menu {
+  background: #223c5b;
+}
+
 .sidenav .active.item i {
   color: #223c5b !important;
  }
+
+ .setting-popup {
+  left: 10px!important;
+}
+
+ .setting-nav {
+  position: absolute!important;
+  bottom: 0!important;
+}
