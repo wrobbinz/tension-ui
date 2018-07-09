@@ -212,21 +212,7 @@ class NoteApp extends Component {
                 updateNoteTags={this.props.updateNoteTags}
                 placeholder="# Tags"
               />
-            </div> :
-            <Grid
-              className="editor float-left"
-              verticalAlign="middle"
-              columns={1}
-            >
-              <Grid.Row>
-                <Grid.Column centered="true" textAlign="center">
-                  <Header className="light-grey" as="h2" icon>
-                    <Icon name="sticky note" />
-                    Click the + icon to create a new note
-                  </Header>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            </div> : null
         }
       </div>
     );
