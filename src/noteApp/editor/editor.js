@@ -43,9 +43,8 @@ class Editor extends Component {
       this.setState({ noteId: this.props.note.id });
       return;
     }
-    const { note } = this.props;
-    note.content = this.quillRef.getContents();
-    this.props.updateNoteDelay(note);
+    const content = this.quillRef.getContents();
+    this.props.updateNote({ content }, true);
   }
 
   render() {
@@ -66,12 +65,12 @@ class Editor extends Component {
 
 Editor.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateNoteDelay: PropTypes.func,
+  updateNote: PropTypes.func,
 };
 
 Editor.defaultProps = {
   note: {},
-  updateNoteDelay: null,
+  updateNote: null,
 };
 
 export default Editor;

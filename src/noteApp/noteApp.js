@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { remove, union } from 'lodash';
+import { union } from 'lodash';
 import { routes, options } from '../api';
 import NoteMenu from './noteMenu/noteMenu';
 import Toolbar from './toolbar/toolbar';
@@ -14,13 +14,13 @@ class NoteApp extends Component {
     super(props);
     this.state = {
       notes: [],
-      note: {
-        title: 'Untitled Note',
-        content: '',
-        tags: [],
-      },
+      note: {},
       userTags: [],
-      isSaved: true,
+    };
+    this.noteTemplate = {
+      title: '',
+      content: { ops: [{ insert: '\n' }] },
+      tags: [],
     };
   }
 
@@ -40,59 +40,44 @@ class NoteApp extends Component {
     }
   }
 
-  selectNote = (id) => {
-    const note = this.state.notes.find(n => n.id === id);
+  selectNote = (note) => {
     console.log('Note:', note);
     this.setState({ note });
   }
 
-  createNote = async (title = 'Untitled Note', content = {}) => {
+  createNote = async (note = this.noteTemplate) => {
     try {
-      const payload = { title, content };
       const url = `${routes.users}/${this.props.user.id}/notes`;
-      const note = (await axios.post(url, payload, options())).data;
+      const newNote = (await axios.post(url, note, options())).data;
 
       const { notes } = this.state;
-      notes.unshift(note);
-      this.setState({ note, notes });
+      notes.unshift(newNote);
+      this.setState({ note: newNote, notes });
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  saveNote = async (id) => {
-    try {
-      const { title, content } = this.state.note;
-      const payload = { title, content };
-      return axios.patch(`${routes.notes}/${id}`, payload, options());
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  copyNote = (id) => {
-    const note = this.state.notes.find(n => n.id === id);
-    const { content } = note;
+  copyNote = (note) => {
+    const { content, tags } = note;
     let { title } = note;
     title = `${title} copy`;
-    this.createNote(title, content);
+    this.createNote({ title, content, tags });
   }
 
-  deleteNote = (id) => {
-    axios.delete(`${routes.notes}${id}`, options())
-      .then(() => {
-        const { notes } = this.state;
-        remove(notes, note => note.id === id);
-        const note = notes[0] || null;
-        this.setState({ notes, note });
-      })
-      .catch((err) => {
-        throw err;
-      });
-  }
+  deleteNote = async (note) => {
+    try {
+      const { id } = note;
+      const url = `${routes.notes}/${id}`;
+      await axios.delete(url, options());
 
-  updateOrder = (notes) => {
-    this.setState({ notes });
+      let { notes } = this.state;
+      notes = notes.filter(n => n.id !== id);
+      const selectedNote = notes[0] || {};
+      this.setState({ notes, note: selectedNote });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   addUserTag = async (value) => {
@@ -101,10 +86,11 @@ class NoteApp extends Component {
       const url = `${routes.users}${this.props.user.id}`;
       const updatedUser = await axios.put(url, payload, options());
       this.setState({ userTags: updatedUser.data.tags });
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      throw new Error(error);
     }
   }
+
   updateNoteTags = async (value) => {
     try {
       const { note } = this.state;
@@ -135,37 +121,19 @@ class NoteApp extends Component {
     }
   }
 
-  updateRating = async (rating) => {
-    const isFavorite = rating === 1;
-    const payload = { is_favorite: isFavorite };
-    const url = `${routes.notes}${this.state.note.id}`;
-    await axios.put(url, payload, options());
-    const { note } = this.state;
-    note.is_favorite = isFavorite;
-    this.setState({ note });
-  }
-
-  updateNoteDelay = async (note) => {
-    const notes = this.findAndMerge(note, this.state.notes);
-    this.setState({ note, notes });
-    /* Save to DB when user finishes typing */
-    await this.setUpdateDelay(note);
-  }
-
-  setUpdateDelay = async (note) => {
-    if (this.typingTimeout) { clearTimeout(this.typingTimeout); }
-
-    this.typingTimeout = setTimeout(async () => {
-      await this.updateNote(note);
-    }, 1000);
-  }
-
-  updateNote = async (note) => {
+  updateNote = async (update, delay = false) => {
     try {
-      const { id, title, content } = note;
-      const payload = { title, content };
-      const url = `${routes.notes}/${id}`;
-      return (await axios.patch(url, payload, options())).data;
+      const note = { ...this.state.note, ...update };
+      const notes = this.findAndMerge(note, this.state.notes);
+      this.setState({ note, notes });
+
+      const url = `${routes.notes}/${note.id}`;
+
+      if (!delay) return axios.patch(url, update, options());
+
+      if (this.typingTimeout) { clearTimeout(this.typingTimeout); }
+      this.typingTimeout = setTimeout(async () => axios.patch(url, update, options()), 1500);
+      return 1500;
     } catch (error) {
       throw new Error(error);
     }
@@ -186,9 +154,6 @@ class NoteApp extends Component {
               note={note}
               selectNote={this.selectNote}
               createNote={this.createNote}
-              copyNote={this.copyNote}
-              deleteNote={this.deleteNote}
-              updateOrder={this.updateOrder}
               userTags={this.state.userTags}
               addUserTag={this.addUserTag}
             /> : null
@@ -198,11 +163,13 @@ class NoteApp extends Component {
             <div className="editor flex-grow">
               <Toolbar
                 note={note}
-                updateNoteDelay={this.updateNoteDelay}
+                updateNote={this.updateNote}
+                copyNote={this.copyNote}
+                deleteNote={this.deleteNote}
               />
               <Editor
                 note={note}
-                updateNoteDelay={this.updateNoteDelay}
+                updateNote={this.updateNote}
               />
               <Tags
                 note={note}
