@@ -9,29 +9,34 @@ class Favorite extends Component {
     this.state = {};
   }
 
-  handleChange = (event, data) => {
+  handleChange = (e, data) => {
     const { rating } = data;
-    this.props.updateRating(rating);
+    this.props.updateNote({ isFavorite: rating === 1 });
   }
 
-  isFavorite = () => {
-    if (this.props.note && this.props.note.is_favorite) {
-      return 1;
-    }
-    return 0;
-  }
+  isFavorite = () => (this.props.note.isFavorite ? 1 : 0);
 
   render() {
     return (
       <Rating
         icon="heart"
         className="favorite"
-        onRate={(event, data) => this.handleChange(event, data)}
+        onRate={this.handleChange}
         rating={this.isFavorite()}
         maxRating={1}
       />
     );
   }
 }
+
+Favorite.propTypes = {
+  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateNote: PropTypes.func,
+};
+
+Favorite.defaultProps = {
+  note: {},
+  updateNote: null,
+};
 
 export default Favorite;
