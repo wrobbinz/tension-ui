@@ -5,6 +5,9 @@
 }
 
 #titleInput {
-  border: none !important;
   padding-left: 0 !important;
+}
+
+#toolbar {
+  padding-top: .85714286em;
 }

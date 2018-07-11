@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Input } from 'semantic-ui-react';
 import Favorite from './favorite/favorite';
+import NoteOptions from './noteOptions/noteOptions';
 import './toolbar.css';
 
 
@@ -12,16 +13,16 @@ class Toolbar extends Component {
   }
 
   handleChange = (event) => {
-    const { note } = this.props;
-    note.title = event.target.value;
-    this.props.updateNoteDelay(note);
+    const title = event.target.value;
+    this.props.updateNote({ title }, true);
   }
 
   render() {
     return (
-      <Menu secondary className="no-margin">
+      <Menu secondary id="toolbar" className="no-margin">
         <Menu.Item className="no-margin">
           <Favorite
+            note={this.props.note}
             updateNote={this.props.updateNote}
           />
         </Menu.Item>
@@ -34,6 +35,7 @@ class Toolbar extends Component {
             value={this.props.note.title}
             maxLength="100"
             onChange={this.handleChange}
+            transparent
             fluid
           />
         </Menu.Item>
@@ -43,12 +45,11 @@ class Toolbar extends Component {
           position="right"
         >
           <Menu.Item>
-            {/* <NoteOptions
-                note={this.props.note}
-                deleteNote={this.props.deleteNote}
-                copyNote={this.props.copyNote}
-                saveNote={this.props.saveNote}
-              /> */}
+            <NoteOptions
+              note={this.props.note}
+              copyNote={this.props.copyNote}
+              deleteNote={this.props.deleteNote}
+            />
           </Menu.Item>
         </Menu.Menu>
       </Menu>
@@ -58,12 +59,16 @@ class Toolbar extends Component {
 
 Toolbar.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateNoteDelay: PropTypes.func,
+  updateNote: PropTypes.func,
+  copyNote: PropTypes.func,
+  deleteNote: PropTypes.func,
 };
 
 Toolbar.defaultProps = {
   note: {},
-  updateNoteDelay: null,
+  updateNote: null,
+  copyNote: null,
+  deleteNote: null,
 };
 
 export default Toolbar;
