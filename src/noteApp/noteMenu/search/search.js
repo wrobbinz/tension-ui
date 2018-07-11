@@ -7,8 +7,7 @@ import './search.css';
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   handleChange = (e, { value }) => {
@@ -27,16 +26,18 @@ class Search extends Component {
         icon="search"
         action={
           <Button
-            icon="plus"
-            onClick={() => { this.props.createNote(); }}
+            icon="edit outline"
+            onClick={this.props.createNote}
           />
         }
+        compact
       />
     );
   }
 }
 
 Search.propTypes = {
+  createNote: PropTypes.func,
   searchValue: PropTypes.string,
   searchTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
@@ -44,6 +45,7 @@ Search.propTypes = {
 };
 
 Search.defaultProps = {
+  createNote: null,
   searchValue: '',
   searchTags: null,
   userTags: null,

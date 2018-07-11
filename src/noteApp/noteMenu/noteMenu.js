@@ -29,8 +29,7 @@ class NoteMenu extends Component {
     super(props);
     this.state = {
       searchValue: '',
-      showFavorites: false,
-      noteView: 'All',
+      noteView: 'all',
     };
   }
 
@@ -46,7 +45,7 @@ class NoteMenu extends Component {
       result.destination.index,
     );
 
-    this.props.updateOrder(notes);
+    // this.props.updateOrder(notes);
   }
 
   updateSearchValue = (value) => {
@@ -54,8 +53,8 @@ class NoteMenu extends Component {
   }
 
   matchNotes = () => {
-    if (this.state.showFavorites) {
-      return this.props.notes.filter(note => note.is_favorite);
+    if (this.state.noteView === 'favorites') {
+      return this.props.notes.filter(note => note.isFavorite);
     }
     if (this.state.searchValue) {
       const searchValue = this.state.searchValue.toLowerCase();
@@ -83,6 +82,11 @@ class NoteMenu extends Component {
 
   handleViewChange = noteView => this.setState({ noteView })
 
+  handleSelect = (e, data) => {
+    const { note } = data;
+    this.props.selectNote(note);
+  }
+
   render() {
     return (
       <Resizable
@@ -102,7 +106,6 @@ class NoteMenu extends Component {
         >
           <Menu.Item>
             <Search
-              compact
               searchValue={this.state.searchValue}
               userTags={this.props.userTags}
               updateSearchValue={this.updateSearchValue}
@@ -129,7 +132,8 @@ class NoteMenu extends Component {
                               >
                                 <List.Item
                                   className="note-list-item truncate"
-                                  onClick={() => { this.props.selectNote(note.id); }}
+                                  note={note}
+                                  onClick={this.handleSelect}
                                   name={note.id.toString()}
                                   active={this.props.note.id === note.id}
                                   id={note.id}
@@ -156,31 +160,26 @@ class NoteMenu extends Component {
             </List>
           </Menu.Item>
           <Menu.Item id="noteView">
-            <Button.Group
-              size="mini"
-              widths="3"
-              fluid
-              basic
-            >
+            <Button.Group size="mini" widths="3" fluid basic>
               <Button
-                onClick={() => { this.handleViewChange('All'); }}
-                active={this.state.noteView === 'All'}
+                onClick={() => { this.handleViewChange('all'); }}
+                active={this.state.noteView === 'all'}
               >
                 All
               </Button>
               <Button
-                onClick={() => { this.handleViewChange('Tags'); }}
-                active={this.state.noteView === 'Tags'}
+                onClick={() => { this.handleViewChange('tags'); }}
+                active={this.state.noteView === 'tags'}
               >
                 Tags
               </Button>
               <Button
-                onClick={() => { this.handleViewChange('Favorites'); }}
-                active={this.state.noteView === 'Favorites'}
+                onClick={() => { this.handleViewChange('favorites'); }}
+                active={this.state.noteView === 'favorites'}
                 icon
               >
                 <Icon
-                  color={this.state.noteView === 'Favorites' ? 'red' : 'grey'}
+                  color={this.state.noteView === 'favorites' ? 'red' : 'grey'}
                   name="heart"
                 />
               </Button>
@@ -193,26 +192,20 @@ class NoteMenu extends Component {
 }
 
 NoteMenu.propTypes = {
+  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
   createNote: PropTypes.func,
-  copyNote: PropTypes.func,
-  deleteNote: PropTypes.func,
-  updateOrder: PropTypes.func,
-  saveNote: PropTypes.func,
   userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 NoteMenu.defaultProps = {
+  user: {},
   notes: false,
   note: null,
   selectNote: false,
   createNote: false,
-  copyNote: false,
-  deleteNote: false,
-  updateOrder: false,
-  saveNote: null,
   userTags: null,
 };
 
