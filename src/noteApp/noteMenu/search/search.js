@@ -11,7 +11,7 @@ class Search extends Component {
   }
 
   handleChange = (e, { value }) => {
-    this.props.updateSearchValue(value);
+    this.props.updateSearch(value);
   }
 
   handleCreate = () => {
@@ -24,7 +24,7 @@ class Search extends Component {
         className="note-search"
         size="mini"
         placeholder="Search Notes..."
-        value={this.props.searchValue}
+        value={this.props.search}
         onChange={this.handleChange}
         iconPosition="left"
         icon="search"
@@ -42,16 +42,14 @@ class Search extends Component {
 
 Search.propTypes = {
   createNote: PropTypes.func,
-  searchValue: PropTypes.string,
-  searchTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  updateSearchValue: PropTypes.func,
+  search: PropTypes.string,
+  updateSearch: PropTypes.func,
 };
 
 Search.defaultProps = {
   createNote: null,
-  searchValue: '',
-  searchTags: null,
-  updateSearchValue: null,
+  search: '',
+  updateSearch: null,
 };
 
 export default Search;
