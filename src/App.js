@@ -18,14 +18,19 @@ class App extends Component {
       loaded: false,
       user: {},
       loggedIn: false,
-      setUser: this.setUser,
     };
   }
 
   async componentWillMount() {
     try {
-      const user = (await axios.get(routes.currentUser, options())).data;
-      this.setState({ user, loggedIn: true, loaded: true });
+      const token = window.localStorage.jwtToken;
+
+      if (!token) {
+        this.setState({ loggedIn: false, loaded: true });
+      } else {
+        const user = (await axios.get(routes.currentUser, options())).data;
+        this.setState({ user, loggedIn: true, loaded: true });
+      }
     } catch (error) {
       this.setState({ loggedIn: false, loaded: true });
     }
@@ -37,6 +42,18 @@ class App extends Component {
       window.localStorage.removeItem('jwtToken');
     }
     this.setState({ user, loggedIn });
+  }
+
+  updateUser = async (update) => {
+    try {
+      const user = { ...this.state.user, ...update };
+      this.setState({ user });
+
+      const url = `${routes.users}/${user.id}`;
+      return axios.patch(url, update, options());
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   logOut = async () => (axios.post(routes.logout, {}, options()));
@@ -57,6 +74,7 @@ class App extends Component {
         <UserContext.Provider value={this.state}>
           <Workspace
             user={this.state.user}
+            updateUser={this.updateUser}
             className="full-height"
           />
         </UserContext.Provider>

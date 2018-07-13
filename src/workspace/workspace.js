@@ -22,7 +22,12 @@ class WorkSpace extends Component {
   }
 
   appView = () => {
-    const noteApp = <NoteApp user={this.props.user} menuVisible={this.state.menuVisible} />;
+    const noteApp = (
+      <NoteApp
+        user={this.props.user}
+        menuVisible={this.state.menuVisible}
+      />
+    );
     switch (this.state.focus) {
       case 'notes':
         return noteApp;
@@ -48,10 +53,12 @@ class WorkSpace extends Component {
 
 WorkSpace.propTypes = {
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateUser: PropTypes.func,
 };
 
 WorkSpace.defaultProps = {
   user: {},
+  updateUser: null,
 };
 
 export default WorkSpace;

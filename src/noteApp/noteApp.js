@@ -15,7 +15,7 @@ class NoteApp extends Component {
     this.state = {
       notes: [],
       note: {},
-      userTags: [],
+      tags: [],
     };
     this.noteTemplate = {
       title: '',
@@ -26,17 +26,12 @@ class NoteApp extends Component {
 
   async componentWillMount() {
     const url = `${routes.users}/${this.props.user.id}/notes`;
-    const notesResponse = (await axios.get(url, options())).data.notes;
-    console.log(notesResponse);
-    const notes = notesResponse.reverse();
+    const { notes } = (await axios.get(url, options())).data;
     if (notes.length > 0) {
+      notes.reverse();
       const note = notes[0];
-      const userTags = this.props.user.tags || [];
-      this.setState({
-        notes,
-        note,
-        userTags,
-      });
+      const tags = this.resolveTags(notes);
+      this.setState({ note, notes, tags });
     }
   }
 
@@ -57,6 +52,27 @@ class NoteApp extends Component {
       throw new Error(error);
     }
   }
+
+  updateNote = async (update, delay = false) => {
+    try {
+      const note = { ...this.state.note, ...update };
+      const notes = this.findAndMerge(note, this.state.notes);
+      const tags = this.resolveTags(notes);
+      this.setState({ note, notes, tags });
+
+      const url = `${routes.notes}/${note.id}`;
+      if (!delay) return axios.patch(url, update, options());
+
+      if (this.typingTimeout) { clearTimeout(this.typingTimeout); }
+      this.typingTimeout = setTimeout(async () => axios.patch(url, update, options()), 1500);
+      return 1500;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  findAndMerge = (newItem, staleArray) => staleArray
+    .map(item => (item.id === newItem.id ? newItem : item));
 
   copyNote = (note) => {
     const { content, tags } = note;
@@ -80,70 +96,10 @@ class NoteApp extends Component {
     }
   }
 
-  addUserTag = async (value) => {
-    try {
-      const payload = { tags: [{ text: value, value, key: value }, ...this.state.userTags] };
-      const url = `${routes.users}${this.props.user.id}`;
-      const updatedUser = await axios.put(url, payload, options());
-      this.setState({ userTags: updatedUser.data.tags });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  updateNoteTags = async (value) => {
-    try {
-      const { note } = this.state;
-      const tags = value.map(tag => (tag.value ? tag : { text: tag, value: tag, key: tag }));
-      const payload = { tags };
-      const url = `${routes.notes}${this.state.note.id}`;
-      const updatedNote = await axios.put(url, payload, options());
-      note.tags = updatedNote.data.tags;
-      this.setState({ note });
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async removeStaleTags() {
-    const { notes, userTags } = this.state;
-    const allNoteTags = union(notes.reduce((tags, note) => tags.concat(note.tags), []));
-    const usedTags = userTags.filter(tag => allNoteTags.includes(tag));
-    if (usedTags !== this.state.userTags) {
-      try {
-        const payload = { tags: usedTags };
-        const url = `${routes.users}${this.props.user.id}`;
-        const updatedUser = await axios.put(url, payload, options());
-        this.setState({ userTags: updatedUser.data.tags });
-      } catch (err) {
-        throw err;
-      }
-    }
-  }
-
-  updateNote = async (update, delay = false) => {
-    try {
-      const note = { ...this.state.note, ...update };
-      const notes = this.findAndMerge(note, this.state.notes);
-      this.setState({ note, notes });
-
-      const url = `${routes.notes}/${note.id}`;
-
-      if (!delay) return axios.patch(url, update, options());
-
-      if (this.typingTimeout) { clearTimeout(this.typingTimeout); }
-      this.typingTimeout = setTimeout(async () => axios.patch(url, update, options()), 1500);
-      return 1500;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
-  findAndMerge = (newItem, staleArray) => staleArray
-    .map(item => (item.id === newItem.id ? newItem : item));
+  resolveTags = notes => union(...notes.map(n => n.tags));
 
   render() {
-    const { note, notes } = this.state;
+    const { note, notes, tags } = this.state;
     return (
       <div className="flex-wrapper flex-grow">
         {
@@ -154,8 +110,6 @@ class NoteApp extends Component {
               note={note}
               selectNote={this.selectNote}
               createNote={this.createNote}
-              userTags={this.state.userTags}
-              addUserTag={this.addUserTag}
             /> : null
         }
         {
@@ -173,10 +127,8 @@ class NoteApp extends Component {
               />
               <Tags
                 note={note}
-                userTags={this.props.userTags}
-                addUserTag={this.props.addUserTag}
-                updateNoteTags={this.props.updateNoteTags}
-                placeholder="# Tags"
+                tags={tags}
+                updateNote={this.updateNote}
               />
             </div> : null
         }

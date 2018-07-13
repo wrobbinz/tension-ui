@@ -24,7 +24,12 @@ class Auth extends Component {
   async signUp() {
     try {
       const { email, username, password } = this.state;
-      await axios.post(routes.users, { email, username, password });
+      const user = {
+        email,
+        username,
+        password,
+      };
+      await axios.post(routes.users, user);
       await this.logIn();
     } catch (error) {
       throw new Error(error);
@@ -70,7 +75,7 @@ class Auth extends Component {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color={this.formColor} textAlign="center">
+            <Header as="h2" color={this.formColor()} textAlign="center">
               {' '}{ this.state.signup ? 'Sign Up' : 'Log In'}
             </Header>
             <Form size="large">

@@ -7,43 +7,34 @@ import './tags.css';
 class Tags extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
-  handleAddition = (e, { value }) => {
-    this.props.addUserTag(value);
-  }
+  getOptions = tags => tags.map(tag => ({ key: tag, text: tag, value: tag }));
 
-  handleChange = (e, { value }) => {
-    this.props.updateNoteTags(value);
-  }
-
-  tagsValue() {
-    if (this.props.note && this.props.note.tags) {
-      return this.props.note.tags.map(tag => tag.value);
-    }
-    return null;
+  handleChange = (e, data) => {
+    const tags = data.value;
+    this.props.updateNote({ tags });
   }
 
   render() {
+    const { note, tags } = this.props;
     return (
       <Menu secondary className="no-margin">
         <Menu.Item className="full-width">
           <Dropdown
             className="tags-dropdown"
-            options={this.props.userTags}
-            placeholder={this.props.placeholder}
-            value={this.tagsValue()}
-            onAddItem={this.handleAddition}
+            options={this.getOptions(tags)}
+            value={note.tags}
             onChange={this.handleChange}
+            placeholder="# Tags"
+            allowAdditions
+            selection
+            multiple
+            floating
             search
             upward
             fluid
-            selection
-            multiple
-            allowAdditions
-            floating
           />
         </Menu.Item>
       </Menu>
@@ -53,18 +44,14 @@ class Tags extends Component {
 
 Tags.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  addUserTag: PropTypes.func,
-  updateNoteTags: PropTypes.func,
-  placeholder: PropTypes.string,
+  tags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  updateNote: PropTypes.func,
 };
 
 Tags.defaultProps = {
-  note: null,
-  userTags: null,
-  addUserTag: null,
-  updateNoteTags: null,
-  placeholder: null,
+  note: {},
+  tags: [],
+  updateNote: null,
 };
 
 export default Tags;
