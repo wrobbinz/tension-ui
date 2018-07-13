@@ -1,7 +1,6 @@
 .note-menu {
   border: none !important;
   background: #fafafa !important;
-  position: relative;
 }
 
 .new-note {
@@ -34,9 +33,6 @@
 }
 
 #noteView {
-  position: absolute !important;
-  bottom: 0;
-  width: 252px;
 }
 
 .ui.secondary.vertical.pointing.menu .active.item {

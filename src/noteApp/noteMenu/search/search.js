@@ -14,6 +14,10 @@ class Search extends Component {
     this.props.updateSearchValue(value);
   }
 
+  handleCreate = () => {
+    this.props.createNote();
+  }
+
   render() {
     return (
       <Input
@@ -27,10 +31,10 @@ class Search extends Component {
         action={
           <Button
             icon="edit outline"
-            onClick={this.props.createNote}
+            onClick={this.handleCreate}
           />
         }
-        compact
+        compact="true"
       />
     );
   }
@@ -40,7 +44,6 @@ Search.propTypes = {
   createNote: PropTypes.func,
   searchValue: PropTypes.string,
   searchTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   updateSearchValue: PropTypes.func,
 };
 
@@ -48,7 +51,6 @@ Search.defaultProps = {
   createNote: null,
   searchValue: '',
   searchTags: null,
-  userTags: null,
   updateSearchValue: null,
 };
 

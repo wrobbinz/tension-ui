@@ -28,8 +28,8 @@ class NoteMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: '',
-      noteView: 'all',
+      search: '',
+      view: 'all',
     };
   }
 
@@ -45,42 +45,29 @@ class NoteMenu extends Component {
       result.destination.index,
     );
 
-    // this.props.updateOrder(notes);
+    this.props.updateOrder(notes);
   }
 
-  updateSearchValue = (value) => {
-    this.setState({ searchValue: value });
+  updateSearch = (value) => {
+    this.setState({ search: value });
   }
 
   matchNotes = () => {
-    if (this.state.noteView === 'favorites') {
+    if (this.state.view === 'favorites') {
       return this.props.notes.filter(note => note.isFavorite);
     }
-    if (this.state.searchValue) {
-      const searchValue = this.state.searchValue.toLowerCase();
-      const matchedNotes = this.props.notes.filter((note) => {
-        let found = false;
-        note.tags.forEach((tag) => {
-          if (tag.value.toLowerCase().includes(searchValue)) {
-            found = true;
-          }
-        });
-        note.content.blocks.forEach((block) => {
-          if (block.text.toLowerCase().includes(searchValue)) {
-            found = true;
-          }
-        });
-        if (note.title.toLowerCase().includes(searchValue)) {
-          found = true;
-        }
-        return found;
+    if (this.state.search) {
+      const search = this.state.search.toLowerCase();
+      return this.props.notes.filter((note) => {
+        const matchedTags = note.tags.map(tag => tag.toLowerCase()).includes(search);
+        const matchedTitle = note.title.toLowerCase().includes(search);
+        return matchedTags || matchedTitle;
       });
-      return matchedNotes;
     }
     return this.props.notes;
   }
 
-  handleViewChange = noteView => this.setState({ noteView })
+  handleViewChange = view => this.setState({ view })
 
   handleSelect = (e, data) => {
     const { note } = data;
@@ -106,9 +93,8 @@ class NoteMenu extends Component {
         >
           <Menu.Item>
             <Search
-              searchValue={this.state.searchValue}
-              userTags={this.props.userTags}
-              updateSearchValue={this.updateSearchValue}
+              search={this.state.search}
+              updateSearch={this.updateSearch}
               createNote={this.props.createNote}
             />
           </Menu.Item>
@@ -163,23 +149,23 @@ class NoteMenu extends Component {
             <Button.Group size="mini" widths="3" fluid basic>
               <Button
                 onClick={() => { this.handleViewChange('all'); }}
-                active={this.state.noteView === 'all'}
+                active={this.state.view === 'all'}
               >
                 All
               </Button>
               <Button
                 onClick={() => { this.handleViewChange('tags'); }}
-                active={this.state.noteView === 'tags'}
+                active={this.state.view === 'tags'}
               >
                 Tags
               </Button>
               <Button
                 onClick={() => { this.handleViewChange('favorites'); }}
-                active={this.state.noteView === 'favorites'}
+                active={this.state.view === 'favorites'}
                 icon
               >
                 <Icon
-                  color={this.state.noteView === 'favorites' ? 'red' : 'grey'}
+                  color={this.state.view === 'favorites' ? 'red' : 'grey'}
                   name="heart"
                 />
               </Button>
@@ -197,7 +183,6 @@ NoteMenu.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
   createNote: PropTypes.func,
-  userTags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 NoteMenu.defaultProps = {
@@ -206,7 +191,6 @@ NoteMenu.defaultProps = {
   note: null,
   selectNote: false,
   createNote: false,
-  userTags: null,
 };
 
 export default NoteMenu;
