@@ -50,6 +50,10 @@ class Editor extends Component {
     this.props.updateNote({ content }, true);
   }
 
+  lockNote = (locked) => {
+    this.quillRef.enable(!locked);
+  }
+
   render() {
     return (
       <ReactQuill

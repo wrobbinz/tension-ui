@@ -18,11 +18,12 @@ class Toolbar extends Component {
   }
 
   render() {
+    const { note } = this.props;
     return (
       <Menu secondary id="toolbar" className="no-margin">
         <Menu.Item className="no-margin">
           <Favorite
-            note={this.props.note}
+            note={note}
             updateNote={this.props.updateNote}
           />
         </Menu.Item>
@@ -32,9 +33,10 @@ class Toolbar extends Component {
             className="no-border"
             size="big"
             placeholder="Title"
-            value={this.props.note.title}
+            value={note.title}
             maxLength="100"
             onChange={this.handleChange}
+            disabled={note.locked}
             transparent
             fluid
           />
@@ -47,6 +49,7 @@ class Toolbar extends Component {
           <Menu.Item>
             <NoteOptions
               note={this.props.note}
+              lockNote={this.props.lockNote}
               copyNote={this.props.copyNote}
               deleteNote={this.props.deleteNote}
             />
@@ -60,6 +63,7 @@ class Toolbar extends Component {
 Toolbar.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   updateNote: PropTypes.func,
+  lockNote: PropTypes.func,
   copyNote: PropTypes.func,
   deleteNote: PropTypes.func,
 };
@@ -67,6 +71,7 @@ Toolbar.propTypes = {
 Toolbar.defaultProps = {
   note: {},
   updateNote: null,
+  lockNote: null,
   copyNote: null,
   deleteNote: null,
 };

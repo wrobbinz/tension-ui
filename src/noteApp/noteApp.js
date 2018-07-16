@@ -12,6 +12,7 @@ import Tags from './tags/tags';
 class NoteApp extends Component {
   constructor(props) {
     super(props);
+    this.editor = React.createRef();
     this.state = {
       notes: [],
       note: {},
@@ -96,6 +97,11 @@ class NoteApp extends Component {
     }
   }
 
+  lockNote = async (locked) => {
+    this.editor.current.lockNote(locked);
+    await this.updateNote({ locked });
+  }
+
   resolveTags = notes => union(...notes.map(n => n.tags));
 
   render() {
@@ -118,12 +124,14 @@ class NoteApp extends Component {
               <Toolbar
                 note={note}
                 updateNote={this.updateNote}
+                lockNote={this.lockNote}
                 copyNote={this.copyNote}
                 deleteNote={this.deleteNote}
               />
               <Editor
                 note={note}
                 updateNote={this.updateNote}
+                ref={this.editor}
               />
               <Tags
                 note={note}

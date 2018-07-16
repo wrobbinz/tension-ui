@@ -9,6 +9,11 @@ class NoteOptions extends Component {
     this.state = {};
   }
 
+  handleLock = () => {
+    const { locked } = this.props.note;
+    this.props.lockNote(!locked);
+  }
+
   handleCopy = () => {
     const { note } = this.props;
     this.props.copyNote(note);
@@ -24,6 +29,7 @@ class NoteOptions extends Component {
   handleClose = () => { this.setState({ deleteModalOpen: false }); }
 
   render() {
+    const { note } = this.props;
     return (
       <Dropdown className="icon" icon="content" color="grey" floating basic>
         <Dropdown.Menu>
@@ -35,6 +41,11 @@ class NoteOptions extends Component {
           />
           <Dropdown.Item icon="external square" text="Export" disabled />
           <Dropdown.Divider />
+          <Dropdown.Item
+            icon={note.locked ? 'unlock' : 'lock'}
+            text={note.locked ? 'Unlock note' : 'Lock note'}
+            onClick={this.handleLock}
+          />
           <Dropdown.Item icon="save" text="Save new version" disabled />
           <Dropdown.Item icon="undo alternate" text="Revert to previous version" disabled />
           <Dropdown.Divider />
@@ -55,7 +66,7 @@ class NoteOptions extends Component {
             <Header
               icon="trash"
               content={
-                `Delete ${this.props.note.title ? `"${this.props.note.title}"` : 'untitled'} note?`
+                `Delete ${note.title || 'untitled'} note?`
               }
             />
             <Modal.Content>
@@ -78,12 +89,14 @@ class NoteOptions extends Component {
 
 NoteOptions.propTypes = {
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  lockNote: PropTypes.func,
   copyNote: PropTypes.func,
   deleteNote: PropTypes.func,
 };
 
 NoteOptions.defaultProps = {
   note: {},
+  lockNote: null,
   copyNote: null,
   deleteNote: null,
 };
