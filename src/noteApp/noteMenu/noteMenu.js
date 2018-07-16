@@ -54,7 +54,7 @@ class NoteMenu extends Component {
 
   matchNotes = () => {
     if (this.state.view === 'favorites') {
-      return this.props.notes.filter(note => note.isFavorite);
+      return this.props.notes.filter(note => note.favorite);
     }
     if (this.state.search) {
       const search = this.state.search.toLowerCase();

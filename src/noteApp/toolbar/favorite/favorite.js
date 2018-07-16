@@ -11,10 +11,10 @@ class Favorite extends Component {
 
   handleChange = (e, data) => {
     const { rating } = data;
-    this.props.updateNote({ isFavorite: rating === 1 });
+    this.props.updateNote({ favorite: rating === 1 });
   }
 
-  isFavorite = () => (this.props.note.isFavorite ? 1 : 0);
+  isFavorite = () => (this.props.note.favorite ? 1 : 0);
 
   render() {
     return (
