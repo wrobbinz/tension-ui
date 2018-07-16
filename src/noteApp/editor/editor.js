@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import MarkdownShortcuts from './plugins/quillMarkdown';
+import QuillUrl from './plugins/quillUrl';
 import ToolbarOptions from './plugins/quillToolbar';
 import './editor.css';
 
 
 Quill.register('modules/MarkdownShortcuts', MarkdownShortcuts);
+Quill.register('modules/QuillUrl', QuillUrl);
 
 class Editor extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class Editor extends Component {
 
     this.modules = {
       MarkdownShortcuts: {},
+      QuillUrl: {},
       toolbar: ToolbarOptions,
     };
   }
