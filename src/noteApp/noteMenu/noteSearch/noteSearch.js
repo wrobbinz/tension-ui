@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Button } from 'semantic-ui-react';
-import './search.css';
+import './noteSearch.css';
 
 
 class Search extends Component {

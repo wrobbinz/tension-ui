@@ -17,11 +17,6 @@
   text-overflow: ellipsis;
 }
 
-.note-icon {
-  float: left !important;
-  margin: 0 0.5em 0 0 !important;
-}
-
 .note-list {
   overflow-y: auto !important;
   overflow-x: hidden;

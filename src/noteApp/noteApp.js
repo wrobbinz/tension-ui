@@ -30,6 +30,7 @@ class NoteApp extends Component {
     const { notes } = (await axios.get(url, options())).data;
     if (notes.length > 0) {
       notes.reverse();
+      console.log(notes);
       const note = notes[0];
       const tags = this.resolveTags(notes);
       this.setState({ note, notes, tags });
