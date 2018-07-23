@@ -1,4 +1,4 @@
-export const base = 'http://0.0.0.0:4000/api/v0';
+export const base = 'http://0.0.0.0:4040/api/v0';
 
 export const routes = {
   notes: `${base}/notes`,

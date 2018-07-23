@@ -5,6 +5,11 @@ import axios from 'axios';
 import { routes, options } from '../api';
 
 
+const tree = {
+  module: 'root',
+  children: [],
+};
+
 class Auth extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +33,7 @@ class Auth extends Component {
         email,
         username,
         password,
+        tree,
       };
       await axios.post(routes.users, user);
       await this.logIn();

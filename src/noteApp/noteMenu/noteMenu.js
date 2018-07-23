@@ -1,28 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Resizable from 're-resizable';
-import { Menu, List, Icon, Button } from 'semantic-ui-react';
-import Search from './search/search';
+import { Menu, Icon, Button } from 'semantic-ui-react';
+import NoteSearch from './noteSearch/noteSearch';
+import NoteList from './noteList/noteList';
+import { resizeDirections } from './constants';
 import './noteMenu.css';
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
-
-const resizeDirections = {
-  top: false,
-  right: true,
-  bottom: false,
-  left: false,
-  topRight: false,
-  bottomRight: false,
-  bottomLeft: false,
-  topLeft: false,
-};
 
 class NoteMenu extends Component {
   constructor(props) {
@@ -33,48 +17,33 @@ class NoteMenu extends Component {
     };
   }
 
-  onDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
+  updateSearch = search => this.setState({ search });
 
-    const notes = reorder(
-      this.props.notes,
-      result.source.index,
-      result.destination.index,
-    );
+  handleViewChange = view => this.setState({ view });
 
-    this.props.updateOrder(notes);
-  }
+  addTreeLeaf = (note) => {
+    const { tree } = this.props.user;
+    const leaf = {
+      noteId: note.id,
+      leaf: true,
+    };
+    tree.children = [leaf, ...tree.children];
+    this.props.updateUser({ tree });
+  };
 
-  updateSearch = (value) => {
-    this.setState({ search: value });
-  }
-
-  matchNotes = () => {
-    if (this.state.view === 'favorites') {
-      return this.props.notes.filter(note => note.favorite);
-    }
-    if (this.state.search) {
-      const search = this.state.search.toLowerCase();
-      return this.props.notes.filter((note) => {
-        const matchedTags = note.tags.map(tag => tag.toLowerCase()).includes(search);
-        const matchedTitle = note.title.toLowerCase().includes(search);
-        return matchedTags || matchedTitle;
-      });
-    }
-    return this.props.notes;
-  }
-
-  handleViewChange = view => this.setState({ view })
-
-  handleSelect = (e, data) => {
-    const { note } = data;
-    this.props.selectNote(note);
+  addTreeFolder = () => {
+    const { tree } = this.props.user;
+    const folder = {
+      module: 'New Folder',
+      collapsed: true,
+      children: [],
+    };
+    tree.children = [folder, ...tree.children];
+    this.props.updateUser({ tree });
   }
 
   render() {
+    const { user, notes } = this.props;
     return (
       <Resizable
         className="resize-indicator"
@@ -92,58 +61,25 @@ class NoteMenu extends Component {
           floated
         >
           <Menu.Item>
-            <Search
+            <NoteSearch
               search={this.state.search}
               updateSearch={this.updateSearch}
               createNote={this.props.createNote}
+              addTreeLeaf={this.addTreeLeaf}
             />
           </Menu.Item>
           <Menu.Item>
-            <List>
-              <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="droppable">
-                  {provided => (
-                    <div
-                      className="note-list"
-                      ref={provided.innerRef}
-                    >
-                      {this.matchNotes().map((note, index) => (
-                        <Draggable key={note.id} draggableId={note.id} index={index}>
-                          {prov => (
-                            <div>
-                              <div
-                                ref={prov.innerRef}
-                                {...prov.draggableProps}
-                                {...prov.dragHandleProps}
-                              >
-                                <List.Item
-                                  className="note-list-item truncate"
-                                  note={note}
-                                  onClick={this.handleSelect}
-                                  name={note.id.toString()}
-                                  active={this.props.note.id === note.id}
-                                  id={note.id}
-                                >
-                                  <List.Icon
-                                    className="note-icon"
-                                    name={this.props.note.id === note.id ? 'sticky note' : 'sticky note outline'}
-                                  />
-                                  <List.Description>
-                                    {note.title === '' ? 'Untitled Note' : note.title}
-                                  </List.Description>
-                                </List.Item>
-                              </div>
-                              {prov.placeholder}
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </List>
+            <Button onClick={this.addTreeFolder}>
+              + Add Folder
+            </Button>
+          </Menu.Item>
+          <Menu.Item>
+            <NoteList
+              notes={notes}
+              selectNote={this.props.selectNote}
+              user={user}
+              updateUser={this.props.updateUser}
+            />
           </Menu.Item>
           <Menu.Item id="noteView">
             <Button.Group size="mini" widths="3" fluid basic>
@@ -179,6 +115,7 @@ class NoteMenu extends Component {
 
 NoteMenu.propTypes = {
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateUser: PropTypes.func,
   notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
@@ -187,10 +124,11 @@ NoteMenu.propTypes = {
 
 NoteMenu.defaultProps = {
   user: {},
-  notes: false,
-  note: null,
-  selectNote: false,
-  createNote: false,
+  updateUser: null,
+  notes: [],
+  note: {},
+  selectNote: null,
+  createNote: null,
 };
 
 export default NoteMenu;
