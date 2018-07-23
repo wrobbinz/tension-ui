@@ -4,7 +4,7 @@ import { Input, Button } from 'semantic-ui-react';
 import './noteSearch.css';
 
 
-class Search extends Component {
+class NoteSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,8 +14,9 @@ class Search extends Component {
     this.props.updateSearch(value);
   }
 
-  handleCreate = () => {
-    this.props.createNote();
+  handleCreate = async () => {
+    const note = await this.props.createNote();
+    this.props.addTreeLeaf(note);
   }
 
   render() {
@@ -40,16 +41,18 @@ class Search extends Component {
   }
 }
 
-Search.propTypes = {
+NoteSearch.propTypes = {
   createNote: PropTypes.func,
   search: PropTypes.string,
   updateSearch: PropTypes.func,
+  addTreeLeaf: PropTypes.func,
 };
 
-Search.defaultProps = {
+NoteSearch.defaultProps = {
   createNote: null,
   search: '',
   updateSearch: null,
+  addTreeLeaf: null,
 };
 
-export default Search;
+export default NoteSearch;

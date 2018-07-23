@@ -37,7 +37,7 @@ class UITree extends Component {
       const draggingStyles = {
         top: dragging.y,
         left: dragging.x,
-        width: dragging.w
+        width: dragging.w,
       };
 
       return (

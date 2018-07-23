@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Resizable from 're-resizable';
 import { Menu, Icon, Button } from 'semantic-ui-react';
-import Search from './noteSearch/noteSearch';
+import NoteSearch from './noteSearch/noteSearch';
 import NoteList from './noteList/noteList';
 import { resizeDirections } from './constants';
 import './noteMenu.css';
@@ -21,8 +21,29 @@ class NoteMenu extends Component {
 
   handleViewChange = view => this.setState({ view });
 
+  addTreeLeaf = (note) => {
+    const { tree } = this.props.user;
+    const leaf = {
+      noteId: note.id,
+      leaf: true,
+    };
+    tree.children = [leaf, ...tree.children];
+    this.props.updateUser({ tree });
+  };
+
+  addTreeFolder = () => {
+    const { tree } = this.props.user;
+    const folder = {
+      module: 'New Folder',
+      collapsed: true,
+      children: [],
+    };
+    tree.children = [folder, ...tree.children];
+    this.props.updateUser({ tree });
+  }
+
   render() {
-    const { notes } = this.props;
+    const { user, notes } = this.props;
     return (
       <Resizable
         className="resize-indicator"
@@ -40,16 +61,24 @@ class NoteMenu extends Component {
           floated
         >
           <Menu.Item>
-            <Search
+            <NoteSearch
               search={this.state.search}
               updateSearch={this.updateSearch}
               createNote={this.props.createNote}
+              addTreeLeaf={this.addTreeLeaf}
             />
+          </Menu.Item>
+          <Menu.Item>
+            <Button onClick={this.addTreeFolder}>
+              + Add Folder
+            </Button>
           </Menu.Item>
           <Menu.Item>
             <NoteList
               notes={notes}
               selectNote={this.props.selectNote}
+              user={user}
+              updateUser={this.props.updateUser}
             />
           </Menu.Item>
           <Menu.Item id="noteView">
@@ -86,6 +115,7 @@ class NoteMenu extends Component {
 
 NoteMenu.propTypes = {
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateUser: PropTypes.func,
   notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
@@ -94,8 +124,9 @@ NoteMenu.propTypes = {
 
 NoteMenu.defaultProps = {
   user: {},
-  notes: null,
-  note: null,
+  updateUser: null,
+  notes: [],
+  note: {},
   selectNote: null,
   createNote: null,
 };

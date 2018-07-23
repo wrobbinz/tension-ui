@@ -30,7 +30,7 @@ class NoteApp extends Component {
     const { notes } = (await axios.get(url, options())).data;
     if (notes.length > 0) {
       notes.reverse();
-      console.log(notes);
+      console.log('Notes:', notes);
       const note = notes[0];
       const tags = this.resolveTags(notes);
       this.setState({ note, notes, tags });
@@ -50,6 +50,7 @@ class NoteApp extends Component {
       const { notes } = this.state;
       notes.unshift(newNote);
       this.setState({ note: newNote, notes });
+      return newNote;
     } catch (error) {
       throw new Error(error);
     }
@@ -107,12 +108,15 @@ class NoteApp extends Component {
 
   render() {
     const { note, notes, tags } = this.state;
+    const { user, updateUser } = this.props;
     return (
       <div className="flex-wrapper flex-grow">
         {
           this.props.menuVisible ?
             <NoteMenu
               className="flex-shrink"
+              user={user}
+              updateUser={updateUser}
               notes={notes}
               note={note}
               selectNote={this.selectNote}
@@ -148,11 +152,13 @@ class NoteApp extends Component {
 
 NoteApp.propTypes = {
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateUser: PropTypes.func,
   menuVisible: PropTypes.bool,
 };
 
 NoteApp.defaultProps = {
   user: {},
+  updateUser: null,
   menuVisible: true,
 };
 

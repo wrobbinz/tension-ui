@@ -4,15 +4,12 @@ import cx from 'classnames';
 import { List } from 'semantic-ui-react';
 import Tree from './tree/react-ui-tree';
 import './noteList.css';
-import tree from './exTree';
 
 
 class NoteList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tree: tree,
-    };
+    this.state = {};
   }
 
   onClickNode = (node) => {
@@ -20,7 +17,7 @@ class NoteList extends Component {
   }
 
   handleChange = (tree) => {
-    this.setState({ tree });
+    this.props.updateUser({ tree });
   }
 
   matchNotes = () => {
@@ -38,49 +35,33 @@ class NoteList extends Component {
     return this.props.notes;
   }
 
-  noteById = id => this.props.notes.find(note => note.id === id)
+  constructTree = () => {
+    if (this.props.notes.length) {
+      const { tree } = this.props.user;
+      const newTree = { ...tree };
+      newTree.children = this.matchNotesToChildren(tree.children);
+      return newTree;
+    }
+    return {};
+  }
 
-  listItems = items => items.map(item => (
-    item.folder ?
-      (
-        <List.Item onClick={this.handleFolderClick} key={item.name} value={item}>
-          <List.Icon
-            className="note-icon"
-            name="slack hash"
-            flipped="vertically"
-          />
-          <List.Content>
-            <List.Header>
-              {item.name}
-            </List.Header>
-            {
-              item.open ?
-                <List.List>
-                  {this.listItems(item.children)}
-                </List.List>
-                : null
-            }
-          </List.Content>
-        </List.Item>
-      ) :
-      (
-        <List.Item
-          onClick={this.handleFileClick}
-          className="note-list-item truncate"
-          name={item.toString()}
-          key={item}
-          value={this.noteById(item)}
-        >
-          <List.Icon
-            className="note-icon"
-            name="sticky note outline"
-          />
-          <List.Content>
-            <List.Header>note</List.Header>
-          </List.Content>
-        </List.Item>
-      )
-  ));
+  matchNotesToChildren = (children) => {
+    const newChildren = children.map((child) => {
+      if (child.leaf && child.noteId) {
+        const note = this.noteById(child.noteId);
+        child.module = note.title || 'Untitled Note';
+        return child;
+      }
+      if (child.children && child.children.length) {
+        child.children = this.matchNotesToChildren(child.children);
+        return child;
+      }
+      return child;
+    });
+    return newChildren;
+  }
+
+  noteById = id => this.props.notes.find(note => note.id === id)
 
   renderNode = node => (
     <List.Item
@@ -95,75 +76,28 @@ class NoteList extends Component {
   )
 
   render() {
-    const { list } = this.state;
     return (
       <List>
         <Tree
           paddingLeft={20}
           onChange={this.handleChange}
-          tree={this.state.tree}
+          tree={this.constructTree()}
           renderNode={this.renderNode}
         />
       </List>
-      // <List size="small">
-      //   { this.listItems(list) }
-      // </List>
-
-
-      // <DragDropContext onDragEnd={this.onDragEnd}>
-      //   <Droppable droppableId="droppable">
-      //     {provided => (
-      //       <div
-      //         className="note-list"
-      //         ref={provided.innerRef}
-      //       >
-      //         {this.matchNotes().map((note, index) => (
-      //           <Draggable key={note.id} draggableId={note.id} index={index}>
-      //             {prov => (
-      //               <div>
-      //                 <div
-      //                   ref={prov.innerRef}
-      //                   {...prov.draggableProps}
-      //                   {...prov.dragHandleProps}
-      //                 >
-      //                   <List.Item
-      //                     className="note-list-item truncate"
-      //                     note={note}
-      //                     onClick={this.handleSelect}
-      //                     name={note.id.toString()}
-      //                     active={this.props.note.id === note.id}
-      //                     id={note.id}
-      //                   >
-      //                     <List.Icon
-      //                       className="note-icon"
-      //                       name={this.props.note.id === note.id ? 'sticky note' : 'sticky note outline'}
-      //                     />
-      //                     <List.Description>
-      //                       {note.title === '' ? 'Untitled Note' : note.title}
-      //                     </List.Description>
-      //                   </List.Item>
-      //                 </div>
-      //                 {prov.placeholder}
-      //               </div>
-      //             )}
-      //           </Draggable>
-      //         ))}
-      //         {provided.placeholder}
-      //       </div>
-      //     )}
-      //   </Droppable>
-      // </DragDropContext>
     );
   }
 }
 
 NoteList.propTypes = {
+  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
 };
 
 NoteList.defaultProps = {
+  user: {},
   notes: [],
   note: null,
   selectNote: null,

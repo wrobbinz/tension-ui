@@ -26,6 +26,7 @@ class WorkSpace extends Component {
       <NoteApp
         user={this.props.user}
         menuVisible={this.state.menuVisible}
+        updateUser={this.props.updateUser}
       />
     );
     switch (this.state.focus) {

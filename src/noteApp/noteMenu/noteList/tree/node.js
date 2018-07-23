@@ -66,7 +66,6 @@ class UITreeNode extends Component {
     const { tree, index, dragging } = this.props;
     const { node } = index;
     const styles = {};
-    console.log(index);
 
     if (index.id === 1) {
       return this.renderChildren();
