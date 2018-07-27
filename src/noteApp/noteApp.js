@@ -30,7 +30,6 @@ class NoteApp extends Component {
     const { notes } = (await axios.get(url, options())).data;
     if (notes.length > 0) {
       notes.reverse();
-      console.log('Notes:', notes);
       const note = notes[0];
       const tags = this.resolveTags(notes);
       this.setState({ note, notes, tags });
@@ -48,8 +47,8 @@ class NoteApp extends Component {
       const newNote = (await axios.post(url, note, options())).data;
 
       const { notes } = this.state;
-      notes.unshift(newNote);
-      this.setState({ note: newNote, notes });
+      const newNotes = [newNote, ...notes];
+      this.setState({ note: newNote, notes: newNotes });
       return newNote;
     } catch (error) {
       throw new Error(error);
