@@ -14,6 +14,8 @@ class NoteList extends Component {
 
   onClickNode = (node) => {
     this.active = node;
+    // const note = this.noteById(node.noteId);
+    // this.props.selectNote(note);
   }
 
   handleChange = (tree) => {
@@ -35,7 +37,7 @@ class NoteList extends Component {
     return this.props.notes;
   }
 
-  constructTree = () => {
+  buildTree = () => {
     if (this.props.notes.length) {
       const { tree } = this.props.user;
       const newTree = { ...tree };
@@ -45,21 +47,19 @@ class NoteList extends Component {
     return {};
   }
 
-  matchNotesToChildren = (children) => {
-    const newChildren = children.map((child) => {
-      if (child.leaf && child.noteId) {
-        const note = this.noteById(child.noteId);
-        child.module = note.title || 'Untitled Note';
-        return child;
-      }
-      if (child.children && child.children.length) {
-        child.children = this.matchNotesToChildren(child.children);
-        return child;
-      }
-      return child;
-    });
-    return newChildren;
-  }
+  matchNotesToChildren = children => children.map((child) => {
+    const matchedChild = child;
+    if (child.leaf && child.noteId) {
+      const note = this.noteById(child.noteId);
+      matchedChild.module = note.title || 'Untitled Note';
+      return matchedChild;
+    }
+    if (child.children && child.children.length) {
+      matchedChild.children = this.matchNotesToChildren(child.children);
+      return matchedChild;
+    }
+    return matchedChild;
+  });
 
   noteById = id => this.props.notes.find(note => note.id === id)
 
@@ -81,7 +81,7 @@ class NoteList extends Component {
         <Tree
           paddingLeft={20}
           onChange={this.handleChange}
-          tree={this.constructTree()}
+          tree={this.buildTree()}
           renderNode={this.renderNode}
         />
       </List>
@@ -91,15 +91,15 @@ class NoteList extends Component {
 
 NoteList.propTypes = {
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  updateUser: PropTypes.func,
   notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
 };
 
 NoteList.defaultProps = {
   user: {},
+  updateUser: null,
   notes: [],
-  note: null,
   selectNote: null,
 };
 

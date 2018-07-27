@@ -33,12 +33,7 @@
   left: 0;
   cursor: pointer;
 }
-/* .m-node .caret-right:before {
-  content: "\25B8";
-}
-.m-node .caret-down:before{
-  content: "\25BE";
-} */
+
 .m-node .node {
   display: inline-block;
   width: 100%;
