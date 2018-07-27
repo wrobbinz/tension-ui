@@ -117,7 +117,6 @@ NoteMenu.propTypes = {
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   updateUser: PropTypes.func,
   notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   selectNote: PropTypes.func,
   createNote: PropTypes.func,
 };
@@ -126,7 +125,6 @@ NoteMenu.defaultProps = {
   user: {},
   updateUser: null,
   notes: [],
-  note: {},
   selectNote: null,
   createNote: null,
 };
