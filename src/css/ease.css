@@ -68,3 +68,14 @@ html, body {
 .row {
   padding-bottom: 0 !important;
 }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hidden {
+  display: none !important;
+}
+
