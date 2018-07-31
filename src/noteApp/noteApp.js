@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { union } from 'lodash';
-import { routes, options } from '../api';
+import Api from '../api';
 import NoteMenu from './noteMenu/noteMenu';
 import Toolbar from './toolbar/toolbar';
 import Editor from './editor/editor';
@@ -12,6 +11,7 @@ import Tags from './tags/tags';
 class NoteApp extends Component {
   constructor(props) {
     super(props);
+    this.api = new Api();
     this.editor = React.createRef();
     this.state = {
       notes: [],
@@ -26,8 +26,8 @@ class NoteApp extends Component {
   }
 
   async componentWillMount() {
-    const url = `${routes.users}/${this.props.user.id}/notes`;
-    const { notes } = (await axios.get(url, options())).data;
+    const { user } = this.props;
+    const { notes } = (await this.api.listNotes({ user })).data;
     if (notes.length > 0) {
       notes.reverse();
       const note = notes[0];
@@ -41,32 +41,29 @@ class NoteApp extends Component {
     this.setState({ note });
   }
 
-  createNote = async (note = this.noteTemplate) => {
+  createNote = async (data = this.noteTemplate) => {
     try {
-      const url = `${routes.users}/${this.props.user.id}/notes`;
-      const newNote = (await axios.post(url, note, options())).data;
-
-      const { notes } = this.state;
-      const newNotes = [newNote, ...notes];
-      this.setState({ note: newNote, notes: newNotes });
-      return newNote;
+      const { user } = this.props;
+      const note = (await this.api.createNote({ user, note: data })).data;
+      const notes = [note, ...this.state.notes];
+      this.setState({ note, notes });
+      return note;
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  updateNote = async (update, delay = false) => {
+  updateNote = async (data, delay = false) => {
     try {
-      const note = { ...this.state.note, ...update };
+      const note = { ...this.state.note, ...data };
       const notes = this.findAndMerge(note, this.state.notes);
       const tags = this.resolveTags(notes);
       this.setState({ note, notes, tags });
 
-      const url = `${routes.notes}/${note.id}`;
-      if (!delay) return axios.patch(url, update, options());
+      if (!delay) return this.api.updateNote({ note, data });
 
       if (this.typingTimeout) { clearTimeout(this.typingTimeout); }
-      this.typingTimeout = setTimeout(async () => axios.patch(url, update, options()), 1500);
+      this.typingTimeout = setTimeout(async () => this.api.updateNote({ note, data }), 1500);
       return 1500;
     } catch (error) {
       throw new Error(error);
@@ -76,21 +73,43 @@ class NoteApp extends Component {
   findAndMerge = (newItem, staleArray) => staleArray
     .map(item => (item.id === newItem.id ? newItem : item));
 
-  copyNote = (note) => {
+  copyNote = async (note) => {
     const { content, tags } = note;
     let { title } = note;
     title = `${title} copy`;
-    this.createNote({ title, content, tags });
+    const newNote = await this.createNote({ title, content, tags });
+    this.addTreeLeaf(newNote);
   }
+
+  addTreeLeaf = (note) => {
+    const { tree } = this.props.user;
+    const leaf = {
+      id: note.id,
+      leaf: true,
+    };
+    tree.children = [leaf, ...tree.children];
+    this.props.updateUser({ tree });
+  };
+
+  filterTree = (id, children) => children.filter((child) => {
+    if (child.children && child.children.length) {
+      return this.filterTree(id, child.children);
+    }
+    return child.id !== id;
+  })
 
   deleteNote = async (note) => {
     try {
-      const { id } = note;
-      const url = `${routes.notes}/${id}`;
-      await axios.delete(url, options());
+      await this.api.deleteNote({ note });
 
-      let { notes } = this.state;
-      notes = notes.filter(n => n.id !== id);
+      const { user } = this.props;
+      const { tree } = user;
+      const { id } = note;
+
+      tree.children = this.filterTree(id, tree.children)
+      console.log(tree)
+      await this.props.updateUser({ tree });
+      const notes = this.state.notes.filter(n => n.id !== id);
       const selectedNote = notes[0] || {};
       this.setState({ notes, note: selectedNote });
     } catch (error) {
@@ -118,6 +137,7 @@ class NoteApp extends Component {
               updateUser={updateUser}
               notes={notes}
               note={note}
+              addTreeLeaf={this.addTreeLeaf}
               selectNote={this.selectNote}
               createNote={this.createNote}
             /> : null

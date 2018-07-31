@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
-import axios from 'axios';
-import { routes, options } from '../api';
+import Api from '../api';
 
 
 const tree = {
@@ -13,6 +12,7 @@ const tree = {
 class Auth extends Component {
   constructor(props) {
     super(props);
+    this.api = new Api();
     this.state = {
       email: '',
       password: '',
@@ -22,9 +22,7 @@ class Auth extends Component {
     };
   }
 
-  getCurrentUser = async () => (axios.get(routes.currentUser, options()));
-
-  authenticate = async (email, password) => (axios.post(routes.login, { email, password }));
+  getCurrentUser = async () => (this.api.getCurrentUser());
 
   async signUp() {
     try {
@@ -35,7 +33,7 @@ class Auth extends Component {
         password,
         tree,
       };
-      await axios.post(routes.users, user);
+      await this.api.createUser(user);
       await this.logIn();
     } catch (error) {
       throw new Error(error);
@@ -45,10 +43,10 @@ class Auth extends Component {
   logIn = async () => {
     try {
       const { email, password } = this.state;
-      const jwtToken = (await this.authenticate(email, password)).data;
+      const jwtToken = (await this.api.logIn({ email, password })).data;
       window.localStorage.setItem('jwtToken', jwtToken);
 
-      const user = (await this.getCurrentUser()).data;
+      const user = (await this.api.getCurrentUser()).data;
       if (user) {
         this.props.setUser(user, true);
       }

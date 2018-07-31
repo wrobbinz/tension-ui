@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Segment, Dimmer, Loader } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import { routes, options } from './api';
+import Api from './api';
 import Auth from './auth/auth';
 import Workspace from './workspace/workspace';
 import { UserContext } from './auth/userContext';
@@ -14,6 +13,7 @@ import './css/styles.css';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.api = new Api();
     this.state = {
       loaded: false,
       user: {},
@@ -28,7 +28,7 @@ class App extends Component {
       if (!token) {
         this.setState({ loggedIn: false, loaded: true });
       } else {
-        const user = (await axios.get(routes.currentUser, options())).data;
+        const user = (await this.api.getCurrentUser()).data;
         this.setState({ user, loggedIn: true, loaded: true });
       }
     } catch (error) {
@@ -38,25 +38,22 @@ class App extends Component {
 
   setUser = async (user, loggedIn) => {
     if (!loggedIn) {
-      await this.logOut();
+      await this.api.logOut();
       window.localStorage.removeItem('jwtToken');
     }
     this.setState({ user, loggedIn });
   }
 
-  updateUser = async (update) => {
+  updateUser = async (data) => {
     try {
-      const user = { ...this.state.user, ...update };
+      const user = { ...this.state.user, ...data };
       this.setState({ user });
 
-      const url = `${routes.users}/${user.id}`;
-      return axios.patch(url, update, options());
+      return this.api.updateUser({ user, data });
     } catch (error) {
       throw new Error(error);
     }
   }
-
-  logOut = async () => (axios.post(routes.logout, {}, options()));
 
   render() {
     const { loaded, loggedIn } = this.state;
