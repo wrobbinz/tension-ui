@@ -40,9 +40,13 @@
   padding: 4px 5px;
 }
 .m-node .node.is-active {
-  background-color:#31363f;
+  background-color:#31363f !important;
 }
 
 .children {
   padding-left: 20px;
+}
+
+.tree-leaf:hover .hidden {
+  display: block !important;
 }
