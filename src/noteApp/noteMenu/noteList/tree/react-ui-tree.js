@@ -8,7 +8,8 @@ class UITree extends Component {
   static propTypes = {
     tree: PropTypes.object.isRequired,
     paddingLeft: PropTypes.number,
-    renderNode: PropTypes.func.isRequired
+    renderNode: PropTypes.func.isRequired,
+    handleNoteClick: PropTypes.func,
   };
 
   static defaultProps = {
@@ -17,7 +18,6 @@ class UITree extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = this.init(props);
   }
 
@@ -45,6 +45,7 @@ class UITree extends Component {
           <Node
             tree={tree}
             index={draggingIndex}
+            handleNoteClick={this.props.handleNoteClick}
             paddingLeft={this.props.paddingLeft}
           />
         </div>
@@ -87,6 +88,7 @@ class UITree extends Component {
           onDragStart={this.dragStart}
           onCollapse={this.toggleCollapse}
           dragging={dragging && dragging.id}
+          handleNoteClick={this.props.handleNoteClick}
         />
       </div>
     );

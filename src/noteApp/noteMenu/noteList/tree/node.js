@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
-import { List, Icon } from 'semantic-ui-react';
+import { Popup, Icon } from 'semantic-ui-react';
 
 class UITreeNode extends Component {
   constructor(props) {
@@ -8,21 +8,48 @@ class UITreeNode extends Component {
     this.innerRef = React.createRef();
   }
 
-  renderCollapse = () => {
+  handleCollapse = (e) => {
+    e.stopPropagation();
+
     const { index } = this.props;
 
-    if (index.node.leaf) {
-      return (
-        <Icon
-          name="sticky note outline"
-          className="collapse note-icon"
-        />
-      );
+    if (!index.node.leaf) {
+      const nodeId = index.id;
+
+      if (this.props.onCollapse) {
+        this.props.onCollapse(nodeId);
+      }
     }
+  };
 
-    const { collapsed } = index.node;
+  handleClick = (e) => {
 
-    return (
+    const { node } = this.props.index;
+
+    if (node && node.leaf) {
+      this.props.handleNoteClick(node.id);
+    }
+  }
+
+  handleMouseDown = (e) => {
+    const nodeId = this.props.index.id;
+    const dom = this.innerRef.current;
+
+    if (this.props.onDragStart) {
+      this.props.onDragStart(nodeId, dom, e);
+    }
+  };
+
+  renderCollapse = () => {
+    const { index } = this.props;
+    const { leaf, collapsed } = index.node;
+
+    return leaf ? (
+      <Icon
+        name="sticky note outline"
+        className="collapse note-icon"
+      />
+    ) : (
       <Icon
         name={collapsed ? 'folder' : 'folder open'}
         className="collapse note-icon"
@@ -37,29 +64,26 @@ class UITreeNode extends Component {
       dragging,
     } = this.props;
 
-    if (index.children && index.children.length) {
-      return (
-        <div className={index.top === 1 ? null : 'children'}>
-          {index.children.map((child) => {
-            const childIndex = tree.getIndex(child);
+    return index.children && index.children.length ? (
+      <div className={index.top === 1 ? null : 'children'}>
+        {index.children.map((child) => {
+          const childIndex = tree.getIndex(child);
 
-            return (
-              <UITreeNode
-                tree={tree}
-                index={childIndex}
-                key={childIndex.id}
-                dragging={dragging}
-                paddingLeft={this.props.paddingLeft}
-                onCollapse={this.props.onCollapse}
-                onDragStart={this.props.onDragStart}
-              />
-            );
-          })}
-        </div>
-      );
-    }
-
-    return null;
+          return (
+            <UITreeNode
+              tree={tree}
+              index={childIndex}
+              key={childIndex.id}
+              dragging={dragging}
+              paddingLeft={this.props.paddingLeft}
+              onCollapse={this.props.onCollapse}
+              onDragStart={this.props.onDragStart}
+              handleNoteClick={this.props.handleNoteClick}
+            />
+          );
+        })}
+      </div>
+    ) : null;
   };
 
   render() {
@@ -85,6 +109,7 @@ class UITreeNode extends Component {
           ref={this.innerRef}
           id={'node-' + index.id}
           onMouseDown={this.handleMouseDown}
+          onClick={this.handleClick}
         >
           {this.renderCollapse()}
           {tree.renderNode(node)}
@@ -93,31 +118,6 @@ class UITreeNode extends Component {
       </div>
     );
   }
-
-  handleCollapse = e => {
-
-    e.stopPropagation();
-
-    const { index } = this.props;
-
-    if (!index.node.leaf) {
-      const { collapsed } = index.node;
-      const nodeId = this.props.index.id;
-
-      if (this.props.onCollapse) {
-        this.props.onCollapse(nodeId);
-      }
-    }
-  };
-
-  handleMouseDown = e => {
-    const nodeId = this.props.index.id;
-    const dom = this.innerRef.current;
-
-    if (this.props.onDragStart) {
-      this.props.onDragStart(nodeId, dom, e);
-    }
-  };
 }
 
 export default UITreeNode;

@@ -11,12 +11,6 @@
   color: #C34B5F !important;
 }
 
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .note-list {
   overflow-y: auto !important;
   overflow-x: hidden;
