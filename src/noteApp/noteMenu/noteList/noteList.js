@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { List } from 'semantic-ui-react';
+import { isEqual } from 'lodash';
 import NoteOptions from '../noteOptions/noteOptions';
 import Tree from './tree/react-ui-tree';
 import './noteList.css';
@@ -10,7 +11,9 @@ import './noteList.css';
 class NoteList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      tree: this.props.tree,
+    };
   }
 
   handleNoteClick = (id) => {
@@ -19,7 +22,10 @@ class NoteList extends Component {
   }
 
   handleChange = (tree) => {
-    this.props.updateUser({ tree });
+    if (!isEqual(tree, this.state.tree)) {
+      this.props.updateUser({ tree });
+      this.setState({ tree });
+    }
   }
 
   matchNotes = () => {
@@ -41,7 +47,6 @@ class NoteList extends Component {
     const { tree } = this.props;
     const newTree = { ...tree };
     newTree.children = this.matchNotesToChildren(tree.children);
-    console.log('Rendered tree', newTree)
     return newTree;
   }
 
@@ -63,22 +68,29 @@ class NoteList extends Component {
 
   noteById = id => this.props.notes.find(note => note.id === id)
 
-  renderNode = node => (
-    <List.Item
-      className={cx('node', {
-        'is-active': node === this.active,
-        'tree-leaf': true,
-      })}
-    >
-      {node.module}
-      {
-        node.children ?
-          (
-            <NoteOptions node={node} />
-          ) : null
-      }
-    </List.Item>
-  )
+  renderNode = (node) => {
+    const { tree, updateUser } = this.props;
+    return (
+      <List.Item
+        className={cx('node', {
+          'is-active': node === this.active,
+          'tree-leaf': true,
+        })}
+      >
+        {node.module}
+        {
+          node.children ?
+            (
+              <NoteOptions
+                tree={tree}
+                node={node}
+                updateUser={updateUser}
+              />
+            ) : null
+        }
+      </List.Item>
+    )
+  }
 
   render() {
     return (

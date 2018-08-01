@@ -22,10 +22,6 @@ class NoteMenu extends Component {
 
   handleViewChange = view => this.setState({ view });
 
-  removeFolder = (id) => {
-
-  };
-
   addFolder = () => {
     const { tree } = this.props.user;
     const folder = {

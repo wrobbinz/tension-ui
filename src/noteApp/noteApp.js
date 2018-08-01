@@ -92,8 +92,9 @@ class NoteApp extends Component {
   };
 
   filterTree = (id, children) => children.filter((child) => {
-    if (child.children && child.children.length) {
-      return this.filterTree(id, child.children);
+    if (child.children && child.children.length && child.id !== id) {
+      child.children = this.filterTree(id, child.children); // eslint-disable-line no-param-reassign
+      return true;
     }
     return child.id !== id;
   })
@@ -105,10 +106,10 @@ class NoteApp extends Component {
       const { user } = this.props;
       const { tree } = user;
       const { id } = note;
+      tree.children = this.filterTree(id, tree.children);
 
-      tree.children = this.filterTree(id, tree.children)
-      console.log(tree)
       await this.props.updateUser({ tree });
+
       const notes = this.state.notes.filter(n => n.id !== id);
       const selectedNote = notes[0] || {};
       this.setState({ notes, note: selectedNote });
@@ -138,6 +139,7 @@ class NoteApp extends Component {
               notes={notes}
               note={note}
               addTreeLeaf={this.addTreeLeaf}
+              filterTree={this.filterTree}
               selectNote={this.selectNote}
               createNote={this.createNote}
             /> : null
