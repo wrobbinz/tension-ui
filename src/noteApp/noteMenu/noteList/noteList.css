@@ -50,3 +50,7 @@
 .tree-leaf:hover .hidden {
   display: block !important;
 }
+
+.folder-input {
+  border-bottom: 1px solid #DDD;
+}

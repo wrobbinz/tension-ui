@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { List } from 'semantic-ui-react';
-import { isEqual } from 'lodash';
-import NoteOptions from '../noteOptions/noteOptions';
+import { List, Input } from 'semantic-ui-react';
+import FolderOptions from '../folderOptions/folderOptions';
 import Tree from './tree/react-ui-tree';
 import './noteList.css';
 
@@ -13,7 +12,28 @@ class NoteList extends Component {
     super(props);
     this.state = {
       tree: this.props.tree,
+      node: {},
     };
+  }
+
+  onKeyDown = (e) => {
+    switch (e.key) {
+      case 'Escape':
+        return this.exitRenameMode();
+      case 'Enter':
+        this.renameFolder();
+        return this.exitRenameMode();
+      default:
+        return null;
+    }
+  }
+
+  enterRenameMode = (node) => {
+    this.setState({ node });
+  }
+
+  exitRenameMode = () => {
+    this.setState({ node: {} });
   }
 
   handleNoteClick = (id) => {
@@ -21,12 +41,41 @@ class NoteList extends Component {
     this.props.selectNote(note);
   }
 
-  handleChange = (tree) => {
-    if (!isEqual(tree, this.state.tree)) {
-      this.props.updateUser({ tree });
-      this.setState({ tree });
-    }
+  renameFolder = () => {
+    const { tree } = this.props;
+    const { node } = this.state;
+    tree.children = this.replaceNode(node, tree.children);
+    this.props.updateUser({ tree });
   }
+
+  replaceNode = (node, children) => children.map((child) => {
+    if (child.children && child.id !== node.id) {
+      child.children = this.replaceNode(node, child.children);
+      return child;
+    }
+    if (child.id === node.id) {
+      child.module = node.module;
+      return child;
+    }
+    return child;
+  })
+
+  handleChange = (newTree) => {
+    const { tree } = this.state;
+    this.props.updateUser({ tree: newTree });
+    this.setState({ tree: newTree });
+  }
+
+  deepCompare = (obj1, obj2) => {
+    return JSON.stringify(obj1, (key, value) => value) == JSON.stringify(obj2, (key, value) => value);
+  }
+
+  // isEqualRecursive = (newChildren, oldChildren) => newChildren.every((child, idx) => {
+  //   if (child.children && child.children.length) {
+  //     return this.isEqualRecursive(child.children, oldChildren[idx].children);
+  //   }
+  //   return isEqual(child, oldChildren[idx]);
+  // })
 
   matchNotes = () => {
     if (this.state.view === 'favorites') {
@@ -68,6 +117,12 @@ class NoteList extends Component {
 
   noteById = id => this.props.notes.find(note => note.id === id)
 
+  handleRenameChange = (e, { value }) => {
+    const { node } = this.state;
+    node.module = value;
+    this.setState({ node });
+  }
+
   renderNode = (node) => {
     const { tree, updateUser } = this.props;
     return (
@@ -77,19 +132,33 @@ class NoteList extends Component {
           'tree-leaf': true,
         })}
       >
-        {node.module}
+        {
+          this.state.node.id === node.id ?
+          (
+            <Input
+              autoFocus
+              value={this.state.renameValue}
+              onChange={this.handleRenameChange}
+              onKeyDown={this.onKeyDown}
+              onBlur={() => this.setState({ node: {} })}
+              transparent
+              className="folder-input"
+            />
+          ) : node.module
+        }
         {
           node.children ?
             (
-              <NoteOptions
+              <FolderOptions
                 tree={tree}
                 node={node}
                 updateUser={updateUser}
+                enterRenameMode={this.enterRenameMode}
               />
             ) : null
         }
       </List.Item>
-    )
+    );
   }
 
   render() {

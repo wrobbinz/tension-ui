@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { List, Icon, Popup } from 'semantic-ui-react';
 import Api from '../../../api';
-import './noteOptions.css';
+import './folderOptions.css';
 
 
-class NoteOptions extends Component {
+class folderOptions extends Component {
   constructor(props) {
     super(props);
     this.api = new Api();
-    this.state = {};
+    this.state = {
+      isOpen: false,
+    };
   }
 
-  handleDelete = async () => {
+  handleDelete = async (e) => {
+    e.stopPropagation();
+    this.setState({ isOpen: false });
     const { node, tree } = this.props;
-    const leafs = this.findLeafs(this.props.node.children);
+    const leafs = this.findLeafs(node.children);
     tree.children = this.filterTree(node.id, tree.children);
     await this.bulkDeleteNotes(leafs);
     await this.props.updateUser({ tree });
@@ -47,17 +51,30 @@ class NoteOptions extends Component {
     return child.id !== id;
   })
 
-  handleRename = () => {
-    // this.props.enterRenameMode();
+  handleRename = (e) => {
+    e.stopPropagation();
+    this.setState({ isOpen: false });
+    const { node } = this.props;
+    this.props.enterRenameMode(node);
+  }
+
+  handleOpen = () => {
+    this.setState({ isOpen: true });
   }
 
   renderOptions = () => (
     <List>
-      <List.Item icon="pencil" content="Rename Folder" />
+      <List.Item
+        onClick={this.handleRename}
+        icon="pencil"
+        content="Rename Folder"
+        className="pointer"
+      />
       <List.Item
         onClick={this.handleDelete}
         icon="times"
         content="Delete Folder"
+        className="pointer"
       />
     </List>
   )
@@ -75,6 +92,8 @@ class NoteOptions extends Component {
         }
         content={this.renderOptions()}
         on="click"
+        open={this.state.isOpen}
+        onOpen={this.handleOpen}
         position="right center"
         size="tiny"
         inverted
@@ -84,7 +103,7 @@ class NoteOptions extends Component {
   }
 }
 
-NoteOptions.propTypes = {
+folderOptions.propTypes = {
   node: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   updateUser: PropTypes.func,
@@ -92,7 +111,7 @@ NoteOptions.propTypes = {
   selectNote: PropTypes.func,
 };
 
-NoteOptions.defaultProps = {
+folderOptions.defaultProps = {
   node: {},
   user: {},
   updateUser: null,
@@ -100,4 +119,4 @@ NoteOptions.defaultProps = {
   selectNote: null,
 };
 
-export default NoteOptions;
+export default folderOptions;
