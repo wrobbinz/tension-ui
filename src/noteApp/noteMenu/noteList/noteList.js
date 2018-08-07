@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { List, Input } from 'semantic-ui-react';
+import { List, Input, Icon } from 'semantic-ui-react';
 import FolderOptions from '../folderOptions/folderOptions';
 import Tree from './tree/react-ui-tree';
 import './noteList.css';
@@ -29,11 +29,11 @@ class NoteList extends Component {
   }
 
   enterRenameMode = (node) => {
-    this.setState({ node });
+    this.setState({ node, isEditing: true });
   }
 
   exitRenameMode = () => {
-    this.setState({ node: {} });
+    this.setState({ node: {}, isEditing: false });
   }
 
   handleNoteClick = (id) => {
@@ -61,21 +61,8 @@ class NoteList extends Component {
   })
 
   handleChange = (newTree) => {
-    const { tree } = this.state;
     this.props.updateUser({ tree: newTree });
-    this.setState({ tree: newTree });
   }
-
-  deepCompare = (obj1, obj2) => {
-    return JSON.stringify(obj1, (key, value) => value) == JSON.stringify(obj2, (key, value) => value);
-  }
-
-  // isEqualRecursive = (newChildren, oldChildren) => newChildren.every((child, idx) => {
-  //   if (child.children && child.children.length) {
-  //     return this.isEqualRecursive(child.children, oldChildren[idx].children);
-  //   }
-  //   return isEqual(child, oldChildren[idx]);
-  // })
 
   matchNotes = () => {
     if (this.state.view === 'favorites') {
@@ -140,14 +127,22 @@ class NoteList extends Component {
               value={this.state.renameValue}
               onChange={this.handleRenameChange}
               onKeyDown={this.onKeyDown}
-              onBlur={() => this.setState({ node: {} })}
+              onClick={(e) => { e.stopPropagation(); }}
+              onBlur={() => this.setState({ node: {}, isEditing: false })}
               transparent
               className="folder-input"
+              icon={
+                <Icon
+                  name="times"
+                  color="grey"
+                  link
+                />
+              }
             />
           ) : node.module
         }
         {
-          node.children ?
+          node.children && !this.state.isEditing ?
             (
               <FolderOptions
                 tree={tree}
