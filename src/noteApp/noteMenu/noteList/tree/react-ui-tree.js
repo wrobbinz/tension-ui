@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'semantic-ui-react';
 import Tree from './tree';
 import Node from './node';
 
