@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { List, Icon, Popup } from 'semantic-ui-react';
+import { List, Icon, Popup, Modal, Header, Button } from 'semantic-ui-react';
 import Api from '../../../api';
 import './folderOptions.css';
 
@@ -14,13 +14,28 @@ class folderOptions extends Component {
     };
   }
 
-  handleDelete = async (e) => {
+  handleDelete = (e) => {
     e.stopPropagation();
     this.setState({ isOpen: false });
-    const { node, tree } = this.props;
+    const { node } = this.props;
     const leafs = this.findLeafs(node.children);
+    if (leafs.length) {
+      this.leafs = leafs;
+      this.openModal();
+    } else {
+      this.deleteNotes(leafs);
+    }
+  }
+
+  handleConfirmDelete = () => {
+    this.deleteNotes(this.leafs);
+  }
+
+  deleteNotes = async (notes = this.leafs) => {
+    console.log(notes)
+    const { node, tree } = this.props;
     tree.children = this.filterTree(node.id, tree.children);
-    await this.bulkDeleteNotes(leafs);
+    await Promise.all(notes.map(note => this.api.deleteNote({ note })));
     await this.props.updateUser({ tree });
   }
 
@@ -32,16 +47,9 @@ class folderOptions extends Component {
     return child.id !== id;
   })
 
-  bulkDeleteNotes = async notes => Promise.all(notes.map(note => this.api.deleteNote({ note })))
-
-  findLeafs = (branch) => {
-    return branch.reduce((leafs, child) => {
-      if (child.children && child.children.length) {
-        return [...leafs, ...this.findLeafs(child.children)];
-      }
-      return child.leaf ? [...leafs, child] : leafs;
-    }, []);
-  }
+  findLeafs = branch => branch.reduce((leafs, child) => (
+    child.children ? [...leafs, ...this.findLeafs(child.children)] : [...leafs, child]
+  ), [])
 
   filterTree = (id, children) => children.filter((child) => {
     if (child.children && child.children.length && child.id !== id) {
@@ -58,8 +66,15 @@ class folderOptions extends Component {
     this.props.enterRenameMode(node);
   }
 
-  handleOpen = () => {
-    this.setState({ isOpen: true });
+  handleClick = () => this.setState({ isOpen: !this.state.isOpen })
+
+  openModal = () => {
+    this.setState({ modalOpen: true });
+  }
+
+  handleModalClose = (e) => {
+    e.stopPropagation();
+    this.setState({ modalOpen: false });
   }
 
   renderOptions = () => (
@@ -81,24 +96,49 @@ class folderOptions extends Component {
 
   render() {
     return (
-      <Popup
-        trigger={
-          <Icon
-            name="ellipsis horizontal"
-            color="grey"
-            className="hidden"
-            onClick={(e) => { e.stopPropagation(); }}
-          />
-        }
-        content={this.renderOptions()}
-        on="click"
-        open={this.state.isOpen}
-        onOpen={this.handleOpen}
-        position="right center"
-        size="tiny"
-        inverted
-        hideOnScroll
-      />
+      <div className="float-right">
+        <Popup
+          onClose={this.handleClick}
+          trigger={
+            <Icon
+              name="ellipsis horizontal"
+              color="grey"
+              className="hidden float-right"
+              onClick={(e) => { e.stopPropagation(); }}
+            />
+          }
+          content={this.renderOptions()}
+          on="click"
+          open={this.state.isOpen}
+          onOpen={this.handleClick}
+          position="right center"
+          size="tiny"
+          inverted
+          hideOnScroll
+        />
+        <Modal
+          open={this.state.modalOpen}
+          onClose={this.handleModalClose}
+          basic
+          size="small"
+        >
+          <Header icon="trash" content="Are you sure?" />
+          <Modal.Content>
+            <p>
+              This folder has stuff in it? Deleting this will delete all of its contents.
+              Are you sure you want to do that?
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={this.handleModalClose} basic color="grey" inverted>
+              <Icon name="remove" /> Cancel
+            </Button>
+            <Button color="red" onClick={this.handleConfirmDelete} inverted>
+              <Icon name="remove" /> Delete
+            </Button>
+          </Modal.Actions>
+        </Modal>
+      </div>
     );
   }
 }
