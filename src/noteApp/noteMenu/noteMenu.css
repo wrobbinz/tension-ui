@@ -1,6 +1,17 @@
 .note-menu {
+  display: flex !important;
   border: none !important;
   background: #fafafa !important;
+  max-height: 100vh;
+}
+.note-view {
+  width: 100%;
+  flex: 1 !important;
+  overflow-y: hidden;
+}
+
+.note-view:hover {
+  overflow-y: auto;
 }
 
 .new-note {

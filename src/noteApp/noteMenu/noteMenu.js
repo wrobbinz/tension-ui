@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Resizable from 're-resizable';
-import { Menu, Icon, Button } from 'semantic-ui-react';
-import uuidv4 from 'uuid/v4';
+import { Menu } from 'semantic-ui-react';
 import NoteSearch from './noteSearch/noteSearch';
-import NoteList from './noteList/noteList';
+import NoteTreeView from './NoteTreeView/NoteTreeView';
+import NoteTreeActions from './NoteTreeView/NoteTreeActions/NoteTreeActions';
+import NoteTagView from './NoteTagView/NoteTagView';
+import NoteFavView from './NoteFavView/NoteFavView';
+import NoteViewOptions from './NoteViewOptions/NoteViewOptions';
 import { resizeDirections } from './constants';
 import './noteMenu.css';
 
@@ -22,20 +25,46 @@ class NoteMenu extends Component {
 
   handleViewChange = view => this.setState({ view });
 
-  addFolder = () => {
-    const { tree } = this.props.user;
-    const folder = {
-      module: 'New Folder',
-      id: uuidv4(),
-      collapsed: true,
-      children: [],
-    };
-    tree.children = [folder, ...tree.children];
-    this.props.updateUser({ tree });
+  changeView = (view) => {
+    this.setState({ view });
+  }
+
+  renderNoteView = (view) => {
+    const { notes, user } = this.props;
+
+    switch (view) {
+      case 'all':
+        return (
+          <NoteTreeView
+            notes={notes}
+            selectNote={this.props.selectNote}
+            tree={user.tree}
+            updateUser={this.props.updateUser}
+          />
+        );
+      case 'tag':
+        return (
+          <NoteTagView
+            notes={notes}
+            selectNote={this.props.selectNote}
+          />
+        );
+      case 'fav':
+        return (
+          <NoteFavView
+            notes={notes}
+            selectNote={this.props.selectNote}
+          />
+        );
+      default:
+        return null;
+    }
   }
 
   render() {
-    const { user, notes } = this.props;
+    const { search, view } = this.state;
+    const { user } = this.props;
+
     return (
       <Resizable
         className="resize-indicator"
@@ -52,63 +81,29 @@ class NoteMenu extends Component {
           vertical
           floated
         >
-          <Menu.Item>
+          <Menu.Item className="full-width">
             <NoteSearch
-              search={this.state.search}
+              search={search}
               updateSearch={this.updateSearch}
               createNote={this.props.createNote}
               addTreeLeaf={this.props.addTreeLeaf}
             />
           </Menu.Item>
-          <Menu.Item>
-            <Button.Group basic size="tiny">
-              <Button
-                onClick={this.addFolder}
-                icon
-              >
-                <Icon.Group>
-                  <Icon name="folder" />
-                  <Icon corner name="add" />
-                </Icon.Group>
-              </Button>
-              <Button icon>
-                <Icon name="align center" />
-              </Button>
-            </Button.Group>
-          </Menu.Item>
-          <Menu.Item>
-            <NoteList
-              notes={notes}
-              selectNote={this.props.selectNote}
-              tree={user.tree}
-              updateUser={this.props.updateUser}
-            />
-          </Menu.Item>
-          <Menu.Item id="noteView">
-            <Button.Group size="mini" widths="3" fluid basic>
-              <Button
-                onClick={() => { this.handleViewChange('all'); }}
-                active={this.state.view === 'all'}
-              >
-                All
-              </Button>
-              <Button
-                onClick={() => { this.handleViewChange('tags'); }}
-                active={this.state.view === 'tags'}
-              >
-                Tags
-              </Button>
-              <Button
-                onClick={() => { this.handleViewChange('favorites'); }}
-                active={this.state.view === 'favorites'}
-                icon
-              >
-                <Icon
-                  color={this.state.view === 'favorites' ? 'red' : 'grey'}
-                  name="heart"
+          {
+            view === 'all' ? (
+              <Menu.Item className="full-width">
+                <NoteTreeActions
+                  user={user}
+                  updateUser={this.props.updateUser}
                 />
-              </Button>
-            </Button.Group>
+              </Menu.Item>
+            ) : null
+          }
+          <Menu.Item className="note-view">
+            {this.renderNoteView(view)}
+          </Menu.Item>
+          <Menu.Item className="full-width">
+            <NoteViewOptions view={view} changeView={this.changeView} />
           </Menu.Item>
         </Menu>
       </Resizable>
