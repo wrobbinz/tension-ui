@@ -13,6 +13,15 @@ import './noteMenu.css';
 
 
 class NoteMenu extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateUser: PropTypes.func.isRequired,
+    notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    addTreeLeaf: PropTypes.func.isRequired,
+    selectNote: PropTypes.func.isRequired,
+    createNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -110,23 +119,5 @@ class NoteMenu extends Component {
     );
   }
 }
-
-NoteMenu.propTypes = {
-  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateUser: PropTypes.func,
-  notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  addTreeLeaf: PropTypes.func,
-  selectNote: PropTypes.func,
-  createNote: PropTypes.func,
-};
-
-NoteMenu.defaultProps = {
-  user: {},
-  updateUser: null,
-  notes: [],
-  addTreeLeaf: null,
-  selectNote: null,
-  createNote: null,
-};
 
 export default NoteMenu;

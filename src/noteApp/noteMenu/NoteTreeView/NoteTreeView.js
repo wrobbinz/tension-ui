@@ -8,6 +8,16 @@ import './NoteTreeView.css';
 
 
 class NoteTreeView extends Component {
+  static propTypes = {
+    tree: PropTypes.shape({
+      children: PropTypes.arrayOf(PropTypes.object),
+      module: PropTypes.string,
+    }).isRequired, // eslint-disable-line react/forbid-prop-types
+    updateUser: PropTypes.func.isRequired,
+    notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -169,19 +179,5 @@ class NoteTreeView extends Component {
     );
   }
 }
-
-NoteTreeView.propTypes = {
-  tree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateUser: PropTypes.func,
-  notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  selectNote: PropTypes.func,
-};
-
-NoteTreeView.defaultProps = {
-  tree: {},
-  updateUser: null,
-  notes: [],
-  selectNote: null,
-};
 
 export default NoteTreeView;

@@ -10,6 +10,10 @@ const tree = {
 };
 
 class Auth extends Component {
+  static propTypes = {
+    setUser: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.api = new Api();
@@ -146,13 +150,5 @@ class Auth extends Component {
     );
   }
 }
-
-Auth.propTypes = {
-  setUser: PropTypes.func,
-};
-
-Auth.defaultProps = {
-  setUser: null,
-};
 
 export default Auth;

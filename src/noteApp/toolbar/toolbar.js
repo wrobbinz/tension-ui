@@ -7,6 +7,14 @@ import './toolbar.css';
 
 
 class Toolbar extends Component {
+  static propTypes = {
+    note: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateNote: PropTypes.func.isRequired,
+    lockNote: PropTypes.func.isRequired,
+    copyNote: PropTypes.func.isRequired,
+    deleteNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -59,21 +67,5 @@ class Toolbar extends Component {
     );
   }
 }
-
-Toolbar.propTypes = {
-  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateNote: PropTypes.func,
-  lockNote: PropTypes.func,
-  copyNote: PropTypes.func,
-  deleteNote: PropTypes.func,
-};
-
-Toolbar.defaultProps = {
-  note: {},
-  updateNote: null,
-  lockNote: null,
-  copyNote: null,
-  deleteNote: null,
-};
 
 export default Toolbar;

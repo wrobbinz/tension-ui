@@ -6,6 +6,11 @@ import './NoteFavView.css';
 
 
 class NoteFavView extends Component {
+  static propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -57,15 +62,5 @@ class NoteFavView extends Component {
     );
   }
 }
-
-NoteFavView.propTypes = {
-  notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  selectNote: PropTypes.func,
-};
-
-NoteFavView.defaultProps = {
-  notes: [],
-  selectNote: null,
-};
 
 export default NoteFavView;

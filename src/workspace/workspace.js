@@ -5,6 +5,12 @@ import NoteApp from '../noteApp/noteApp';
 
 
 class WorkSpace extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateUser: PropTypes.func.isRequired,
+    setUser: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -51,15 +57,5 @@ class WorkSpace extends Component {
     );
   }
 }
-
-WorkSpace.propTypes = {
-  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateUser: PropTypes.func,
-};
-
-WorkSpace.defaultProps = {
-  user: {},
-  updateUser: null,
-};
 
 export default WorkSpace;

@@ -6,6 +6,11 @@ import './NoteTagView.css';
 
 
 class NoteTagView extends Component {
+  static propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selectNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -75,15 +80,5 @@ class NoteTagView extends Component {
     );
   }
 }
-
-NoteTagView.propTypes = {
-  notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  selectNote: PropTypes.func,
-};
-
-NoteTagView.defaultProps = {
-  notes: [],
-  selectNote: null,
-};
 
 export default NoteTagView;

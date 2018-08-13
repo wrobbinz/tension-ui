@@ -5,6 +5,11 @@ import './NoteViewOptions.css';
 
 
 class NoteViewOptions extends Component {
+  static propTypes = {
+    view: PropTypes.string.isRequired,
+    changeView: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -50,15 +55,5 @@ class NoteViewOptions extends Component {
     );
   }
 }
-
-NoteViewOptions.propTypes = {
-  view: PropTypes.string,
-  changeView: PropTypes.func,
-};
-
-NoteViewOptions.defaultProps = {
-  view: 'all',
-  changeView: null,
-};
 
 export default NoteViewOptions;

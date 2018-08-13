@@ -9,6 +9,12 @@ import Tags from './tags/tags';
 
 
 class NoteApp extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateUser: PropTypes.func.isRequired,
+    menuVisible: PropTypes.bool.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.api = new Api();
@@ -37,7 +43,7 @@ class NoteApp extends Component {
   }
 
   selectNote = (note) => {
-    console.log('Note:', note);
+    console.log('Note:', note); // eslint-disable-line no-console
     this.setState({ note });
   }
 
@@ -170,17 +176,5 @@ class NoteApp extends Component {
     );
   }
 }
-
-NoteApp.propTypes = {
-  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateUser: PropTypes.func,
-  menuVisible: PropTypes.bool,
-};
-
-NoteApp.defaultProps = {
-  user: {},
-  updateUser: null,
-  menuVisible: true,
-};
 
 export default NoteApp;

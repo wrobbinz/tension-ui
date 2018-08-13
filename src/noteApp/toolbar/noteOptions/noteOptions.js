@@ -4,6 +4,13 @@ import { Icon, Dropdown, Modal, Header, Button } from 'semantic-ui-react';
 
 
 class NoteOptions extends Component {
+  static propTypes = {
+    note: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    lockNote: PropTypes.func.isRequired,
+    copyNote: PropTypes.func.isRequired,
+    deleteNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -86,19 +93,5 @@ class NoteOptions extends Component {
     );
   }
 }
-
-NoteOptions.propTypes = {
-  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  lockNote: PropTypes.func,
-  copyNote: PropTypes.func,
-  deleteNote: PropTypes.func,
-};
-
-NoteOptions.defaultProps = {
-  note: {},
-  lockNote: null,
-  copyNote: null,
-  deleteNote: null,
-};
 
 export default NoteOptions;

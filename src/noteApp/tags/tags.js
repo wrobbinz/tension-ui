@@ -5,6 +5,12 @@ import './tags.css';
 
 
 class Tags extends Component {
+  static propTypes = {
+    note: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    updateNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -41,17 +47,5 @@ class Tags extends Component {
     );
   }
 }
-
-Tags.propTypes = {
-  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  tags: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  updateNote: PropTypes.func,
-};
-
-Tags.defaultProps = {
-  note: {},
-  tags: [],
-  updateNote: null,
-};
 
 export default Tags;

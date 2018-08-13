@@ -6,6 +6,11 @@ import './NoteTreeActions.css';
 
 
 class NoteTreeActions extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateUser: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,15 +53,5 @@ class NoteTreeActions extends Component {
     );
   }
 }
-
-NoteTreeActions.propTypes = {
-  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateUser: PropTypes.func,
-};
-
-NoteTreeActions.defaultProps = {
-  user: {},
-  updateUser: null,
-};
 
 export default NoteTreeActions;

@@ -25,6 +25,12 @@ const menuItems = [
 ];
 
 class SideNav extends Component {
+  static propTypes = {
+    focus: PropTypes.string.isRequired,
+    setFocus: PropTypes.func.isRequired,
+    setUser: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -69,17 +75,5 @@ class SideNav extends Component {
     );
   }
 }
-
-SideNav.propTypes = {
-  setLoginStatus: PropTypes.func,
-  focus: PropTypes.string,
-  setFocus: PropTypes.func,
-};
-
-SideNav.defaultProps = {
-  setLoginStatus: null,
-  focus: false,
-  setFocus: false,
-};
 
 export default SideNav;

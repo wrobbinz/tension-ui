@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Icon, Popup, List } from 'semantic-ui-react';
 import Account from '../account/account';
 import { UserContext } from '../../auth/userContext';
 
 
 class AppOptions extends Component {
+  static propTypes = {
+    setUser: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {

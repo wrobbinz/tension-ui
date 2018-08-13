@@ -4,6 +4,11 @@ import { Rating } from 'semantic-ui-react';
 
 
 class Favorite extends Component {
+  static propTypes = {
+    note: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateNote: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -28,15 +33,5 @@ class Favorite extends Component {
     );
   }
 }
-
-Favorite.propTypes = {
-  note: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateNote: PropTypes.func,
-};
-
-Favorite.defaultProps = {
-  note: {},
-  updateNote: null,
-};
 
 export default Favorite;

@@ -6,6 +6,12 @@ import './folderOptions.css';
 
 
 class folderOptions extends Component {
+  static propTypes = {
+    node: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    updateUser: PropTypes.func.isRequired,
+    enterRenameMode: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.api = new Api();
@@ -32,7 +38,6 @@ class folderOptions extends Component {
   }
 
   deleteNotes = async (notes = this.leafs) => {
-    console.log(notes)
     const { node, tree } = this.props;
     tree.children = this.filterTree(node.id, tree.children);
     await Promise.all(notes.map(note => this.api.deleteNote({ note })));
@@ -142,21 +147,5 @@ class folderOptions extends Component {
     );
   }
 }
-
-folderOptions.propTypes = {
-  node: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  user: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  updateUser: PropTypes.func,
-  notes: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  selectNote: PropTypes.func,
-};
-
-folderOptions.defaultProps = {
-  node: {},
-  user: {},
-  updateUser: null,
-  notes: [],
-  selectNote: null,
-};
 
 export default folderOptions;

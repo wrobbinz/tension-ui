@@ -5,6 +5,13 @@ import './noteSearch.css';
 
 
 class NoteSearch extends Component {
+  static propTypes = {
+    createNote: PropTypes.func.isRequired,
+    search: PropTypes.string.isRequired,
+    updateSearch: PropTypes.func.isRequired,
+    addTreeLeaf: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -40,19 +47,5 @@ class NoteSearch extends Component {
     );
   }
 }
-
-NoteSearch.propTypes = {
-  createNote: PropTypes.func,
-  search: PropTypes.string,
-  updateSearch: PropTypes.func,
-  addTreeLeaf: PropTypes.func,
-};
-
-NoteSearch.defaultProps = {
-  createNote: null,
-  search: '',
-  updateSearch: null,
-  addTreeLeaf: null,
-};
 
 export default NoteSearch;
