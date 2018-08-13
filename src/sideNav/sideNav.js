@@ -70,7 +70,7 @@ class SideNav extends Component {
             }
           />
         ))}
-        <AppOptions logOut={this.props.logOut} />
+        <AppOptions setUser={this.props.setUser} />
       </Menu>
     );
   }

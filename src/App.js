@@ -15,8 +15,8 @@ class App extends Component {
     super(props);
     this.api = new Api();
     this.state = {
-      loaded: false,
       user: {},
+      loaded: false,
       loggedIn: false,
     };
   }
@@ -24,7 +24,6 @@ class App extends Component {
   async componentWillMount() {
     try {
       const token = window.localStorage.jwtToken;
-
       if (!token) {
         this.setState({ loggedIn: false, loaded: true });
       } else {
@@ -72,6 +71,7 @@ class App extends Component {
           <Workspace
             user={this.state.user}
             updateUser={this.updateUser}
+            setUser={this.setUser}
             className="full-height"
           />
         </UserContext.Provider>

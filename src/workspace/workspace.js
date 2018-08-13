@@ -50,6 +50,7 @@ class WorkSpace extends Component {
           <SideNav
             focus={this.state.focus}
             setFocus={this.setFocus}
+            setUser={this.props.setUser}
           />
         </div>
         { this.appView() }
