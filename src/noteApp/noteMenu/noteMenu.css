@@ -8,6 +8,7 @@
   width: 100%;
   flex: 1 !important;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .note-view:hover {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Resizable from 're-resizable';
 import { Menu } from 'semantic-ui-react';
 import NoteSearch from './noteSearch/noteSearch';
+import NoteSearchView from './NoteSearchView/NoteSearchView';
 import NoteTreeView from './NoteTreeView/NoteTreeView';
 import NoteTreeActions from './NoteTreeView/NoteTreeActions/NoteTreeActions';
 import NoteTagView from './NoteTagView/NoteTagView';
@@ -39,7 +40,17 @@ class NoteMenu extends Component {
   }
 
   renderNoteView = (view) => {
+    const { search } = this.state;
     const { notes, user } = this.props;
+    if (search) {
+      return (
+        <NoteSearchView
+          search={search}
+          notes={notes}
+          selectNote={this.props.selectNote}
+        />
+      );
+    }
 
     switch (view) {
       case 'all':
