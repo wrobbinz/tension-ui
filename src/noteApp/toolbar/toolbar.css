@@ -11,3 +11,7 @@
 #toolbar {
   padding-top: .85714286em;
 }
+
+#toolbar:hover {
+  background: #fafafa;
+}

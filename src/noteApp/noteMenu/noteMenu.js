@@ -31,7 +31,7 @@ class NoteMenu extends Component {
     };
   }
 
-  updateSearch = search => this.setState({ search });
+  updateSearch = search => this.setState({ search })
 
   handleViewChange = view => this.setState({ view });
 

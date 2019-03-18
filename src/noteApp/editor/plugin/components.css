@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+
+code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.9em;
+  background: #F0F0F0;
+  padding: 0.2em 0.3em;
+  margin: 0 0.2em;
+  border-radius: 3px;
+}
+
+blockquote {
+  border-left: 3px solid #DDD;
+  padding: 0.2em 0 0.2em 1em;
+  color: #AAA;
+}
+
+.hr {
+  border-bottom: 1px solid #000;
+  display: block;
+  opacity: 0.2;
+}
+
+.strikethrough {
+  text-decoration: line-through !important;
+}
+
+.highlight {
+  background-color: #65c7d8;
+  padding: 0.2em 0.3em;
+  border-radius: 3px;
+}
+
+.header-icon {
+  position: absolute;
+  left: -2em;
+  top: 1.2em;
+}
+
+.punctuation {
+  opacity: 0.4;
+}
+
+.checklist-item-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox-wrapper {
+  margin-right: 0.75em;
+}

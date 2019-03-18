@@ -1,95 +1,15 @@
-#quillEditor {
-  padding: 1em 14em 1em 3em;
+.note-editor {
+  padding: 1em 3.5em 1em 3.5em;
   height: calc(100vh - 108px)!important;
   overflow-y: auto !important;
 }
 
-/* Headers */
-#quillEditor h1 {
-  font-size: 2.8em;
-  margin-bottom: 0.4em;
+.note-editor h1,h2,h3,h4,h5,h6 {
+  position: relative;
 }
 
-#quillEditor h2 {
-  font-size: 2.4em;
-  margin-bottom: 0.4em;
+.note-editor h1 {
+  border-bottom: 1px solid #DDD;
+  padding-bottom: 0.4em;
+  display: block;
 }
-
-#quillEditor h3 {
-  font-size: 1.9em;
-  margin-bottom: 0.4em;
-}
-
-#quillEditor h4 {
-  font-size: 1.5em;
-  margin-bottom: 0.4em;
-}
-
-#quillEditor h5 {
-  font-size: 1.2em;
-  margin-bottom: 0.3em;
-}
-
-#quillEditor h6 {
-  font-size: 1.2em;
-  color: #C34B5F;
-}
-
-#quillEditor p {
-  font-size: 1.2em;
-  line-height: 1.7;
-  margin-bottom: 0.8em;
-}
-
-#quillEditor p a {
-  text-decoration: none;
-}
-
-#quillEditor p code {
-  font-size: 1em;
-}
-
-#quillEditor pre {
-  font-size: 1em;
-  /* background-color: #f0f0f0 !important; */
-  margin: 1em 0;
-}
-
-
-/* Lists */
-/* #quillEditor ul, #quillEditor ol {
-  margin: 1em 0;
-} */
-
-#quillEditor ul li, #quillEditor ol li {
-  font-size: 1.2em;
-}
-
-#quillEditor ul li::before{
-  font-size: 1.4em;
-  padding-right: 0.3em;
-  color: #C34B5F;
-}
-
-#quillEditor ol li::before{
-  font-size: 1em;
-  padding-right: 0.3em;
-  margin-bottom: 0.4em;
-  color: #C34B5F;
-}
-
-#quillEditor ul [data-checked] {
-  margin: 0 !important;
-}
-/* Checkboxes */
-#quillEditor ul[data-checked="true"] li::before {
-    content: '\2713';
-}
-
-#quillEditor hr {
-  color: #e9e9e9;
-  border-style: solid;
-  margin-bottom: 1.4em;
-
-}
-
